@@ -1,0 +1,39 @@
+class_name Ctor
+extends RefCounted
+
+## The behaviours the engine knows by their constructor key (the number the zone builders
+## register them with). Each key is the address of the original constructor.
+
+const FLAG_SETTER := 0x004CB3F9
+const VAR_OR_STEP := 0x004CAF83
+const BOT_END := 0x004CD15C
+const TELEPORT_STEP := 0x004D2C63
+const NOTE_EMITTER := 0x004CFE5B
+const NULL_STEP := 0x004D2E09
+const TURN_TO_PEPPER := 0x004CA5C9
+const MEET_PEPPER := 0x004CAD75
+const NODE_SWING := 0x004D0B35
+const SCALE_MORPH := 0x004CF219
+const WALK_RAMP := 0x004599B9
+const TALK_NODE := 0x0087D84E
+const PATH_WALKER := 0x00459290
+const START_CSM := 0x004B882C
+const ZONE_TRIGGER := 0x004B90CC
+const DOOR_SWING := 0x004D0510
+const SIREN_VEHICLE := 0x004D27B6
+const HOLO_GUIDE := 0x0087E961
+const RIDE_GATE := 0x008763DB
+const PULSE_SCALE := 0x004D4068
+const PATROL_FALL := 0x004D84A3
+const BRICK_BOT := 0x004CC3D5
+const HOP_BOMB := 0x004D3BEE
+const BOT_DEFEAT := 0x004CCE41
+const RIDE_MACHINE := 0x00880905
+const BOAT_DRIVE := 0x0087B32C
+const GUIDE_WALKER := 0x004CE238
+const FLYING_CRAFT := 0x004D697C
+const MUSIC_EMITTER := 0x004D14A6
+const GEM := 0x00600E30
+const TUMBLEWEED := 0x0060297E
+const SCORPION := 0x00603935
+const SEA_ANIMATION := 0x00457172

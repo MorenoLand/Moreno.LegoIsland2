@@ -1,0 +1,42 @@
+name	segment	dls
+Z01BPK	_Data\sounds\DirectMusic\z01BPKSkate Park Theme.sgt	Skate Park.dls
+Z02LGIM	_Data\sounds\DirectMusic\z02LGILego Town Main.sgt	LI2 Town Custom.dls
+Z02LGIT	_Data\sounds\DirectMusic\z02LGILego Town Theme.sgt	LI2 Town Custom.dls
+Z02LGIB	_Data\sounds\DirectMusic\z02LGILego Town Bridge.sgt	LI2 Town Custom.dls
+Z02Papa	_Data\sounds\DirectMusic\z02LGIPapaBrick.sgt	LI2 Town Custom.dls
+Z02Mama	_Data\sounds\DirectMusic\z02LGIMamaBrick.sgt	LI2 Town Custom.dls
+Z02Nick	_Data\sounds\DirectMusic\z02LGINick Brick.sgt	LI2 Town Custom.dls
+Z02Laura	_Data\sounds\DirectMusic\z02LGILaura Brick.sgt	LI2 Town Custom.dls
+Z02Info	_Data\sounds\DirectMusic\z02LGIInfoman1.sgt	LI2 Town Custom.dls
+Z02Trom	_Data\sounds\DirectMusic\z02LGITromSolo.sgt	LI2 Town Custom.dls
+Z05WAB1	_Data\sounds\DirectMusic\z05WABWakLevel1.sgt	WakaBot.dls
+Z05WAB2	_Data\sounds\DirectMusic\z05WABWakLevel2.sgt	WakaBot.dls
+Z05WAB3	_Data\sounds\DirectMusic\z05WABWakLev3.sgt	WakaBot.dls
+Z07CSI	_Data\sounds\DirectMusic\z07CSIMedieval Theme.sgt	Medieval.dls
+Z08BKD1	_Data\sounds\DirectMusic\z08BKDBDivingLev1.sgt	Brick Diving.dls
+Z08BKD2	_Data\sounds\DirectMusic\z08BKDBDivingLev2.sgt	Brick Diving.dls
+Z10RGB	_Data\sounds\DirectMusic\z10RGBCedric.sgt	Cedric.dls
+Z15SSH	_Data\sounds\DirectMusic\z15sshAdvRace.sgt	advrace.dls
+Z17WAS1	_Data\sounds\DirectMusic\z17WASWakaSnake1.sgt	WakaSnake.dls
+Z17WAS2	_Data\sounds\DirectMusic\z17WASWakaSnake2.sgt	WakaSnake.dls
+Z18MMP	_Data\sounds\DirectMusic\z18MMPMatching Mummies.sgt	Matching Mummies.dls
+Z18MMPPre	_Data\sounds\DirectMusic\z18MMPPre-Matching.sgt	Matching Mummies.dls
+Hotep	_Data\sounds\DirectMusic\HotepHoteps Tomb.sgt	Hoteps Tomb.dls
+Z21FSH	_Data\sounds\DirectMusic\z21FSHOasis.sgt	OasisFishing.dls
+Z21Jaws	_Data\sounds\DirectMusic\z21FSHFishing.sgt	OasisFishing.dls
+Flying	_Data\sounds\DirectMusic\FlyingFlying.sgt	Flying Max.dls
+Z28HAT	_Data\sounds\DirectMusic\z28HATMrHates.sgt	MrHates.dls
+Z38PAR	_Data\sounds\DirectMusic\z38PARAsteroids.sgt	Asteroids.dls
+Z39ASB	_Data\sounds\DirectMusic\z38PARAsteroids.sgt	Asteroids.dls
+Z40APO	_Data\sounds\DirectMusic\z38PARAsteroids.sgt	Asteroids.dls
+Z41MAP	_Data\sounds\DirectMusic\z41MAPBlueDanube.sgt	BlueDanube.dls
+Z42BRP	_Data\sounds\DirectMusic\z42BRPBrickster.sgt	Brickster.dls
+ad1T	_Data\sounds\DirectMusic\ad1AdvIntro.sgt	Ad1.dls
+ad1V	_Data\sounds\DirectMusic\ad1AdventurerVartn.sgt	Ad1.dls
+ad2	_Data\sounds\DirectMusic\ad2Adv2.sgt	Adventurers2.dls
+bbotsM	_Data\sounds\DirectMusic\bbotsBricksterbots.sgt	Bricksterbots.dls
+bbotsV	_Data\sounds\DirectMusic\bbotsBBotsVartn.sgt	Bricksterbots.dls
+ogel	_Data\sounds\DirectMusic\ogelOgel.sgt	Ogel.dls
+radio	_Data\sounds\DirectMusic\danceBBotdance.sgt	BBotdance.dls
+carn	_Data\sounds\DirectMusic\CarnFlyingCarn.sgt	FlyingCarn.dls
+menu	_Data\sounds\DirectMusic\menuMenu.sgt	Menu.dls

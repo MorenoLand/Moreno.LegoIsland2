@@ -1,0 +1,902 @@
+0	_Data/sounds/z02LGI/Silence.wav	33	1	8.0	64.0	64	11025
+1	_Data/sounds/z38PAR/wind_accel_deccel11.wav	10	1	1.0	200.0	64	32000
+2	_Data/sounds/z02LGI/Silence.wav	33	1	8.0	64.0	64	11025
+3	_Data/sounds/z28hat/winch2.wav	8	0	1.0	200.0	64	11025
+4	_Data/sounds/z28hat/background.wav	28	0	1.0	200.0	64	22050
+5	_Data/sounds/z28hat/crickets.wav	1	0	1.0	200.0	64	22050
+6	_Data/sounds/z28hat/flap1.wav	44	0	15.0	200.0	64	10500
+7	_Data/sounds/z28hat/StepRev.wav	127	1	15.0	200.0	64	11000
+8	_Data/sounds/z28hat/elecfence2.wav	121	0	20.0	300.0	64	22050
+9	_Data/sounds/z28hat/thrust.wav	99	0	15.0	200.0	64	10000
+10	_Data/sounds/z28hat/newbabes.wav	88	0	10.0	200.0	64	11025
+11	_Data/sounds/z28hat/sandrop.wav	8	1	1.0	200.0	64	6500
+12	_Data/sounds/z28hat/missed.wav	44	1	1.0	200.0	64	22000
+13	_Data/sounds/z28hat/success.wav	33	1	1.0	200.0	64	11025
+14	_Data/sounds/z28hat/roar1.wav	99	1	10.0	200.0	64	22050
+15	_Data/sounds/z28hat/roar2.wav	99	1	10.0	200.0	64	22050
+16	UNDEFINED	1	1	1.0	1.0	1	22050
+17	_Data/sounds/z28hat/runoff3.wav	77	1	1.0	200.0	64	22050
+18	_Data/sounds/z28hat/BurpEko.wav	127	1	15.0	200.0	64	19000
+19	_Data/sounds/z28hat/eat.wav	127	1	15.0	200.0	64	22500
+20	_Data/sounds/z28hat/FireHit2.wav	66	1	1.0	200.0	64	22050
+21	_Data/sounds/z28hat/thrust.wav	7	0	1.0	200.0	64	22050
+22	UNDEFINED	1	1	1.0	1.0	1	22050
+23	_Data/sounds/z38PAR/plane_flyoff.wav	56	1	1.0	200.0	64	16000
+24	_Data/sounds/z38PAR/wind_freefall_8_22.wav	12	0	1.0	200.0	64	16000
+25	_Data/sounds/z38PAR/wind_chuteopen22.wav	56	0	1.0	200.0	64	22050
+26	_Data/sounds/z38PAR/s_ameri_jungle.wav	6	0	256.0	1024.0	64	44100
+27	_Data/sounds/z38PAR/sea16_8.wav	8	0	96.0	1024.0	64	16000
+28	_Data/sounds/z38PAR/chute_open4.wav	48	1	1.0	200.0	64	44100
+29	_Data/sounds/z38PAR/plane_flight_idle.wav	36	0	64.0	756.0	64	22050
+30	_Data/sounds/z38PAR/smack_nochute.wav	56	1	1.0	200.0	64	22050
+31	_Data/sounds/z38PAR/bigsplash.wav	56	1	1.0	200.0	64	44100
+32	_Data/sounds/z38PAR/Hit_targnochute.wav	56	1	1.0	200.0	64	44100
+33	_Data/sounds/z38PAR/land_succes_targ.wav	48	1	1.0	200.0	64	16000
+34	_Data/sounds/z38PAR/land_off_target.wav	56	1	1.0	200.0	64	22050
+35	_Data/sounds/z38PAR/splash1.wav	48	1	1.0	200.0	64	22050
+36	_Data/sounds/z38PAR/ptero_fly.wav	16	0	16.0	512.0	64	44100
+37	_Data/sounds/z38PAR/ptero_call1.wav	40	1	44.0	1024.0	64	8000
+38	_Data/sounds/z28hat/roarrev.wav	99	1	10.0	200.0	64	22050
+39	_Data/sounds/z38PAR/ptero_call2.wav	40	1	44.0	1024.0	64	8000
+40	_Data/sounds/z38PAR/ptero_call3.wav	40	1	44.0	1024.0	64	8000
+41	_Data/sounds/z38PAR/hit_ring.wav	52	1	1.0	200.0	64	22050
+42	_Data/sounds/z38PAR/hit_pterodactyl.wav	52	1	1.0	200.0	64	22050
+43	_Data/sounds/z38PAR/hit_plane1.wav	52	1	1.0	200.0	64	22050
+44	_Data/sounds/z38PAR/hit_balloon.wav	52	1	1.0	200.0	64	22050
+45	_Data/sounds/z38PAR/thrust.wav	16	0	16.0	756.0	64	22050
+46	_Data/sounds/z38PAR/thru_ring.wav	52	1	1.0	200.0	64	44100
+47	_Data/sounds/z38PAR/chute_flap_in_wind16.wav	2	0	1.0	200.0	64	18000
+48	_Data/sounds/z08BKD/pepper_stroke6.wav	16	1	1.0	200.0	64	44100
+49	_Data/sounds/z08BKD/pepper_stroke7.wav	16	1	1.0	200.0	64	44100
+50	_Data/sounds/z08BKD/pepper_dive_under.wav	96	1	1.0	200.0	64	44100
+51	_Data/sounds/z08BKD/clam_open.wav	68	1	16.0	256.0	64	22050
+52	_Data/sounds/z08BKD/clam2.wav	92	1	16.0	256.0	64	22050
+53	_Data/sounds/z08BKD/clam_sucking.wav	84	1	16.0	256.0	64	22050
+54	_Data/sounds/z08BKD/hit_sand.wav	80	1	1.0	200.0	64	22050
+55	_Data/sounds/z08BKD/bonk.wav	64	1	1.0	200.0	64	44100
+56	_Data/sounds/z08BKD/breath.wav	32	1	1.0	200.0	64	22050
+57	_Data/sounds/z08BKD/shock1.wav	64	1	1.0	200.0	64	44100
+58	_Data/sounds/z08BKD/shock4.wav	64	1	1.0	200.0	64	44100
+59	_Data/sounds/z08BKD/clang1.wav	72	1	1.0	200.0	64	44100
+60	_Data/sounds/z08BKD/clang2.wav	72	1	1.0	200.0	64	44100
+61	_Data/sounds/z08BKD/tenticle_slap.wav	80	1	1.0	200.0	64	44100
+62	_Data/sounds/z08BKD/h200mm.wav	34	1	16.0	256.0	64	44100
+63	_Data/sounds/z08BKD/surface_loop.wav	36	0	1.0	200.0	64	22050
+64	_Data/sounds/z08BKD/under_surface2.wav	48	0	1.0	200.0	64	22050
+65	_Data/sounds/z08BKD/underwater_amb1.wav	52	0	1.0	200.0	64	22050
+66	_Data/sounds/z08BKD/underwater_deep2.wav	56	0	1.0	200.0	64	22050
+67	_Data/sounds/z08BKD/boing.wav	64	1	1.0	200.0	64	44100
+68	_Data/sounds/z08BKD/wave_crash1.wav	28	1	1.0	200.0	64	22050
+69	_Data/sounds/z08BKD/wave_crash2.wav	28	1	1.0	200.0	64	22050
+70	_Data/sounds/z08BKD/rattle_clam1.wav	0	1	1.0	200.0	64	44100
+71	_Data/sounds/z08BKD/rattle_clam2.wav	0	1	1.0	200.0	64	44100
+72	_Data/sounds/z08BKD/grab_brick.wav	72	1	64.0	756.0	64	44100
+73	_Data/sounds/z08BKD/drop_brick.wav	96	1	1.0	200.0	64	44100
+74	_Data/sounds/z08BKD/construct.wav	92	1	16.0	256.0	64	44100
+75	_Data/sounds/z09JST/hoof_slow4.wav	64	1	8.0	128.0	64	44100
+76	_Data/sounds/z09JST/hoof_slow2.wav	64	1	8.0	128.0	64	44100
+77	_Data/sounds/z09JST/hoof_slow3.wav	64	1	8.0	128.0	64	44100
+78	_Data/sounds/z09JST/hoof_slow1.wav	64	1	8.0	128.0	64	44100
+79	_Data/sounds/z09JST/hoof_mid2.wav	64	1	8.0	128.0	64	44100
+80	_Data/sounds/z09JST/hoof_mid1.wav	64	1	8.0	128.0	64	44100
+81	_Data/sounds/z09JST/hoof_mid3.wav	64	1	8.0	128.0	64	44100
+82	_Data/sounds/z09JST/hoof_mid4.wav	64	1	8.0	128.0	64	44100
+83	_Data/sounds/z09JST/fast_hoof1.wav	64	1	8.0	128.0	64	44100
+84	_Data/sounds/z09JST/fast_hoof2.wav	64	1	8.0	128.0	64	44100
+85	_Data/sounds/z09JST/fast_hoof4.wav	64	1	8.0	128.0	64	44100
+86	_Data/sounds/z09JST/fast_hoof3.wav	64	1	8.0	128.0	64	44100
+87	_Data/sounds/z09JST/horse_idle1.wav	64	1	8.0	128.0	64	44100
+88	_Data/sounds/z09JST/horse_knock.wav	64	1	8.0	128.0	64	44100
+89	_Data/sounds/z09JST/horse_idle3.wav	64	1	8.0	128.0	64	44100
+90	_Data/sounds/z09JST/horse_knock.wav	64	1	8.0	128.0	64	44100
+91	_Data/sounds/z09JST/horse_idle2.wav	64	1	8.0	128.0	64	44100
+92	_Data/sounds/z09JST/horse_idle1.wav	64	1	8.0	128.0	64	44100
+93	_Data/sounds/z09JST/wind_scary.wav	52	0	1.0	200.0	64	22050
+94	_Data/sounds/z09JST/crow2.wav	22	1	1.0	200.0	64	11025
+95	_Data/sounds/z09JST/crow1.wav	22	1	1.0	200.0	64	11025
+96	_Data/sounds/z09JST/crwd_pep_success.wav	72	1	1.0	200.0	64	22050
+97	_Data/sounds/z09JST/crwd_boo_knock.wav	52	1	1.0	200.0	64	22050
+98	_Data/sounds/z09JST/crwd_pepper_wins.wav	52	1	1.0	200.0	64	22050
+99	_Data/sounds/z09JST/crwd_pepper_lose.wav	52	1	1.0	200.0	64	22050
+100	_Data/sounds/z09JST/crwd_buildloop.wav	52	0	1.0	200.0	64	22050
+101	_Data/sounds/z09JST/knocked_off.wav	80	1	16.0	256.0	64	44100
+102	_Data/sounds/z09JST/polearm_twang.wav	80	1	16.0	256.0	64	44100
+103	_Data/sounds/z09JST/Smacked_down.wav	80	1	16.0	256.0	64	44100
+104	_Data/sounds/z09JST/knocked_off.wav	80	0	16.0	256.0	64	44100
+105	_Data/sounds/z09JST/polearm_twang.wav	80	1	16.0	256.0	64	44100
+106	_Data/sounds/z09JST/Smacked_down.wav	80	1	16.0	256.0	64	44100
+107	_Data/sounds/z22BIP/plane_flight.wav	24	0	1.0	200.0	64	70000
+108	_Data/sounds/z22BIP/take_off1.wav	48	1	1.0	200.0	64	22050
+109	_Data/sounds/z22BIP/fuel_alarm.wav	64	0	1.0	200.0	64	22050
+110	_Data/sounds/z22BIP/wind_out_of_fuel.wav	64	0	1.0	200.0	64	20000
+111	_Data/sounds/z22BIP/banana_cannon.wav	56	1	1.0	200.0	64	44100
+112	_Data/sounds/z22BIP/pick_up_fuel.wav	72	1	1.0	200.0	64	44100
+113	_Data/sounds/z22BIP/hit_valley_side.wav	52	1	1.0	200.0	64	22050
+114	_Data/sounds/z22BIP/hit_valley_side.wav	56	1	1.0	200.0	64	22050
+115	_Data/sounds/z22BIP/splash1.wav	80	1	1.0	200.0	64	44100
+116	_Data/sounds/z22BIP/mellon_hit.wav	72	1	1.0	200.0	64	44100
+117	_Data/sounds/z22BIP/plane_flyoff.wav	48	1	1.0	200.0	64	22050
+118	_Data/sounds/z22BIP/skid_halt.wav	72	0	1.0	200.0	64	22050
+119	_Data/sounds/z22BIP/chimp_chatter3.wav	52	1	32.0	512.0	64	44100
+120	_Data/sounds/z22BIP/chimp_chatter2.wav	52	1	32.0	512.0	64	44100
+121	_Data/sounds/z22BIP/chimp_chatter1.wav	52	1	32.0	512.0	64	44100
+122	_Data/sounds/z22BIP/hit_chimp1.wav	52	1	24.0	384.0	64	44100
+123	_Data/sounds/z22BIP/hit_chimp2.wav	52	1	24.0	384.0	64	44100
+124	_Data/sounds/z22BIP/hit_chimp3.wav	52	1	24.0	384.0	64	44100
+125	_Data/sounds/z22BIP/chimp_throw1.wav	64	1	32.0	512.0	64	44100
+126	_Data/sounds/z22BIP/melon_fly.wav	0	0	64.0	756.0	64	32000
+127	_Data/sounds/z41MAP/Cheese hit.wav	85	1	1.0	200.0	64	44100
+128	_Data/sounds/z41MAP/Hit Robot total.wav	65	1	1.0	200.0	64	44100
+129	_Data/sounds/z41MAP/Pepperoni hit.wav	85	1	1.0	200.0	64	44100
+130	_Data/sounds/z41MAP/tomato hit.wav	85	1	1.0	200.0	64	44100
+131	_Data/sounds/z41MAP/eek.wav	60	1	1.0	200.0	64	22050
+132	_Data/sounds/z41MAP/Ouch.wav	65	1	1.0	200.0	64	22050
+133	_Data/sounds/z41MAP/hit papa.wav	57	1	1.0	200.0	64	44100
+134	_Data/sounds/z41MAP/Capsicum hit.wav	80	1	1.0	200.0	64	44100
+135	_Data/sounds/z41MAP/hit window.wav	66	1	1.0	200.0	64	44100
+136	_Data/sounds/z02LGI/silence.wav	0	1	1.0	200.0	64	22050
+137	_Data/sounds/z02LGI/River.wav	0	0	15.0	550.0	64	11025
+138	_Data/sounds/z02LGI/silence.wav	0	1	1.0	200.0	64	22050
+139	_Data/sounds/z02LGI/French.wav	127	0	8.0	64.0	64	11025
+140	_Data/sounds/z02LGI/thrust.wav	44	0	15.0	200.0	64	22050
+141	_Data/sounds/z02LGI/Jet_Ski.wav	17	0	1.0	200.0	64	11025
+142	_Data/sounds/z22BIP/on_target.wav	64	1	48.0	756.0	64	44100
+143	_Data/sounds/z22BIP/river_amb.wav	32	0	64.0	756.0	64	16000
+144	_Data/sounds/z22BIP/junble_amb.wav	36	64	1.0	200.0	64	16000
+145	_Data/sounds/z22BIP/plane_flight_idle.wav	24	0	32.0	512.0	64	22050
+146	_Data/sounds/z22BIP/pickup_bananas.wav	64	1	1.0	200.0	64	22050
+147	_Data/sounds/z28hat/Succ_Tail.wav	44	1	1.0	200.0	64	22050
+148	_Data/sounds/z01BPK/skatewheels.wav	72	0	8.0	128.0	64	44100
+149	_Data/sounds/z01BPK/wheelramp.wav	72	1	8.0	128.0	64	44100
+150	_Data/sounds/z01BPK/jump.wav	72	1	8.0	128.0	64	44100
+151	_Data/sounds/z01BPK/land_crete.wav	72	1	8.0	128.0	64	44100
+152	_Data/sounds/z01BPK/land_ramp.wav	72	1	8.0	128.0	64	44100
+153	_Data/sounds/z01BPK/bump.wav	72	1	8.0	128.0	64	44100
+154	_Data/sounds/z01BPK/boardstop.wav	72	1	8.0	128.0	64	44100
+155	_Data/sounds/z20DSP/engine_idle.wav	56	0	16.0	256.0	64	22050
+156	_Data/sounds/z20DSP/Engine_new.wav	80	0	64.0	756.0	64	44100
+157	_Data/sounds/z20DSP/wind_out_of_fuel.wav	64	0	64.0	1024.0	64	44100
+158	_Data/sounds/z20DSP/honk_parp.wav	48	1	16.0	256.0	64	11025
+159	_Data/sounds/z20DSP/honk1.wav	48	1	16.0	256.0	64	11025
+160	_Data/sounds/z01BPK/wheelair.wav	72	1	8.0	128.0	64	44100
+161	_Data/sounds/z20DSP/bump1.wav	80	1	32.0	512.0	64	44100
+162	_Data/sounds/z20DSP/bump2.wav	80	1	16.0	256.0	64	44100
+163	_Data/sounds/z20DSP/AfterBurner.wav	96	1	64.0	756.0	64	44100
+164	_Data/sounds/z20DSP/bonus_time.wav	96	1	1.0	200.0	64	44100
+165	_Data/sounds/z20DSP/speedster_crsh.wav	80	1	16.0	256.0	64	36000
+166	_Data/sounds/z20DSP/shrunk.wav	96	1	16.0	256.0	64	44100
+167	_Data/sounds/z20DSP/enlarge.wav	96	1	16.0	256.0	64	44100
+168	_Data/sounds/z20DSP/picked_up.wav	64	0	16.0	256.0	64	22050
+169	_Data/sounds/z20DSP/rockyrumble.wav	64	0	64.0	756.0	64	44100
+170	_Data/sounds/z20DSP/Whistle_fly.wav	127	1	64.0	756.0	64	44100
+171	_Data/sounds/z20DSP/clock_tick.wav	80	0	1.0	200.0	64	44100
+172	_Data/sounds/z20DSP/bell.wav	80	1	1.0	200.0	64	11025
+173	_Data/sounds/z20DSP/fish_swish.wav	72	0	16.0	256.0	64	11025
+174	_Data/sounds/z20DSP/fishflip.wav	72	1	16.0	256.0	64	11025
+175	_Data/sounds/z20DSP/fish_splash8khz.wav	72	1	1.0	200.0	64	8000
+176	_Data/sounds/z20DSP/ufo_ambience.wav	80	0	32.0	512.0	64	8000
+177	_Data/sounds/z20DSP/rocks1.wav	96	1	128.0	1024.0	64	32000
+178	_Data/sounds/z20DSP/rocks2.wav	96	1	128.0	1024.0	64	32000
+179	_Data/sounds/z20DSP/honk2.wav	48	1	16.0	256.0	64	11025
+180	_Data/sounds/z20DSP/Cactus_Hit.wav	96	1	32.0	512.0	64	44100
+181	_Data/sounds/z20DSP/COWHIT2.wav	80	1	64.0	1024.0	64	44100
+182	_Data/sounds/z20DSP/COWHIT3.wav	80	1	64.0	1024.0	64	44100
+183	_Data/sounds/PSX ONLY	127	1	1.0	200.0	64	22050
+184	_Data/sounds/PSX ONLY	127	1	1.0	200.0	64	22050
+185	_Data/sounds/z15SSH/main_engine.wav	48	0	1.0	200.0	64	44100
+186	_Data/sounds/z15SSH/turret.wav	0	0	1.0	200.0	64	19000
+187	_Data/sounds/z15SSH/snake_amb2.wav	42	0	1.0	200.0	64	44100
+188	_Data/sounds/z15SSH/river_amb.wav	72	0	64.0	756.0	64	44100
+189	_Data/sounds/z15SSH/fountain.wav	64	0	64.0	756.0	64	44100
+190	_Data/sounds/z15SSH/bot_train2.wav	64	0	72.0	1024.0	64	32000
+191	_Data/sounds/z15SSH/passover.wav	104	1	1.0	200.0	64	35000
+192	_Data/sounds/z15SSH/overstuds.wav	56	0	1.0	200.0	64	44100
+193	_Data/sounds/z15SSH/snakes.wav	64	0	44.0	640.0	64	48000
+194	_Data/sounds/z15SSH/snakejump.wav	72	1	64.0	756.0	64	44100
+195	_Data/sounds/z15SSH/gem_eat.wav	104	1	64.0	756.0	64	48000
+196	_Data/sounds/z15SSH/hit_snake.wav	88	1	44.0	640.0	64	22050
+197	_Data/sounds/z15SSH/coco_kannon.wav	72	1	1.0	200.0	64	44100
+198	_Data/sounds/z15SSH/big_skid.wav	36	1	1.0	200.0	64	44100
+199	_Data/sounds/z15SSH/small_skid.wav	36	1	1.0	200.0	64	44100
+200	_Data/sounds/z15SSH/turret.wav	8	0	1.0	200.0	64	52000
+201	_Data/sounds/z15SSH/turret.wav	8	0	1.0	200.0	64	52000
+202	_Data/sounds/z36CNT/centri_amb.wav	56	0	1.0	200.0	64	44100
+203	_Data/sounds/z36CNT/seatbelt.wav	64	1	1.0	200.0	64	44100
+204	_Data/sounds/z36CNT/visorslide.wav	64	1	1.0	200.0	64	44100
+205	_Data/sounds/z36CNT/pepper_end.wav	96	1	1.0	200.0	64	44100
+206	_Data/sounds/z36CNT/bigbutt.wav	52	1	1.0	200.0	0	30870
+207	_Data/sounds/z36CNT/release1.wav	84	1	1.0	200.0	64	44100
+208	_Data/sounds/z36CNT/warning1.wav	88	1	1.0	200.0	64	44100
+209	_Data/sounds/z36CNT/brakes.wav	56	1	1.0	200.0	64	44100
+210	_Data/sounds/z36CNT/main_turb.wav	104	0	1.0	200.0	64	22050
+211	_Data/sounds/z36CNT/swoosh.wav	86	1	1.0	200.0	64	44100
+212	_Data/sounds/z36CNT/wrong1.wav	52	1	1.0	200.0	0	22050
+213	_Data/sounds/z36CNT/correct1.wav	52	1	1.0	200.0	0	44100
+214	_Data/sounds/z36CNT/wrong2.wav	52	1	1.0	200.0	127	22050
+215	_Data/sounds/z36CNT/correct2.wav	52	1	1.0	200.0	127	44100
+216	_Data/sounds/z36CNT/klaxon2.wav	96	0	1.0	200.0	64	22050
+217	_Data/sounds/z36CNT/butt1.wav	40	1	1.0	200.0	64	44100
+218	_Data/sounds/z36CNT/butt2.wav	40	1	1.0	200.0	64	44100
+219	_Data/sounds/z36CNT/butt3.wav	40	1	1.0	200.0	64	44100
+220	_Data/sounds/z36CNT/butt4.wav	40	1	1.0	200.0	64	44100
+221	_Data/sounds/z40APO/2d_accel.wav	24	0	1.0	200.0	64	14700
+222	_Data/sounds/z40APO/breath.wav	16	0	1.0	200.0	64	44100
+223	_Data/sounds/z40APO/hit_ring.wav	40	1	1.0	200.0	64	22050
+224	_Data/sounds/z40APO/hit_asteroid.wav	40	1	1.0	200.0	64	44100
+225	_Data/sounds/z40APO/hit_monster.wav	40	1	1.0	200.0	64	44100
+226	_Data/sounds/z40APO/hit_rocketbot.wav	40	1	1.0	200.0	64	44100
+227	_Data/sounds/z40APO/rockmonster.wav	40	1	44.0	1024.0	64	44100
+228	_Data/sounds/z40APO/Bot_Rocket3.wav	28	0	24.0	756.0	64	44100
+229	_Data/sounds/z40APO/solar_open.wav	64	1	1.0	200.0	64	44100
+230	_Data/sounds/z40APO/Bot_Rocket3.wav	32	0	1.0	200.0	64	27930
+231	_Data/sounds/z40APO/smack_nochute.wav	40	1	1.0	200.0	64	44100
+232	_Data/sounds/z40APO/Hit_targnochute.wav	56	1	1.0	200.0	64	44100
+233	_Data/sounds/z40APO/landontarget.wav	48	1	1.0	200.0	64	44100
+234	_Data/sounds/z40APO/land_offtarget.wav	48	1	1.0	200.0	64	44100
+235	_Data/sounds/z40APO/main_engine.wav	32	0	64.0	756.0	64	11025
+236	_Data/sounds/z40APO/doos_OPEN.wav	40	1	1.0	200.0	64	44100
+237	_Data/sounds/z40APO/launch.wav	40	1	1.0	200.0	64	44100
+238	_Data/sounds/z40APO/beacon.wav	16	1	48.0	756.0	64	44100
+239	_Data/sounds/z40APO/thru_spacering.wav	32	1	1.0	200.0	64	44100
+240	_Data/sounds/z40APO/monolith.wav	56	0	128.0	1024.0	64	44100
+241	_Data/sounds/z40APO/palace_amb.wav	40	1	48.0	756.0	64	24500
+242	_Data/sounds/z40APO/rocket_amb.wav	40	1	16.0	256.0	64	44100
+243	_Data/sounds/z90ADV/VolcanoLoop1.wav	64	0	128.0	1024.0	64	11025
+244	_Data/sounds/z40OGL/monolith.wav	96	0	8.0	128.0	64	22050
+245	_Data/sounds/z09JST/fanfare short.wav	72	1	16.0	256.0	64	44100
+246	_Data/sounds/z09JST/fanfare medium.wav	72	1	16.0	256.0	64	44100
+247	_Data/sounds/z09JST/fanfare long.wav	72	1	16.0	256.0	64	44100
+248	_Data/sounds/z09JST/joustpower.wav	80	0	1.0	200.0	64	24500
+249	_Data/sounds/z02LGI/ToyTrain2.wav	55	0	15.0	500.0	64	22050
+250	_Data/sounds/z02LGI/Toycar1.wav	66	0	10.0	200.0	64	11025
+251	_Data/sounds/z02LGI/Toycar2.wav	66	0	10.0	200.0	64	11025
+252	_Data/sounds/z02LGI/Trainwis.wav	44	1	15.0	500.0	64	11025
+253	_Data/sounds/z02LGI/swift1.wav	47	0	16.0	128.0	64	11025
+254	_Data/sounds/z02LGI/Silence.wav	66	0	16.0	128.0	64	11025
+255	_Data/sounds/z02LGI/Throw_1.wav	40	1	1.0	200.0	64	22050
+256	_Data/sounds/z02LGI/TreeTest.wav	88	1	1.0	200.0	64	22050
+257	_Data/sounds/z02LGI/HitWall.wav	13	1	1.0	200.0	64	22050
+258	_Data/sounds/z02LGI/Piza_Hit.wav	111	1	8.0	200.0	64	22050
+259	_Data/sounds/z02LGI/Bunny2.wav	111	1	8.0	64.0	64	22050
+260	_Data/sounds/z02LGI/FootKick.wav	49	1	8.0	75.0	64	22050
+261	_Data/sounds/z02LGI/Skid.wav	16	1	1.0	200.0	64	11025
+262	_Data/sounds/z02LGI/BoardFinish2.wav	60	1	1.0	200.0	64	22050
+263	_Data/sounds/z02LGI/Footsteps/GRAVEL/GRAVEL_1.WAV	17	1	1.0	200.0	64	22050
+264	_Data/sounds/z02LGI/Footsteps/GRAVEL/GRAVEL_2.WAV	17	1	1.0	200.0	64	22050
+265	_Data/sounds/z02LGI/Footsteps/GRAVEL/GRAVEL_3.WAV	17	1	1.0	200.0	64	22050
+266	_Data/sounds/z02LGI/Footsteps/GRAVEL/GRAVEL_4.WAV	17	1	1.0	200.0	64	22050
+267	_Data/sounds/z02LGI/Footsteps/GRASS/GRASS_1.WAV	20	1	1.0	200.0	64	22050
+268	_Data/sounds/z02LGI/Footsteps/GRASS/GRASS_2.WAV	20	1	1.0	200.0	64	22050
+269	_Data/sounds/z02LGI/Footsteps/GRASS/GRASS_3.WAV	20	1	1.0	200.0	64	22050
+270	_Data/sounds/z02LGI/Footsteps/GRASS/GRASS_4.WAV	20	1	1.0	200.0	64	22050
+271	_Data/sounds/z02LGI/Footsteps/BRIDGE/BRIDGE_1.WAV	20	1	1.0	200.0	64	22050
+272	_Data/sounds/z02LGI/Footsteps/BRIDGE/BRIDGE_2.WAV	20	1	1.0	200.0	64	22050
+273	_Data/sounds/z02LGI/Footsteps/BRIDGE/BRIDGE_3.WAV	20	1	1.0	200.0	64	22050
+274	_Data/sounds/z02LGI/Footsteps/BRIDGE/BRIDGE_4.WAV	20	1	1.0	200.0	64	22050
+275	_Data/sounds/z02LGI/Footsteps/PLASTIC/PLAS_1.WAV	24	1	1.0	200.0	64	22050
+276	_Data/sounds/z02LGI/Footsteps/PLASTIC/PLAS_2.WAV	24	1	1.0	200.0	64	22050
+277	_Data/sounds/z02LGI/Footsteps/PLASTIC/PLAS_3.WAV	24	1	1.0	200.0	64	22050
+278	_Data/sounds/z02LGI/Footsteps/PLASTIC/PLAS_4.WAV	24	1	1.0	200.0	64	22050
+279	_Data/sounds/z02LGI/Footsteps/ROAD/ROAD_1.WAV	20	1	1.0	200.0	64	22050
+280	_Data/sounds/z02LGI/Footsteps/ROAD/ROAD_2.WAV	20	1	1.0	200.0	64	22050
+281	_Data/sounds/z02LGI/Footsteps/ROAD/ROAD_3.WAV	20	1	1.0	200.0	64	22050
+282	_Data/sounds/z02LGI/Footsteps/ROAD/ROAD_4.WAV	22	1	1.0	200.0	64	22050
+283	_Data/sounds/z02LGI/Footsteps/ROCK/ROCK_1.WAV	20	1	1.0	200.0	64	22050
+284	_Data/sounds/z02LGI/CCTV.wav	0	0	2.0	20.0	64	11025
+285	_Data/sounds/z02LGI/Footsteps/ROCK/ROCK_2.WAV	20	1	1.0	200.0	64	22050
+286	_Data/sounds/z02LGI/Footsteps/ROCK/ROCK_3.WAV	20	1	1.0	200.0	64	22050
+287	_Data/sounds/z02LGI/Footsteps/ROCK/ROCK_4.WAV	20	1	1.0	200.0	64	22050
+288	_Data/sounds/z02LGI/Footsteps/SAND/SAND_1.WAV	16	1	1.0	200.0	64	22050
+289	_Data/sounds/z02LGI/Footsteps/SAND/SAND_2.WAV	16	1	1.0	200.0	64	22050
+290	_Data/sounds/z02LGI/Boulder2.wav	88	1	1.0	200.0	64	11025
+291	_Data/sounds/z02LGI/Footsteps/SAND/SAND_3.WAV	16	1	1.0	200.0	64	22050
+292	_Data/sounds/z02LGI/Footsteps/SAND/SAND_4.WAV	16	1	1.0	200.0	64	22050
+293	_Data/sounds/z02LGI/Seaside.wav	35	0	15.0	500.0	64	10000
+294	_Data/sounds/z02LGI/Splash.wav	27	1	1.0	200.0	64	9500
+295	_Data/sounds/z02LGI/Swim.wav	27	1	1.0	200.0	64	11025
+296	_Data/sounds/z02LGI/Outwater.wav	66	1	1.0	200.0	64	11025
+297	_Data/sounds/z02LGI/MotoBoat.wav	21	0	1.0	200.0	64	11025
+298	_Data/sounds/z02lgi/Butterfly.wav	6	0	8.0	64.0	64	10000
+299	_Data/sounds/z02lgi/Outboard.wav	10	0	1.0	200.0	64	11500
+300	UNDEFINED	1	1	1.0	1.0	1	22050
+301	_Data/sounds/z02LGI/Clock.wav	40	1	1.0	200.0	64	11025
+302	_Data/sounds/z02LGI/P_Jump.wav	5	1	1.0	200.0	64	16000
+303	_Data/sounds/z21FSH/Cast Reel with whistle.wav	75	1	1.0	200.0	64	44100
+304	_Data/sounds/z21FSH/Throw 1.wav	75	1	1.0	200.0	64	16000
+305	_Data/sounds/z21FSH/Throw 2.wav	76	1	1.0	200.0	64	16000
+306	_Data/sounds/z02LGI/chopper.wav	27	0	32.0	512.0	64	22050
+307	_Data/sounds/z02LGI/Bounce.wav	36	1	8.0	75.0	64	22050
+308	_Data/sounds/z21FSH/Float plop 1.wav	120	1	32.0	128.0	64	22050
+309	_Data/sounds/z21FSH/Float plop 2.wav	120	1	32.0	128.0	64	22050
+310	_Data/sounds/z21FSH/stretch 2.wav	85	1	64.0	240.0	64	44100
+311	_Data/sounds/z18MMP/Spider Move.wav	127	0	8.0	48.0	64	16000
+312	_Data/sounds/z18MMP/Spider Drop.wav	100	1	16.0	100.0	64	16000
+313	_Data/sounds/z18MMP/Spider Move.wav	100	0	4.0	20.0	64	16000
+314	_Data/sounds/z18MMP/Knock Coffin.wav	65	1	16.0	200.0	64	22050
+315	_Data/sounds/z18MMP/Open Coffin.wav	76	1	16.0	512.0	64	16000
+316	_Data/sounds/z18MMP/Close Coffin.wav	87	1	16.0	512.0	64	32000
+317	_Data/sounds/z18MMP/Rotating Symbol.wav	95	0	8.0	32.0	64	16000
+318	_Data/sounds/z18MMP/Correct Sym Match.wav	55	1	1.0	200.0	64	22050
+319	_Data/sounds/z18MMP/Failed Match.wav	60	1	1.0	200.0	64	22050
+320	_Data/sounds/z18MMP/Symbol Move.wav	0	0	16.0	200.0	64	16000
+321	_Data/sounds/z18MMP/Create Key.wav	42	1	1.0	200.0	64	32000
+322	_Data/sounds/z18MMP/Rotating Key.wav	70	0	16.0	200.0	64	22050
+323	_Data/sounds/z18MMP/Create Key.wav	56	1	1.0	200.0	64	32000
+324	_Data/sounds/z18MMP/Portcullis Loop.wav	95	0	16.0	50.0	64	22050
+325	_Data/sounds/z18MMP/Portcullis Open.wav	115	1	64.0	1024.0	64	22050
+326	_Data/sounds/z18MMP/cave water.wav	55	0	16.0	40.0	64	22050
+327	_Data/sounds/z18MMP/Rotating Symbol.wav	86	0	16.0	90.0	64	22050
+328	_Data/sounds/z18MMP/Collect Page.wav	110	1	1.0	200.0	64	22050
+329	_Data/sounds/z18MMP/Rolling Boulder.wav	120	0	30.0	320.0	64	22050
+330	_Data/sounds/z18MMP/Column Fall.wav	100	1	16.0	200.0	64	16000
+331	_Data/sounds/z18MMP/Dead Centurion Groan.wav	98	1	16.0	512.0	64	22050
+332	_Data/sounds/z18MMP/Dead King Groan.wav	88	1	16.0	512.0	64	22050
+333	_Data/sounds/z18MMP/Dead Explorer Groan.wav	88	1	16.0	512.0	64	16000
+334	_Data/sounds/z18MMP/Out of Time.wav	85	1	1.0	200.0	64	16000
+335	_Data/sounds/z18MMP/Clock 1 Second.wav	60	10	1.0	200.0	64	16000
+336	_Data/sounds/z02LGI/GetBoard.wav	60	1	1.0	200.0	64	22050
+337	_Data/sounds/z21FSH/wriggle loop2.wav	100	0	30.0	320.0	64	22050
+338	_Data/sounds/z21FSH/Fishy Flap.wav	127	1	1.0	200.0	64	44100
+339	UNDEFINED	1	1	1.0	1.0	1	22050
+340	_Data/sounds/z21FSH/snapline.wav	110	1	1.0	200.0	64	44100
+341	_Data/sounds/z21FSH/lineloose.wav	80	1	1.0	200.0	64	44100
+342	_Data/sounds/z21FSH/float wibble 2.wav	35	1	64.0	200.0	64	22050
+343	_Data/sounds/z21FSH/float wibble 1.wav	35	1	64.0	200.0	64	22050
+344	_Data/sounds/z21FSH/stretch 1.wav	46	1	1.0	200.0	64	22050
+345	_Data/sounds/z21FSH/stretch 3.wav	43	1	1.0	200.0	64	44100
+346	_Data/sounds/z21FSH/stretch 2.wav	38	1	1.0	200.0	64	22050
+347	_Data/sounds/z21FSH/got fish.wav	60	1	1.0	200.0	64	32000
+348	_Data/sounds/z21FSH/got bertha.wav	127	1	1.0	200.0	64	22050
+349	_Data/sounds/z02lgi/Toycar1.wav	0	0	10.0	200.0	64	7000
+350	_Data/sounds/z02LGI/Toycar2.wav	0	0	10.0	200.0	64	7000
+351	_Data/sounds/z21FSH/Pepper huw.WAV	70	1	1.0	200.0	64	22050
+352	_Data/sounds/z21FSH/Pepper hwuuh.WAV	70	1	1.0	200.0	64	22050
+353	_Data/sounds/z21FSH/Pepper ohhh.WAV	70	1	1.0	200.0	64	22050
+354	_Data/sounds/z21FSH/Pepper woooo.WAV	70	1	1.0	200.0	64	22050
+355	_Data/sounds/z02LGI/ToyTrain2.wav	33	0	15.0	500.0	64	16000
+356	_Data/sounds/z17WAS/Flip Lid.wav	0	1	1.0	200.0	28	44100
+357	_Data/sounds/z17WAS/Flip Lid.wav	0	1	1.0	200.0	100	44100
+358	_Data/sounds/z17WAS/Flip Lid.wav	0	1	1.0	200.0	64	44100
+359	_Data/sounds/z17WAS/Flip Lid.wav	0	1	1.0	200.0	64	44100
+360	_Data/sounds/z17WAS/Swish 1.wav	127	1	16.0	200.0	64	44100
+361	_Data/sounds/z17WAS/Swish 2.wav	127	1	16.0	200.0	64	44100
+362	_Data/sounds/z17WAS/Swish 3.wav	127	1	16.0	200.0	64	44100
+363	_Data/sounds/z17WAS/Swish 4.wav	127	1	16.0	200.0	64	44100
+364	_Data/sounds/z17WAS/Mighty Swish.wav	127	1	16.0	200.0	64	44100
+365	_Data/sounds/z17WAS/x Swish 1.wav	127	1	16.0	200.0	64	44100
+366	_Data/sounds/z17WAS/x Swish 2.wav	127	1	16.0	200.0	64	44100
+367	_Data/sounds/z17WAS/Mighty x Swish.wav	90	1	16.0	200.0	64	44100
+368	_Data/sounds/z17WAS/Snake 1.wav	46	1	64.0	2048.0	28	44100
+369	_Data/sounds/z17WAS/Snake 2.wav	40	1	1.0	200.0	100	44100
+370	_Data/sounds/z17WAS/Snake 3.wav	43	1	1.0	200.0	64	44100
+371	_Data/sounds/z17WAS/Snake 4.wav	56	1	1.0	200.0	64	44100
+372	_Data/sounds/z17WAS/Tock low.wav	37	4	1.0	200.0	64	44100
+373	_Data/sounds/z17WAS/Tock mid.wav	41	4	1.0	200.0	64	44100
+374	_Data/sounds/z17WAS/Tock high.wav	43	8	1.0	200.0	64	44100
+375	_Data/sounds/z17WAS/Pepper Grunt 1.wav	50	1	1.0	200.0	64	22050
+376	_Data/sounds/z17WAS/Pepper Grunt 2.wav	50	1	1.0	200.0	64	22050
+377	_Data/sounds/z18MMP/zombie laugh 1.wav	110	1	16.0	200.0	64	16000
+378	_Data/sounds/z18MMP/zombie laugh 2.wav	110	1	16.0	200.0	64	16000
+379	_Data/sounds/z18MMP/zombie laugh 3.wav	110	1	16.0	200.0	64	16000
+380	_Data/sounds/z18MMP/zombie laugh 4.wav	110	1	16.0	200.0	64	16000
+381	_Data/sounds/z18MMP/zombie laugh 5.wav	110	1	16.0	200.0	64	16000
+382	_Data/sounds/z18MMP/zombie laugh 6.wav	110	1	16.0	200.0	64	16000
+383	_Data/sounds/z02LGI/skateboard/SK_Road.wav	10	0	1.0	200.0	64	22050
+384	_Data/sounds/z02LGI/skateboard/SK_Grass.wav	7	0	1.0	200.0	64	22050
+385	_Data/sounds/z02LGI/skateboard/SK_Sand.wav	7	0	1.0	200.0	64	22050
+386	_Data/sounds/z02LGI/skateboard/SK_Gravel.wav	7	0	1.0	200.0	64	22050
+387	_Data/sounds/z02LGI/skateboard/SK_Bridge.wav	10	0	1.0	200.0	64	22050
+388	_Data/sounds/z02LGI/skateboard/SK_Rock.wav	7	0	1.0	200.0	64	22050
+389	_Data/sounds/z02LGI/skateboard/SK_Plastic.wav	7	0	1.0	200.0	64	22050
+390	_Data/sounds/z02LGI/Footsteps/Bridge/Bridge_4.wav	44	1	1.0	200.0	64	22050
+391	_Data/sounds/z02LGI/Footsteps/Road/Road_2.wav	33	1	1.0	200.0	64	22050
+392	_Data/sounds/z02LGI/Footsteps/Sand/Sand_2.wav	33	1	1.0	200.0	64	22050
+393	_Data/sounds/z02LGI/Footsteps/Gravel/Gravel_1.wav	33	1	1.0	200.0	64	22050
+394	_Data/sounds/z02LGI/Footsteps/Plastic/Plas_3.wav	33	1	1.0	200.0	64	22050
+395	_Data/sounds/z02LGI/Footsteps/Grass/Grass_2.wav	33	1	1.0	200.0	64	22050
+396	_Data/sounds/z02LGI/Footsteps/Rock/Rock_4.wav	33	1	1.0	200.0	64	22050
+397	_Data/sounds/z18MMP/Flaming Torch.wav	100	0	1.0	20.0	64	22050
+398	_Data/sounds/z10RGB/kannon.wav	80	1	1.0	200.0	64	44100
+399	_Data/sounds/z10RGB/Dry_Fire.wav	72	1	1.0	200.0	64	22050
+400	_Data/sounds/z10RGB/clock_tick.wav	64	0	1.0	200.0	64	44100
+401	_Data/sounds/z10RGB/loaded_bell.wav	52	1	1.0	200.0	64	44100
+402	_Data/sounds/z10RGB/swivel1.wav	72	0	1.0	200.0	64	24500
+403	_Data/sounds/z10RGB/Tilt.wav	64	0	1.0	200.0	64	24500
+404	_Data/sounds/z10RGB/ced_fire.wav	127	1	64.0	756.0	64	44100
+405	_Data/sounds/z10RGB/Can_DIE.wav	127	1	64.0	756.0	64	22050
+406	_Data/sounds/z10RGB/HIT_CASTLE.wav	80	1	64.0	756.0	64	44100
+407	_Data/sounds/z10RGB/near_miss.wav	127	1	16.0	256.0	64	32000
+408	_Data/sounds/z10RGB/Dogz_ShellFLY.wav	127	1	16.0	256.0	64	14000
+409	_Data/sounds/z10RGB/Cedric_leap1.wav	127	1	64.0	756.0	64	44100
+410	_Data/sounds/z10RGB/Cedric_leap2.wav	127	1	64.0	756.0	64	44100
+411	_Data/sounds/z10RGB/Cedric_Idle1.wav	127	1	64.0	756.0	64	44100
+412	_Data/sounds/z10RGB/Cedric_idle2.wav	127	1	64.0	756.0	64	44100
+413	_Data/sounds/z10RGB/Cedric_hit1.wav	127	1	64.0	756.0	64	44100
+414	_Data/sounds/z10RGB/Cedric_hit2.wav	127	1	64.0	756.0	64	44100
+415	_Data/sounds/z10RGB/surface_loop.wav	127	0	64.0	756.0	64	22050
+416	_Data/sounds/z10RGB/wave_crash1.wav	127	1	64.0	756.0	64	22050
+417	_Data/sounds/z10RGB/wave_crash2.wav	127	1	64.0	756.0	64	22050
+418	_Data/sounds/z10RGB/wind_scary.wav	64	0	1.0	200.0	64	22050
+419	_Data/sounds/z10RGB/crow2.wav	28	1	1.0	200.0	64	11025
+420	_Data/sounds/z10RGB/crow1.wav	28	1	1.0	200.0	64	11025
+421	_Data/sounds/z18MMP/Pepper Squeal 1.WAV	50	1	1.0	200.0	64	22050
+422	_Data/sounds/z18MMP/Pepper Squeal 2.WAV	50	1	1.0	200.0	64	22050
+423	_Data/sounds/z18MMP/Pepper Squeal 3.WAV	50	1	1.0	200.0	64	22050
+424	_Data/sounds/z01BPK/falloff.wav	127	1	1.0	200.0	64	44100
+425	_Data/sounds/z01BPK/SMACK.wav	72	1	8.0	128.0	64	44100
+426	_Data/sounds/z01BPK/Grab.wav	80	1	8.0	128.0	64	44100
+427	_Data/sounds/z01BPK/sumsault.wav	72	1	8.0	128.0	64	44100
+428	_Data/sounds/z01BPK/cartwheel.wav	72	1	8.0	128.0	64	44100
+429	_Data/sounds/z01BPK/handstand1.wav	72	1	8.0	128.0	64	44100
+430	_Data/sounds/z01BPK/BoardCrazy.wav	72	1	8.0	128.0	64	44100
+431	_Data/sounds/z01BPK/moonstick.wav	72	1	1.0	200.0	64	44100
+432	_Data/sounds/z01BPK/starfish.wav	72	1	1.0	200.0	64	44100
+433	_Data/sounds/z01BPK/Supermove.wav	72	1	1.0	200.0	64	44100
+434	_Data/sounds/z01BPK/brickbothop.wav	72	1	1.0	200.0	64	44100
+435	_Data/sounds/z01BPK/Pizza_Spin.wav	72	1	1.0	200.0	64	44100
+436	_Data/sounds/z01BPK/Hungry_BRK.wav	72	1	8.0	128.0	64	44100
+437	_Data/sounds/z01BPK/FancyNancy.wav	72	1	1.0	200.0	64	44100
+438	_Data/sounds/z01BPK/NickBrickTrick.wav	72	1	1.0	200.0	64	44100
+439	_Data/sounds/z01BPK/scratch3.wav	72	1	1.0	200.0	64	44100
+440	_Data/sounds/z01BPK/bull_charge.wav	72	1	1.0	200.0	64	44100
+441	_Data/sounds/z01BPK/bull_zoom.wav	72	1	1.0	200.0	64	44100
+442	_Data/sounds/z01BPK/ThunderClap.wav	72	1	1.0	200.0	64	44100
+443	_Data/sounds/z01BPK/CrookedHates.wav	72	1	1.0	200.0	64	44100
+444	_Data/sounds/z01BPK/board_turn.wav	72	1	8.0	128.0	64	44100
+445	_Data/sounds/z01BPK/boney_SMACK.wav	104	1	1.0	200.0	64	44100
+446	_Data/sounds/z01BPK/	127	1	1.0	200.0	64	22050
+447	_Data/sounds/z01BPK/	127	1	1.0	200.0	64	22050
+448	_Data/sounds/z01BPK/	127	1	1.0	200.0	64	22050
+449	_Data/sounds/z01BPK/	127	0	1.0	200.0	64	22050
+450	_Data/sounds/z18MMP/Rat Sqeak.wav	50	1	1.0	8.0	64	22050
+451	_Data/sounds/z17WAS/out of time.wav	63	1	1.0	200.0	64	44100
+452	_Data/sounds/z17WAS/Hit 4.wav	34	1	1.0	200.0	64	22050
+453	_Data/sounds/z17WAS/Hit 2.wav	50	1	1.0	200.0	100	22050
+454	_Data/sounds/z17WAS/Hit 3.wav	60	1	1.0	200.0	28	22050
+455	_Data/sounds/z17WAS/Hit 1.wav	50	1	1.0	200.0	64	22050
+456	_Data/sounds/z17WAS/big bonk.wav	100	1	1.0	200.0	64	22050
+457	_Data/sounds/z17WAS/X swing big.wav	108	1	1.0	200.0	64	22050
+458	_Data/sounds/z39ASB/nearmiss1.wav	56	1	64.0	128.0	64	16000
+459	_Data/sounds/z39ASB/nearmiss2.wav	56	1	64.0	128.0	64	16000
+460	_Data/sounds/z39ASB/Comedy_impact.wav	48	1	1.0	200.0	64	11025
+461	_Data/sounds/z39ASB/Impact2.wav	48	1	1.0	200.0	64	11025
+462	_Data/sounds/z39ASB/Impact1.wav	48	1	1.0	200.0	64	11025
+463	_Data/sounds/z17WAS/Pepper Gasp.wav	50	1	1.0	200.0	64	22050
+464	_Data/sounds/z17WAS/Get Crystal.wav	40	1	1.0	200.0	64	22050
+465	_Data/sounds/z41MAP/Create Pizza.wav	30	1	1.0	200.0	64	32000
+466	_Data/sounds/z41MAP/Pickup Cheese.wav	59	1	1.0	200.0	28	44100
+467	_Data/sounds/z41MAP/Pickup Tomato.wav	80	1	1.0	200.0	64	44100
+468	_Data/sounds/z41MAP/Pickup Capsicum.wav	79	1	1.0	200.0	100	44100
+469	_Data/sounds/z41MAP/Pickup Pepperoni.wav	75	1	1.0	200.0	64	44100
+470	_Data/sounds/z41MAP/Midair Loop.wav	95	0	2.0	25.0	64	22050
+471	_Data/sounds/z41MAP/Correct Ingred.wav	10	1	1.0	200.0	64	22050
+472	_Data/sounds/z41MAP/Wrong Ingred.wav	0	1	1.0	200.0	64	22050
+473	_Data/sounds/z41MAP/Yeooww.wav	60	1	1.0	200.0	64	22050
+474	_Data/sounds/z41MAP/hooray.wav	55	1	1.0	200.0	64	22050
+475	_Data/sounds/z41MAP/yeaah.wav	55	1	1.0	200.0	64	22050
+476	_Data/sounds/z41MAP/congrats.wav	60	1	1.0	200.0	64	44100
+477	_Data/sounds/z05WAB/swipe.wav	72	1	1.0	200.0	64	44100
+478	_Data/sounds/z05WAB/hit_bot.wav	80	1	16.0	128.0	64	44100
+479	_Data/sounds/z05WAB/hit_info.wav	80	1	16.0	128.0	64	44100
+480	_Data/sounds/z05WAB/miss1.wav	72	1	16.0	128.0	64	44100
+481	_Data/sounds/z05WAB/whak_amb.wav	64	0	1.0	200.0	64	30772
+482	_Data/sounds/z41MAP/Throw 1.wav	65	1	1.0	200.0	64	44100
+483	_Data/sounds/z41MAP/throw 2.wav	40	1	1.0	200.0	64	44100
+484	_Data/sounds/z41MAP/Throw 3.wav	55	1	1.0	200.0	64	44100
+485	_Data/sounds/z41MAP/Throw 4.wav	55	1	1.0	200.0	64	44100
+486	_Data/sounds/z05WAB/square.wav	48	1	1.0	200.0	0	52920
+487	_Data/sounds/z05WAB/hatch_shut.wav	48	1	1.0	200.0	0	44100
+488	_Data/sounds/z05WAB/triangle.wav	48	1	1.0	200.0	64	52920
+489	_Data/sounds/z05WAB/hatch_shut.wav	48	1	1.0	200.0	64	44100
+490	_Data/sounds/z05WAB/circle.wav	48	1	1.0	200.0	127	52920
+491	_Data/sounds/z05WAB/hatch_shut.wav	48	1	1.0	200.0	127	44100
+492	_Data/sounds/z05WAB/ex.wav	48	1	1.0	200.0	64	52920
+493	_Data/sounds/z05WAB/hatch_shut.wav	48	1	1.0	200.0	64	44100
+494	_Data/sounds/z05WAB/alarm1.wav	52	0	1.0	200.0	64	44100
+495	_Data/sounds/z05WAB/alarm_horn1.wav	52	0	1.0	200.0	64	14700
+496	_Data/sounds/z41MAP/Pepper huw.WAV	40	1	1.0	200.0	64	22050
+497	_Data/sounds/z41MAP/Pepper hwuuh.WAV	40	1	1.0	200.0	64	22050
+498	_Data/sounds/z10RGB/pep_hit1.wav	127	1	64.0	756.0	64	44100
+499	_Data/sounds/z10RGB/pep_hit2.wav	127	1	64.0	756.0	64	44100
+500	_Data/sounds/z10RGB/pep_hit3.wav	127	1	64.0	756.0	64	44100
+501	_Data/sounds/z10RGB/Can_DIE.wav	72	1	1.0	200.0	64	22050
+502	_Data/sounds/z18MMP/Step_Floor1.wav	35	1	1.0	200.0	64	16000
+503	_Data/sounds/z18MMP/Step_Floor2.wav	35	1	1.0	200.0	64	16000
+504	_Data/sounds/z18MMP/Step_Floor3.wav	35	1	1.0	200.0	64	16000
+505	_Data/sounds/z18MMP/Step_Floor4.wav	35	1	1.0	200.0	64	16000
+506	_Data/sounds/z18MMP/step_bridge1.wav	35	1	1.0	200.0	64	16000
+507	_Data/sounds/z18MMP/step_bridge2.wav	35	1	1.0	200.0	64	16000
+508	_Data/sounds/z18MMP/step_bridge3.wav	35	1	1.0	200.0	64	16000
+509	_Data/sounds/z18MMP/step_bridge4.wav	35	1	1.0	200.0	64	16000
+510	_Data/sounds/z39ASB/Engine Static PC1.wav	18	0	1.0	200.0	64	11025
+511	UNDEFINED	1	1	1.0	1.0	1	22050
+512	UNDEFINED	1	1	1.0	1.0	1	22050
+513	_Data/sounds/z39ASB/Pepper_yell2.WAV	0	1	1.0	200.0	64	22050
+514	_Data/sounds/z39ASB/Pepper_yell1.WAV	0	1	1.0	200.0	64	22050
+515	UNDEFINED	1	1	1.0	1.0	1	22050
+516	UNDEFINED	1	1	1.0	1.0	1	22050
+517	UNDEFINED	1	1	1.0	1.0	1	22050
+518	_Data/sounds/z27TRX/roar1.wav	60	1	1.0	200.0	64	16000
+519	_Data/sounds/z27TRX/roar2.wav	60	1	1.0	200.0	64	16000
+520	_Data/sounds/z27TRX/roar3.wav	60	1	1.0	200.0	64	16000
+521	_Data/sounds/z27TRX/roar4.wav	80	1	1.0	200.0	64	16000
+522	_Data/sounds/z27TRX/Dino fall1.wav	75	1	1.0	200.0	64	16000
+523	_Data/sounds/z27TRX/Dino fall2.wav	89	1	1.0	200.0	64	44100
+524	_Data/sounds/z27TRX/dino jump1.wav	54	1	1.0	200.0	64	44100
+525	_Data/sounds/z27TRX/dino jump2.wav	90	1	1.0	200.0	64	22050
+526	_Data/sounds/z27TRX/Falling_Rock.wav	52	1	16.0	640.0	64	22050
+527	_Data/sounds/z27TRX/Bump_pillar.wav	65	1	1.0	200.0	64	44100
+528	_Data/sounds/z27TRX/Bump_log.wav	52	1	1.0	200.0	64	44100
+529	_Data/sounds/z27TRX/Bump_net.wav	75	1	1.0	200.0	64	44100
+530	_Data/sounds/z27TRX/Bump_pillar.wav	75	1	1.0	200.0	64	44100
+531	_Data/sounds/z27TRX/rock impact.wav	60	1	8.0	320.0	64	44100
+532	_Data/sounds/z27TRX/pendulum.wav	100	1	24.0	128.0	64	16000
+533	_Data/sounds/z27TRX/ice wind.wav	127	1	1.0	200.0	64	16000
+534	_Data/sounds/z27TRX/Falling_Rock.wav	52	1	16.0	640.0	64	22050
+535	_Data/sounds/z27TRX/egg splat.wav	54	1	16.0	640.0	64	44100
+536	_Data/sounds/z27TRX/pepper squeal1.WAV	50	1	1.0	200.0	64	44100
+537	_Data/sounds/z27TRX/pepper squeal2.WAV	50	1	1.0	200.0	64	44100
+538	_Data/sounds/z27TRX/pepper shout1.WAV	45	1	1.0	200.0	64	44100
+539	_Data/sounds/z27TRX/pepper shout2.WAV	50	1	1.0	200.0	64	44100
+540	_Data/sounds/z27TRX/GRAVEL_1.WAV	34	1	1.0	200.0	64	11025
+541	_Data/sounds/z27TRX/GRAVEL_2.WAV	34	1	1.0	200.0	64	11025
+542	_Data/sounds/z27TRX/GRAVEL_3.WAV	34	1	1.0	200.0	64	11025
+543	_Data/sounds/z27TRX/GRAVEL_4.WAV	34	1	1.0	200.0	64	11025
+544	_Data/sounds/z27TRX/BRIDGE_1.WAV	87	1	1.0	200.0	64	11025
+545	_Data/sounds/z27TRX/BRIDGE_2.WAV	87	1	1.0	200.0	64	11025
+546	_Data/sounds/z27TRX/BRIDGE_3.WAV	87	1	1.0	200.0	64	11025
+547	_Data/sounds/z27TRX/BRIDGE_4.WAV	87	1	1.0	200.0	64	11025
+548	_Data/sounds/z27TRX/Breathloop.wav	58	0	1.0	200.0	64	16000
+549	_Data/sounds/z27TRX/catchbreath.wav	30	1	1.0	200.0	64	16000
+550	_Data/sounds/z27TRX/waterfall.wav	34	0	16.0	160.0	64	44100
+551	_Data/sounds/z27TRX/Blank.wav	0	1	1.0	200.0	64	44100
+552	_Data/sounds/z27TRX/Blank.wav	127	1	1.0	200.0	64	22050
+553	_Data/sounds/z27TRX/Blank.wav	127	0	16.0	640.0	64	22050
+554	UNDEFINED	1	1	1.0	1.0	1	22050
+555	_Data/sounds/z27TRX/pepper wahey.WAV	49	1	1.0	200.0	64	44100
+556	_Data/sounds/z27TRX/bump_fence.wav	65	1	1.0	200.0	64	44100
+557	_Data/sounds/z42BRP/footmet1.wav	64	1	1.0	200.0	64	44100
+558	_Data/sounds/z42BRP/footmet3.wav	64	1	1.0	200.0	64	44100
+559	_Data/sounds/z42BRP/footmet4.wav	64	1	1.0	200.0	64	44100
+560	_Data/sounds/z42BRP/footmet2.wav	64	1	1.0	200.0	64	44100
+561	_Data/sounds/z42BRP/BRIDGE_1.WAV	64	1	1.0	200.0	64	44100
+562	_Data/sounds/z42BRP/BRIDGE_4.WAV	64	1	1.0	200.0	64	44100
+563	_Data/sounds/z42BRP/BRIDGE_3.WAV	64	1	1.0	200.0	64	44100
+564	_Data/sounds/z42BRP/BRIDGE_2.WAV	64	1	1.0	200.0	64	44100
+565	_Data/sounds/z42BRP/PLAS_3.WAV	64	1	1.0	200.0	64	44100
+566	_Data/sounds/z42BRP/PLAS_2.WAV	64	1	1.0	200.0	64	44100
+567	_Data/sounds/z42BRP/PLAS_4.WAV	64	1	1.0	200.0	64	44100
+568	_Data/sounds/z42BRP/PLAS_1.WAV	64	1	1.0	200.0	64	44100
+569	_Data/sounds/z42BRP/jump.wav	72	1	1.0	200.0	64	44100
+570	_Data/sounds/z42BRP/fall.wav	52	1	1.0	200.0	64	11025
+571	_Data/sounds/z42BRP/yesss.wav	0	1	1.0	200.0	64	44100
+572	_Data/sounds/z42BRP/switch.wav	72	1	1.0	200.0	64	44100
+573	_Data/sounds/z42BRP/throw.wav	72	1	1.0	200.0	64	44100
+574	_Data/sounds/z42BRP/head_hit.wav	72	1	1.0	200.0	64	44100
+575	_Data/sounds/z42BRP/runover.wav	64	1	1.0	200.0	64	44100
+576	_Data/sounds/z42BRP/Brick_ehk.wav	56	1	32.0	512.0	64	44100
+577	_Data/sounds/z42BRP/Brick_uurg.wav	56	1	32.0	512.0	64	44100
+578	_Data/sounds/z42BRP/Brick_eeep.wav	56	1	32.0	512.0	64	44100
+579	_Data/sounds/z42BRP/BRIDGE_1.WAV	56	1	32.0	512.0	64	44100
+580	_Data/sounds/z42BRP/BRIDGE_2.WAV	56	1	32.0	512.0	64	44100
+581	_Data/sounds/z42BRP/bsterhit.wav	56	1	32.0	512.0	64	44100
+582	_Data/sounds/z42BRP/footmet1.wav	64	1	8.0	128.0	64	44100
+583	_Data/sounds/z42BRP/footmet2.wav	64	1	8.0	128.0	64	44100
+584	_Data/sounds/z42BRP/big_out.wav	72	1	16.0	256.0	64	44100
+585	_Data/sounds/z42BRP/med_OUT.wav	52	1	8.0	128.0	64	44100
+586	_Data/sounds/z42BRP/smallout.wav	64	0	16.0	256.0	64	44100
+587	_Data/sounds/z42BRP/pizzabot.wav	72	1	8.0	128.0	64	44100
+588	_Data/sounds/z42BRP/end_plat.wav	72	1	16.0	256.0	64	44100
+589	_Data/sounds/z39ASB/Engine thrust.wav	24	0	1.0	200.0	64	22050
+590	_Data/sounds/z27TRX/jump lava.wav	124	1	1.0	200.0	64	44100
+591	_Data/sounds/z39ASB/Engine Static PC2.wav	18	0	1.0	200.0	64	22050
+592	_Data/sounds/z39ASB/engine gyro.wav	6	0	1.0	200.0	64	22050
+593	_Data/sounds/z21FSH/reel-in 1.wav	56	1	1.0	200.0	64	44100
+594	_Data/sounds/z21FSH/reel-in 2.wav	56	1	1.0	200.0	64	44100
+595	_Data/sounds/z09JST/Smacked_down.wav	52	1	16.0	256.0	64	48000
+596	_Data/sounds/z09JST/Smacked_down.wav	52	1	16.0	256.0	64	49000
+597	_Data/sounds/z09JST/grab.wav	64	1	16.0	256.0	64	44100
+598	_Data/sounds/z09JST/chuck.wav	64	1	16.0	256.0	64	44100
+599	_Data/sounds/z09JST/bigsplash.wav	48	1	32.0	512.0	64	44100
+600	_Data/sounds/z18MMP/Meld.wav	70	1	1.0	200.0	64	44100
+601	_Data/sounds/z41MAP/papa_doing.wav	37	1	1.0	200.0	64	44100
+602	_Data/sounds/z00FRE/UpDown1.wav	33	1	1.0	200.0	64	44100
+603	_Data/sounds/z00FRE/UpDown2.wav	33	1	1.0	200.0	64	44100
+604	_Data/sounds/z00FRE/UpDown3.wav	33	1	1.0	200.0	64	44100
+605	_Data/sounds/z00FRE/UpDown4.wav	33	1	1.0	200.0	64	44100
+606	_Data/sounds/z00FRE/Select.wav	33	1	1.0	200.0	64	44100
+607	_Data/sounds/z00FRE/Back.wav	33	1	1.0	200.0	64	44100
+608	_Data/sounds/z00FRE/OnOff.wav	44	1	1.0	200.0	64	44100
+609	_Data/sounds/z41MAP/claps.wav	60	1	1.0	200.0	64	39000
+610	_Data/sounds/z27TRX/terra wing.wav	127	1	16.0	640.0	64	16000
+611	_Data/sounds/z27TRX/volcano.wav	50	0	32.0	128.0	64	22050
+612	_Data/sounds/z27TRX/dino spectator2.wav	50	1	16.0	160.0	64	16000
+613	_Data/sounds/z27TRX/egg skid.wav	70	1	1.0	200.0	64	44100
+614	_Data/sounds/z40OGL/fish_amb1.wav	56	0	8.0	128.0	64	22050
+615	_Data/sounds/z40OGL/crystal1.wav	64	1	1.0	5.0	64	16000
+616	_Data/sounds/z40OGL/Bot_Smack.wav	72	1	1.0	200.0	64	22050
+617	_Data/sounds/z40OGL/Pep_Smacked.wav	64	1	1.0	200.0	64	22050
+618	_Data/sounds/z40OGL/wind_out_of_fuel.wav	32	0	1.0	200.0	64	14000
+619	_Data/sounds/z40OGL/palace_amb.wav	72	0	16.0	256.0	64	12000
+620	_Data/sounds/z40OGL/Shuttle.wav	0	0	1.0	200.0	64	44100
+621	_Data/sounds/z27TRX/winrace.wav	108	1	1.0	200.0	64	22050
+622	_Data/sounds/z27TRX/Blank.wav	127	1	1.0	200.0	64	22050
+623	_Data/sounds/z27TRX/Blank.wav	127	1	1.0	200.0	64	22050
+624	_Data/sounds/z27TRX/Loserace.wav	110	1	1.0	200.0	64	16000
+625	_Data/sounds/z07CSI/crowd_mumble.wav	127	1	1.0	200.0	64	16000
+626	_Data/sounds/z40OGL/fish_amb1.wav	0	0	1.0	200.0	64	6468
+627	_Data/sounds/z07CSI/swish1.wav	127	1	5.0	100.0	64	44100
+628	_Data/sounds/z07CSI/swish2.wav	127	1	5.0	100.0	64	44100
+629	_Data/sounds/z07CSI/swish3.wav	127	1	5.0	100.0	64	44100
+630	_Data/sounds/z07CSI/horse blows.wav	70	1	16.0	512.0	64	22050
+631	_Data/sounds/z07CSI/neigh3.wav	70	1	1.0	200.0	64	32000
+632	_Data/sounds/z07CSI/grunt1.wav	56	1	16.0	512.0	64	22050
+633	_Data/sounds/z07CSI/horse boing.wav	70	1	1.0	200.0	64	22050
+634	_Data/sounds/z07CSI/soldier bounce.wav	80	1	1.0	200.0	64	44100
+635	_Data/sounds/z04IFC/Info_Amb.wav	28	0	1.0	200.0	64	44100
+636	_Data/sounds/z04IFC/MF_Logon.wav	48	1	1.0	200.0	64	44100
+637	_Data/sounds/z04IFC/MF_EXIT.wav	48	1	1.0	200.0	64	44100
+638	_Data/sounds/z04IFC/movepointer.wav	48	1	1.0	200.0	32	44100
+639	_Data/sounds/z04IFC/Display3.wav	36	1	1.0	200.0	64	44100
+640	_Data/sounds/z04IFC/Display2.wav	36	1	1.0	200.0	64	44100
+641	_Data/sounds/z04IFC/Display1.wav	36	1	1.0	200.0	64	44100
+642	_Data/sounds/z03PPH/StartComp.wav	72	1	8.0	128.0	64	44100
+643	_Data/sounds/z03PPH/Shutoff.wav	72	1	8.0	128.0	64	44100
+644	_Data/sounds/z03PPH/computer.wav	64	0	1.0	200.0	64	44100
+645	_Data/sounds/z03PPH/selectormove.wav	64	1	1.0	200.0	64	44100
+646	_Data/sounds/z03PPH/Sub_NA.wav	64	1	1.0	200.0	64	44100
+647	_Data/sounds/z07CSI/pep_squeal1.wav	40	1	1.0	200.0	64	22050
+648	_Data/sounds/z03PPH/biplane.wav	64	1	1.0	200.0	64	44100
+649	_Data/sounds/z07CSI/pep_squeal2.wav	60	1	1.0	200.0	64	22050
+650	_Data/sounds/z03PPH/BoardPark.wav	64	1	1.0	200.0	64	44100
+651	_Data/sounds/z03PPH/BrickDive.wav	64	1	1.0	200.0	64	44100
+652	_Data/sounds/z03PPH/Centrifuge.wav	64	1	1.0	200.0	64	44100
+653	_Data/sounds/z03PPH/desertsp.wav	64	1	1.0	200.0	64	44100
+654	_Data/sounds/z03PPH/Joust.wav	64	1	1.0	200.0	64	44100
+655	_Data/sounds/z03PPH/Matching.wav	64	1	1.0	200.0	64	44100
+656	_Data/sounds/z03PPH/MrHATES.wav	64	1	1.0	200.0	64	11025
+657	_Data/sounds/z03PPH/Palace.wav	64	1	1.0	200.0	64	44100
+658	_Data/sounds/z03PPH/RagingBull.wav	64	1	1.0	200.0	64	44100
+659	_Data/sounds/z03PPH/SnakeShoot.wav	64	1	1.0	200.0	64	44100
+660	_Data/sounds/z03PPH/Asteroids.wav	64	1	1.0	200.0	64	44100
+661	_Data/sounds/z03PPH/MakadPizza.wav	64	1	1.0	200.0	64	44100
+662	_Data/sounds/z03PPH/Trex.wav	64	1	1.0	200.0	64	16000
+663	_Data/sounds/z03PPH/Wakasnake.wav	64	1	1.0	200.0	64	44100
+664	_Data/sounds/z03PPH/Whakabot.wav	64	1	1.0	200.0	64	44100
+665	_Data/sounds/z03PPH/selected.wav	64	1	1.0	200.0	64	44100
+666	_Data/sounds/z03PPH/Error.wav	64	1	1.0	200.0	64	44100
+667	_Data/sounds/z07CSI/collect page.wav	127	1	1.0	200.0	64	32000
+668	_Data/sounds/z07CSI/neigh2.wav	70	1	16.0	512.0	64	22050
+669	_Data/sounds/z07CSI/horse showoff.wav	75	1	16.0	512.0	64	22050
+670	_Data/sounds/z04IFC/PLAS_4.WAV	40	1	1.0	200.0	64	44100
+671	_Data/sounds/z04IFC/PLAS_1.WAV	40	1	1.0	200.0	64	44100
+672	_Data/sounds/z04IFC/PLAS_2.WAV	40	1	1.0	200.0	64	44100
+673	_Data/sounds/z04IFC/PLAS_3.WAV	40	0	1.0	200.0	64	44100
+674	_Data/sounds/z03PPH/PLAS_4.WAV	56	1	8.0	128.0	64	44100
+675	_Data/sounds/z03PPH/PLAS_1.WAV	56	1	8.0	128.0	64	44100
+676	_Data/sounds/z03PPH/PLAS_2.WAV	56	1	8.0	128.0	64	44100
+677	_Data/sounds/z03PPH/PLAS_3.WAV	56	1	8.0	128.0	64	44100
+678	_Data/sounds/z40OGL/snore1.wav	80	0	8.0	128.0	64	22050
+679	_Data/sounds/z40OGL/snore2.wav	80	0	8.0	128.0	64	22050
+680	_Data/sounds/z40OGL/snore3.wav	80	0	8.0	128.0	64	22050
+681	UNDEFINED	1	1	1.0	1.0	1	22050
+682	UNDEFINED	1	1	1.0	1.0	1	22050
+683	UNDEFINED	1	1	1.0	1.0	1	22050
+684	UNDEFINED	1	1	1.0	1.0	1	22050
+685	UNDEFINED	1	1	1.0	1.0	1	22050
+686	UNDEFINED	1	1	1.0	1.0	1	22050
+687	UNDEFINED	1	1	1.0	1.0	1	22050
+688	UNDEFINED	1	1	1.0	1.0	1	22050
+689	UNDEFINED	1	1	1.0	1.0	1	22050
+690	UNDEFINED	1	1	1.0	1.0	1	22050
+691	UNDEFINED	1	1	1.0	1.0	1	22050
+692	UNDEFINED	1	1	1.0	1.0	1	22050
+693	UNDEFINED	1	1	1.0	1.0	1	22050
+694	_Data/sounds/z09JST/baldoing.wav	64	1	1.0	200.0	64	44100
+695	_Data/sounds/z09JST/smack.wav	72	1	16.0	256.0	64	44100
+696	_Data/sounds/z02LGI/Horn2.wav	127	0	1.0	200.0	64	22050
+697	_Data/sounds/z04IFC/InfoManiac.wav	40	0	1.0	200.0	127	44100
+698	_Data/sounds/z04IFC/Printer.wav	28	0	1.0	200.0	0	44100
+699	_Data/sounds/z04IFC/garage 2.wav	24	1	1.0	200.0	0	44100
+700	_Data/sounds/z04IFC/garage 3.wav	24	1	1.0	200.0	127	44100
+701	_Data/sounds/z04IFC/boing 2.wav	32	1	1.0	200.0	0	44100
+702	_Data/sounds/z04IFC/wibble long.wav	32	1	1.0	200.0	127	44100
+703	_Data/sounds/z02LGI/Throw_2.wav	22	1	1.0	200.0	64	11025
+704	_Data/sounds/z02LGI/ToyChange.wav	14	1	1.0	200.0	64	10000
+705	_Data/sounds/z02LGI/skateboard/S_L_Road.wav	33	1	1.0	200.0	64	22050
+706	_Data/sounds/z02LGI/skateboard/S_L_Plas.wav	33	1	1.0	200.0	64	22050
+707	_Data/sounds/z02LGI/skateboard/S_L_Rock.wav	33	1	1.0	200.0	64	22050
+708	_Data/sounds/z02LGI/skateboard/S_L_Brij.wav	33	1	1.0	200.0	64	22050
+709	_Data/sounds/z02LGI/skateboard/S_L_Sand.wav	24	1	1.0	200.0	64	22050
+710	_Data/sounds/z02LGI/skateboard/S_L_Gras.wav	24	1	1.0	200.0	64	22050
+711	UNDEFINED	1	1	1.0	1.0	1	22050
+712	_Data/sounds/z07CSI/hoof_grass1.wav	127	1	16.0	512.0	64	44100
+713	_Data/sounds/z07CSI/hoof_grass2.wav	127	1	16.0	512.0	64	44100
+714	_Data/sounds/z07CSI/hoof_grass3.wav	127	1	16.0	512.0	64	44100
+715	_Data/sounds/z07CSI/hoof_grass4.wav	127	1	16.0	512.0	64	44100
+716	_Data/sounds/z07CSI/hoof_gravel1.wav	70	1	16.0	512.0	64	44100
+717	_Data/sounds/z07CSI/hoof_gravel2.wav	70	1	16.0	512.0	64	44100
+718	_Data/sounds/z07CSI/hoof_gravel3.wav	70	1	16.0	512.0	64	44100
+719	_Data/sounds/z07CSI/hoof_gravel4.wav	70	1	16.0	512.0	64	44100
+720	_Data/sounds/z07CSI/hoof_Plastic1.wav	127	1	16.0	512.0	64	44100
+721	_Data/sounds/z07CSI/hoof_Plastic2.wav	127	1	16.0	512.0	64	44100
+722	_Data/sounds/z07CSI/hoof_Plastic3.wav	127	1	16.0	512.0	64	44100
+723	_Data/sounds/z07CSI/hoof_Plastic4.wav	127	1	16.0	512.0	64	44100
+724	_Data/sounds/z07CSI/hoof_sand1.wav	127	1	16.0	512.0	64	44100
+725	_Data/sounds/z07CSI/hoof_sand2.wav	127	1	16.0	512.0	64	44100
+726	_Data/sounds/z07CSI/hoof_sand3.wav	127	1	16.0	512.0	64	44100
+727	_Data/sounds/z07CSI/hoof_sand4.wav	127	1	16.0	512.0	64	44100
+728	_Data/sounds/z07CSI/hoof_rock1.wav	127	1	16.0	512.0	64	44100
+729	_Data/sounds/z07CSI/hoof_rock2.wav	127	1	16.0	512.0	64	44100
+730	_Data/sounds/z07CSI/hoof_rock3.wav	127	1	16.0	512.0	64	44100
+731	_Data/sounds/z07CSI/hoof_rock4.wav	127	1	16.0	512.0	64	44100
+732	_Data/sounds/z07CSI/cedric_walk.wav	127	0	1.0	16.0	512	44100
+733	_Data/sounds/z02LGI/Horn2.wav	77	1	10.0	200.0	64	20000
+734	_Data/sounds/z27TRX/Land_Gravel.WAV	50	1	1.0	200.0	64	11025
+735	_Data/sounds/z02LGI/Toycar3.wav	66	0	10.0	200.0	64	11025
+736	UNDEFINED	1	1	1.0	1.0	1	22050
+737	_Data/sounds/z27TRX/Land_bridge.WAV	127	1	1.0	200.0	64	11025
+738	_Data/sounds/z07CSI/flagtotal.wav	80	0	24.0	120.0	64	22050
+739	_Data/sounds/z22BIP/RM_chuck.wav	64	1	48.0	756.0	64	44100
+740	_Data/sounds/z22BIP/RM_smack.wav	64	1	48.0	756.0	64	44100
+741	_Data/sounds/z22BIP/rock_hit.wav	72	1	1.0	200.0	64	44100
+742	_Data/sounds/z02LGI/Horn1.wav	77	1	10.0	200.0	64	20000
+743	_Data/sounds/z02LGI/Horn2.wav	77	1	10.0	200.0	64	22050
+744	_Data/sounds/z02lgi/Toycar3.wav	0	0	10.0	200.0	64	7000
+745	_Data/sounds/z02LGI/CarVox2.wav	0	0	10.0	200.0	64	18000
+746	_Data/sounds/z02LGI/CarVox2.wav	66	0	10.0	200.0	64	22050
+747	_Data/sounds/z02LGI/Horn3.wav	77	1	10.0	200.0	64	20000
+748	_Data/sounds/z02lgi/Toycar2.wav	0	0	10.0	200.0	64	7000
+749	_Data/sounds/z02lgi/Toycar2.wav	66	0	10.0	200.0	64	11025
+750	_Data/sounds/z02LGI/Horn2.wav	77	1	10.0	200.0	64	20000
+751	_Data/sounds/z02LGI/Boing5.wav	8	1	1.0	200.0	64	11025
+752	_Data/sounds/z02LGI/Page2.wav	44	1	1.0	200.0	64	22050
+753	_Data/sounds/z02LGI/Collect.wav	55	1	1.0	200.0	64	22050
+754	_Data/sounds/z27TRX/dino spectator1.wav	0	1	16.0	160.0	64	44000
+755	_Data/sounds/z90ADV/VolcanoLoop2.wav	64	0	128.0	1024.0	64	11025
+756	_Data/sounds/z90ADV/sea16_8.wav	127	0	64.0	1024.0	64	16000
+757	_Data/sounds/z90ADV/windy2.wav	96	0	64.0	1024.0	64	16000
+758	_Data/sounds/z90ADV/dinopark_amb.wav	127	0	64.0	1024.0	64	22050
+759	_Data/sounds/z02lgi/	64	4	32.0	512.0	64	22050
+760	_Data/sounds/z18MMP/boneybang.wav	55	1	32.0	512.0	64	16000
+761	_Data/sounds/z90ADV/windy2.wav	96	0	1.0	200.0	64	16000
+762	_Data/sounds/z90ADV/sea16_8.wav	127	0	32.0	512.0	64	16000
+763	_Data/sounds/z90ADV/tumbleweed.wav	80	0	8.0	64.0	64	16000
+764	_Data/sounds/z90ADV/Scorpian_move.wav	48	1	8.0	128.0	64	36000
+765	_Data/sounds/z90ADV/Scorpian_jump2.wav	96	1	16.0	128.0	64	44100
+766	_Data/sounds/z90ADV/Scorpian_sting.wav	96	1	16.0	128.0	64	44100
+767	_Data/sounds/z90ADV/plane_wind.wav	72	0	32.0	512.0	64	22050
+768	_Data/sounds/z90ADV/chaseplane_parked.wav	64	0	32.0	512.0	64	22050
+769	_Data/sounds/z07CSI/Archer stretch.wav	127	1	1.0	200.0	64	22050
+770	_Data/sounds/z90ADV/ptero_flap1.wav	56	1	1.0	200.0	64	44100
+771	_Data/sounds/z90ADV/ptero_flap2.wav	56	1	1.0	200.0	64	22050
+772	_Data/sounds/z90ADV/Radar.wav	80	0	16.0	256.0	64	44100
+773	_Data/sounds/z07CSI/Archer ping.wav	127	1	16.0	512.0	64	22050
+774	_Data/sounds/z90ADV/windy2.wav	64	0	1.0	200.0	64	16000
+775	_Data/sounds/z90ADV/spookywind.wav	64	0	16.0	256.0	64	44100
+776	_Data/sounds/z90ADV/Pepper_Ouch.wav	84	1	1.0	200.0	64	44100
+777	_Data/sounds/z90ADV/call3.wav	72	1	1.0	200.0	64	44100
+778	_Data/sounds/z90ADV/call2.wav	72	1	1.0	200.0	64	44100
+779	_Data/sounds/z90ADV/call1.wav	72	1	1.0	200.0	64	44100
+780	_Data/sounds/z90ADV/dinopark_amb.wav	64	0	1.0	200.0	64	22050
+781	_Data/sounds/z90ADV/tribal.wav	127	0	8.0	128.0	64	12000
+782	_Data/sounds/z90ADV/babe_bounce.wav	64	1	4.0	64.0	64	44100
+783	_Data/sounds/z90ADV/babe_bounce2.wav	64	1	4.0	64.0	64	63700
+784	_Data/sounds/z90ADV/babe_bounce.wav	64	1	4.0	64.0	64	44100
+785	_Data/sounds/z90ADV/babe_bounce2.wav	64	1	4.0	64.0	64	63700
+786	_Data/sounds/z90ADV/babe_bounce2.wav	64	1	4.0	64.0	64	63700
+787	_Data/sounds/z90ADV/babe_bounce2.wav	64	1	4.0	64.0	64	63700
+788	_Data/sounds/z90ADV/babe_bounce.wav	64	1	4.0	64.0	64	44100
+789	_Data/sounds/z90ADV/babes.wav	64	0	8.0	128.0	64	99372
+790	_Data/sounds/z90ADV/babydino1.wav	64	1	4.0	64.0	64	52920
+791	_Data/sounds/z90ADV/babydino2.wav	64	1	4.0	64.0	64	49480
+792	_Data/sounds/z90ADV/babydino3.wav	64	1	4.0	64.0	64	49215
+793	_Data/sounds/z90ADV/babydino1.wav	64	1	4.0	64.0	64	52920
+794	_Data/sounds/z90ADV/babydino2.wav	64	1	4.0	64.0	64	49480
+795	_Data/sounds/z90ADV/babydino3.wav	64	1	4.0	64.0	64	49215
+796	_Data/sounds/z90ADV/babydino1.wav	64	1	4.0	64.0	64	52920
+797	_Data/sounds/z90ADV/ptero_flutter2.wav	96	0	8.0	128.0	64	20000
+798	_Data/sounds/z90ADV/dino1.wav	96	1	16.0	256.0	64	44100
+799	_Data/sounds/z90ADV/dino2.wav	96	1	16.0	256.0	64	44100
+800	_Data/sounds/z90ADV/dino4.wav	96	1	16.0	256.0	64	44100
+801	_Data/sounds/z90ADV/dino_ele_long.wav	76	1	16.0	256.0	64	24500
+802	_Data/sounds/z90ADV/dino_wal.wav	76	1	16.0	256.0	64	31500
+803	_Data/sounds/z90ADV/crickets.wav	48	0	1.0	200.0	64	22050
+804	_Data/sounds/z90ADV/crickets.wav	48	0	1.0	200.0	64	22050
+805	UNDEFINED	1	1	1.0	1.0	1	22050
+806	_Data/sounds/z40OGL/space_wind.wav	28	0	1.0	200.0	64	22050
+807	_Data/sounds/z40OGL/weird1.wav	22	1	1.0	200.0	64	6791
+808	_Data/sounds/z40OGL/Space_Bird3.wav	22	1	1.0	200.0	64	22050
+809	_Data/sounds/z40OGL/spacE_bird2.wav	22	1	1.0	200.0	64	22050
+810	_Data/sounds/z40OGL/citizen_centaur.wav	80	0	4.0	64.0	64	22050
+811	_Data/sounds/z40OGL/citizen_yellowthing.wav	96	0	4.0	64.0	64	22050
+812	_Data/sounds/z40OGL/citizen_plant.wav	82	0	4.0	64.0	64	22050
+813	_Data/sounds/z40OGL/citizen_catapillar.wav	96	0	2.0	32.0	64	22050
+814	_Data/sounds/z40OGL/space_chimp1.wav	72	1	8.0	128.0	64	22050
+815	_Data/sounds/z40OGL/space_chimp2.wav	72	1	8.0	128.0	64	22050
+816	_Data/sounds/z40OGL/space_chimp2.wav	72	1	8.0	128.0	64	22050
+817	_Data/sounds/z40OGL/crater_wierd.wav	72	0	8.0	128.0	64	18000
+818	_Data/sounds/z02LGI/Boot.wav	55	1	1.0	200.0	64	44100
+819	_Data/sounds/z21FSH/Fish Bites.wav	90	1	64.0	240.0	64	22050
+820	_Data/sounds/z08BKD/get_page.wav	64	1	1.0	200.0	64	44100
+821	_Data/sounds/z21FSH/reel loop.wav	35	0	1.0	200.0	64	44100
+822	_Data/sounds/cutscene/brick1.wav	64	1	32.0	512.0	64	22050
+823	_Data/sounds/cutscene/brick2.wav	64	1	32.0	512.0	64	22050
+824	_Data/sounds/cutscene/brick3.wav	64	1	32.0	512.0	64	22050
+825	_Data/sounds/cutscene/brick4.wav	64	1	32.0	512.0	64	22050
+826	_Data/sounds/cutscene/card.wav	96	1	16.0	256.0	64	11025
+827	_Data/sounds/z01BPK/Hungry_BRK.wav	80	1	16.0	256.0	64	44100
+828	_Data/sounds/cutscene/flame_breath.wav	80	1	16.0	256.0	64	16000
+829	_Data/sounds/z40OGL/snore2.wav	127	1	16.0	256.0	64	22050
+830	_Data/sounds/cutscene/open_door.wav	96	1	16.0	256.0	64	16000
+831	_Data/sounds/cutscene/Jail_bang1.wav	96	1	16.0	256.0	64	16000
+832	_Data/sounds/cutscene/steal_book.wav	96	1	16.0	256.0	64	44100
+833	_Data/sounds/cutscene/rip4.wav	80	1	64.0	1024.0	64	22050
+834	_Data/sounds/cutscene/rip2.wav	80	1	64.0	1024.0	64	22050
+835	_Data/sounds/cutscene/rip3.wav	80	1	64.0	1054.0	64	22050
+836	_Data/sounds/cutscene/paper2.wav	80	1	16.0	256.0	64	44100
+837	_Data/sounds/z40APO/Bot_Rocket3.wav	52	0	16.0	256.0	64	52000
+838	_Data/sounds/cutscene/violin_slide.wav	64	1	32.0	512.0	64	32000
+839	_Data/sounds/cutscene/bot_supersmack.wav	48	1	16.0	256.0	64	44100
+840	_Data/sounds/cutscene/bothit_bridge.wav	64	1	32.0	512.0	64	44100
+841	_Data/sounds/cutscene/bot_arrive.wav	72	1	48.0	756.0	64	44100
+842	_Data/sounds/cutscene/summon.wav	96	1	16.0	256.0	64	8000
+843	_Data/sounds/cutscene/portal_open.wav	64	1	64.0	756.0	64	16000
+844	_Data/sounds/cutscene/vortex_loop.wav	56	0	64.0	756.0	64	11025
+845	_Data/sounds/cutscene/vortex_close.wav	64	1	64.0	756.0	64	16000
+846	_Data/sounds/cutscene/best_deconstruct.wav	80	0	64.0	1024.0	64	44100
+847	_Data/sounds/cutscene/looped_majick.wav	64	0	32.0	512.0	64	16000
+848	_Data/sounds/cutscene/majick1.wav	64	1	32.0	512.0	64	16000
+849	_Data/sounds/cutscene/majick2.wav	64	1	32.0	512.0	64	16000
+850	_Data/sounds/cutscene/majick3.wav	64	1	32.0	512.0	64	16000
+851	_Data/sounds/cutscene/majick4.wav	80	1	32.0	512.0	64	16000
+852	_Data/sounds/cutscene/beam_in1.wav	32	1	64.0	1024.0	64	44100
+853	_Data/sounds/cutscene/bothit_wall.wav	64	1	16.0	256.0	64	44100
+854	_Data/sounds/z01BPK/Grab.wav	127	1	16.0	256.0	64	44100
+855	_Data/sounds/z08BKD/clang1.wav	48	1	16.0	256.0	64	44100
+856	_Data/sounds/z09JST/parp_bell.wav	80	1	16.0	256.0	64	44100
+857	_Data/sounds/IsleStunts/Supermove.wav	127	1	1.0	200.0	64	16000
+858	_Data/sounds/IsleStunts/CrookedHates.wav	127	1	1.0	200.0	64	16000
+859	_Data/sounds/IsleStunts/brickbothop.wav	127	1	1.0	200.0	64	16000
+860	_Data/sounds/IsleStunts/NickBrickTrick.wav	127	1	1.0	200.0	64	16000
+861	_Data/sounds/IsleStunts/scratch3.wav	127	1	1.0	200.0	64	16000
+862	_Data/sounds/IsleStunts/bull_charge.wav	127	1	1.0	200.0	64	16000
+863	_Data/sounds/IsleStunts/ThunderClap.wav	127	1	1.0	200.0	64	16000
+864	_Data/sounds/IsleStunts/FancyNancy.wav	127	1	1.0	200.0	64	16000
+865	_Data/sounds/IsleStunts/Hungry_BRK.wav	127	0	1.0	200.0	64	16000
+866	_Data/sounds/IsleStunts/Pizza_Spin.wav	127	0	1.0	200.0	64	16000
+867	_Data/sounds/IsleStunts/Generic_Stunt.wav	127	1	1.0	200.0	64	11025
+868	_Data/sounds/z02LGI/BrikMorp.wav	77	1	8.0	64.0	64	22050
+869	_Data/sounds/z07CSI/armour.wav	110	1	128.0	1024.0	64	22050
+870	_Data/sounds/z07CSI/Crowd_Laugh.wav	82	1	64.0	1024.0	64	16000
+871	_Data/sounds/z07CSI/crowd_mumble.wav	60	1	64.0	1024.0	64	16000
+872	_Data/sounds/z07CSI/flagtotal.wav	80	0	24.0	120.0	64	22050
+873	_Data/sounds/z07CSI/throw pole.wav	60	1	128.0	1024.0	64	22050
+874	_Data/sounds/z07CSI/Crowd_Cheer.wav	60	1	64.0	1024.0	64	22050
+875	_Data/sounds/z07CSI/big thunder.wav	80	1	64.0	1024.0	64	22050
+876	_Data/sounds/z07CSI/cedric_walk.wav	50	0	64.0	1024.0	64	22050
+877	_Data/sounds/z39ASB/Engine Cutoff.wav	36	1	1.0	200.0	64	22050
+878	_Data/sounds/cutscene/RichC1.wav	64	1	1.0	200.0	64	44100
+879	_Data/sounds/cutscene/RichC2.wav	64	1	1.0	200.0	64	11025
+880	_Data/sounds/z02LGI/Sophie1.wav	12	0	1.0	200.0	64	18000
+881	_Data/sounds/z21FSH/castometer.wav	46	1	1.0	200.0	64	22050
+882	UNDEFINED	1	1	1.0	1.0	1	22050
+883	_Data/sounds/z17WAS/Flaming Torch.wav	7	0	64.0	2048.0	64	22050
+884	_Data/sounds/z02LGI/SepHorn1.wav	22	1	1.0	200.0	64	20000
+885	_Data/sounds/z02LGI/SepHorn2.wav	22	1	1.0	200.0	64	22050
+886	_Data/sounds/z02LGI/SepHorn3.wav	22	1	1.0	200.0	64	22050
+887	_Data/sounds/z02LGI/SepHorn4.wav	22	1	1.0	200.0	64	22050
+888	_Data/sounds/z02LGI/SepHorn5.wav	22	1	1.0	200.0	64	22050
+889	_Data/sounds/z07CSI/cutscene hooves	70	0	16.0	512.0	64	22050
+890	_Data/sounds/z07CSI/cedric defeat.wav	100	1	64.0	2048.0	64	22050
+891	_Data/sounds/z02LGI/Thrust.wav	10	0	1.0	200.0	64	18000
+892	_Data/sounds/z02LGI/Pep_Down.wav	50	1	1.0	200.0	64	22050
+893	_Data/sounds/z02LGI/Pep_Up.wav	45	1	1.0	200.0	64	22050
+894	_Data/sounds/z02LGI/Doing.wav	77	1	1.0	8.0	64	11025
+895	_Data/sounds/z02LGI/Teeter.wav	44	1	1.0	200.0	64	22050
+896	_Data/sounds/z02LGI/Fence.wav	99	1	1.0	200.0	64	22050
+897	_Data/sounds/cutscene/FireLoop1.wav	56	0	32.0	512.0	64	11025
+898	_Data/sounds/cutscene/phew.wav	56	1	32.0	512.0	64	22050
+899	_Data/sounds/cutscene/divebomb.wav	52	0	16.0	256.0	64	22050
+900	_Data/sounds/cutscene/bad_music.wav	64	0	16.0	256.0	64	11025
+901	_Data/sounds/cutscene/rocket.wav	72	0	48.0	756.0	64	22050
