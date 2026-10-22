@@ -65,9 +65,56 @@ static func register_ports(ctx: ScriptContext, services: ActorServices, vars) ->
 		return FlyingCraft.from_descriptor(services, vars, c.actor)
 	f[Ctor.MUSIC_EMITTER] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
 		return MusicEmitter.from_descriptor(services, vars)
+	f[Ctor.HORSE] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return Horse.from_descriptor(services, vars, c.actor)
+	f[Ctor.HORSE_RIDER] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return HorseRider.from_descriptor(services, vars)
+	f[Ctor.CASTLE_MODE] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return CastleMode.from_descriptor(services, vars)
+	f[Ctor.HORSE_FOLLOWER] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return HorseFollower.from_descriptor(services)
+	f[Ctor.SKATE] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return Skate.from_descriptor(services, vars)
+	f[Ctor.SKATE_ENTRY] = f[Ctor.SKATE]
+	f[Ctor.ISLAND_MODE] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return IslandMode.from_descriptor(services, vars)
 	f[Ctor.GEM] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
 		return Gem.from_descriptor(services, vars, c.actor)
 	f[Ctor.TUMBLEWEED] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
 		return Tumbleweed.from_descriptor(services, vars, c.actor)
 	f[Ctor.SCORPION] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
 		return Scorpion.from_descriptor(services, vars, c.actor)
+	f[Ctor.CASTLE_CUES] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return CastleCues.from_descriptor(services, vars)
+	f[Ctor.PAGE_SPINNER] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return PageSpinner.from_descriptor()
+	f[Ctor.ANCHOR_SWING] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return AnchorSwing.from_descriptor()
+	f[Ctor.CLAM_HINGE] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return ClamHinge.from_descriptor(services)
+	f[Ctor.OCTOPUS_ARM] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return OctopusArm.from_descriptor(services)
+	f[Ctor.FISH_SWARM] = func(desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return FishSwarm.from_descriptor(desc, services, services.shared["dive_graph"], c.actor)
+	f[Ctor.SWIMMER] = func(desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return Swimmer.from_descriptor(desc, services, c.actor)
+	f[Ctor.DIVE_CAMERA] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return DiveCamera.from_descriptor(services, c.actor)
+	f[Ctor.DIVE_BRICK] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return DiveBrick.from_descriptor(services, c.actor)
+	f[Ctor.DIVE_CANNON] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return DiveCannon.from_descriptor(services)
+	f[Ctor.CANNON_BALL] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return CannonBall.from_descriptor(services)
+	f[Ctor.DIVE_PIRATE] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return DivePirate.from_descriptor(services, c.actor)
+	f[Ctor.DIVE_DOLPHIN] = func(desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return DiveDolphin.from_descriptor(desc, services, services.shared["dive_graph"], c.actor)
+	f[Ctor.CAROUSEL_RIDE] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return CarouselRide.from_descriptor(services)
+	f[Ctor.RIDER_CLIPS] = func(_desc: Descriptor, _slot: int, _c: ScriptContext, _tag: int) -> Behaviour:
+		return RiderClips.from_descriptor(services)
+	f[Ctor.RATTUS] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return Rattus.from_descriptor(services, c.actor)
+	f[Ctor.BRICK_PICKUP] = func(_desc: Descriptor, _slot: int, c: ScriptContext, _tag: int) -> Behaviour:
+		return BrickPickup.from_descriptor(services, vars, c.actor)

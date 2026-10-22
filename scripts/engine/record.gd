@@ -19,6 +19,11 @@ var block: BehaviourBlock = null
 ## Godot-side node (the MeshInstance3D standing for this record), if any.
 var node: Node3D = null
 var floats := {}
+## True once the 3x3 matrix cells (+0xC .. +0x34 in `floats`) hold the matrix to draw with.
+var matrix_valid := false
+## The record's polygon collision file (its model's .col), for the zones that test records
+## against each other through RecordCollision.
+var col: ColFile = null
 
 
 func field_f(offset: int) -> float:

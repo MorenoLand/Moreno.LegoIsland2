@@ -27,6 +27,11 @@ func clip_finished(record, _step: float) -> bool:
 	return bool(finished.get(record.index, false))
 
 
+## FUN_0042352A(anim, step): would the clip run out within this step (nothing advances).
+func clip_ends_within(_record, _step: float) -> bool:
+	return false
+
+
 ## Waypoint graphs by table (0 = W_ROAD, 1 = W_PATH, 2 = W_CSM, 3 = W_OTH), each a Waypoints.
 var graphs := {}
 var faces := {}
@@ -167,8 +172,37 @@ var scene_active := true
 
 
 ## FUN_004ce3c0 reaches other records by their offset in the record array.
-func record_at(_index: int) -> Variant:
-	return null
+## FUN_00428AB0(record, query, 0) on the record's polygon file: {} for no hit, else the world
+## "point" and "normal" of the nearest polygon, its "poly" and the parameter "t".
+func collide_record(record, start: Vector3, direction: Vector3, mask: int, radius_a: float, radius_b: float) -> Dictionary:
+	if record == null:
+		return {}
+	return RecordCollision.query(record, actor_matrix(record), start, direction, mask, radius_a, radius_b)
+
+
+## FUN_00426310 and the model tables: give every record the polygon file of its first model slot.
+static func assign_colliders(zone: String, records: Array) -> void:
+	var prefix := zone.substr(3).to_lower()
+	var paths := {}
+	for row in Table.rows("res://data/%s_cols.tsv" % prefix):
+		var path := String(row[2]).replace("\\", "/")
+		if not path.begins_with("sentinel"):
+			paths[int(row[0])] = path
+	var cache := {}
+	for row in Table.rows("res://data/%s_models.tsv" % prefix):
+		var index := int(row[0])
+		if index >= records.size() or String(row[2]).strip_edges() == "":
+			continue
+		var slot := int(String(row[2]).split(" ")[0])
+		if not paths.has(slot) or String(row[1]) == "PEPP":
+			continue
+		if not cache.has(slot):
+			cache[slot] = ColFile.parse(Data.read(paths[slot]))
+		records[index].col = cache[slot]
+
+
+func record_at(index: int) -> Variant:
+	return all_records[index] if index >= 0 and index < all_records.size() else null
 
 
 ## FUN_00422342(matrix, angles, position, scale): rebuild the actor matrix from three
@@ -180,6 +214,7 @@ func set_actor_matrix(record, angles: Vector3, position: Vector3, _scale: Vector
 	record.x = position.x
 	record.y = position.y
 	record.z = position.z
+	init_matrix(record)
 
 
 ## FUN_00446852(handle): 0 = free, 2/3/4 = walking states of the 0x84-byte walker slot
@@ -250,11 +285,6 @@ func model_set_field(_record, _mask: int, _value: int) -> void:
 
 func model_set_flag(_record, _value: int) -> void:
 	pass
-
-
-## FUN_00428A60: sweep from `start` along `delta`; returns the hit position or null.
-func collide_down(_record, _start: Vector3, _delta: Vector3, _flags: int) -> Variant:
-	return null
 
 
 ## FUN_00881A12(position, mode): ground height under a position.
@@ -334,9 +364,62 @@ func matrix_snapshot(_record) -> Variant:
 	return null
 
 
-## FUN_004220A1: set the rotation part of the matrix from the angles stored on the record.
-func set_rotation(_record, _x: float, _y: float, _z: float) -> void:
-	pass
+## FUN_004221E4(matrix, 0, yaw, 0, position): a level matrix turned by the record's yaw.
+func set_matrix_yaw(record, position: Vector3) -> void:
+	record.x = position.x
+	record.y = position.y
+	record.z = position.z
+	var rows := rotation_rows(0.0, record.yaw, 0.0)
+	_store_rows(record, Vector3(rows[0], rows[1], rows[2]), Vector3(rows[4], rows[5], rows[6]), Vector3(rows[8], rows[9], rows[10]))
+
+
+## The matrix a record starts with: the placement angles.
+func init_matrix(record) -> void:
+	var rows := rotation_rows(record.field_f(0x4C), record.yaw, record.field_f(0x54))
+	_store_rows(record, Vector3(rows[0], rows[1], rows[2]), Vector3(rows[4], rows[5], rows[6]), Vector3(rows[8], rows[9], rows[10]), false)
+
+
+## The record's 3x3 matrix cells (+0xC / +0x1C / +0x2C rows) and the flag that says it is the
+## one to draw with.
+func _store_rows(record, row0: Vector3, row1: Vector3, row2: Vector3, mark := true) -> void:
+	record.set_field_f(0x0C, row0.x)
+	record.set_field_f(0x10, row0.y)
+	record.set_field_f(0x14, row0.z)
+	record.set_field_f(0x1C, row1.x)
+	record.set_field_f(0x20, row1.y)
+	record.set_field_f(0x24, row1.z)
+	record.set_field_f(0x2C, row2.x)
+	record.set_field_f(0x30, row2.y)
+	record.set_field_f(0x34, row2.z)
+	if mark:
+		record.matrix_valid = true
+
+
+## FUN_004220A1: set the rotation part of the matrix from the angles (the position stays).
+func set_rotation(record, x: float, y: float, z: float) -> void:
+	var rows := rotation_rows(x, y, z)
+	_store_rows(record, Vector3(rows[0], rows[1], rows[2]), Vector3(rows[4], rows[5], rows[6]), Vector3(rows[8], rows[9], rows[10]), false)
+
+
+## FUN_00881A12(position, 4.0) as the castle's ground probes call it: the terrain only (the
+## records are FUN_00428A60's business). -1e38 when there is none.
+func terrain_height(position: Vector3, mode: float) -> float:
+	return ground_height(position, mode)
+
+
+## FUN_00428A60: sweep from `start` along `delta`; returns the hit position or null.
+func collide_down(_record, _start: Vector3, _delta: Vector3, _flags: int) -> Variant:
+	return null
+
+
+## FUN_00428A60 for the castle's probes: the record whose surface is under `start` within the
+## delta, as {"record": index, "position": point}, or null.
+func record_under(_record, _start: Vector3, _delta: Vector3) -> Variant:
+	return null
+
+
+## FUN_00429560: the surface kind of the last ground query.
+var last_surface := 0
 
 
 ## FUN_00446CA4(handle, actor): bind a walker slot to its actor.
@@ -415,6 +498,12 @@ func model_reset_shadow(_record) -> void:
 
 ## FUN_00429FF0(handle, position): play a sound at a position when it is in range,
 ## otherwise stop it; FUN_0042A200: set its value; FUN_0042A1B0: release it.
+## FUN_00429F30(level): sets the music's intensity level (-2, -1 or 0 in the castle).
+## OPEN: the port's music player has no level control yet.
+func music_level(_level: int) -> void:
+	pass
+
+
 func sound_follow(_key: int, _position: Vector3) -> void:
 	pass
 
@@ -492,6 +581,28 @@ var camera_locked := 0
 var camera_rig = null
 
 
+## DAT_00979CA0: depth fog is on (FUN_00407F00 / FUN_00407F30).
+var fog_active := true
+
+
+## FUN_0042336A(anim, step): move the clip on by `step` frames. 0 while it plays, 1 when a
+## looping clip came round, 2 when one that does not loop ran out.
+func clip_advance(record, step: float) -> int:
+	return 2 if clip_finished(record, step) else 0
+
+
+## FUN_004232A3 on Pepper's own animation (record DAT_00975E44 + 0x688): the clip he plays.
+func set_pepper_clip(clip: int) -> void:
+	if player != null:
+		set_clip(player, clip, 0.0)
+
+
+## Whether Pepper swims (the island's walker decides; the exe reads his height against the
+## sea level).
+func swimming() -> bool:
+	return false
+
+
 ## FUN_0041F9C9: read the controls. Returns [bits, axis x, axis y]; DAT_00975E7C (the held
 ## direction bits 1 left, 2 right, 4 up, 8 down, 0x20 / 0x80 brake / accelerate) is
 ## `talk.game_flags_b`.
@@ -514,8 +625,22 @@ func camera_ease_height(y: float) -> void:
 
 
 ## FUN_0087F210: tilt the machine's matrix to the ground under it (four probes).
-func align_to_ground_machine(_record) -> void:
-	pass
+func align_to_ground_machine(record) -> void:
+	var right := Vector3(record.field_f(0x0C), record.field_f(0x10), record.field_f(0x14))
+	var forward := Vector3(record.field_f(0x2C), record.field_f(0x30), record.field_f(0x34))
+	var here := Vector3(record.x, record.y, record.z)
+	var probes := []
+	for offset in [-right * 1.5, right * 1.5, -forward * 1.5, forward * 1.5]:
+		var at: Vector3 = here + offset
+		var ground := ground_height(Vector3(at.x, here.y + 0.6, at.z), 4.0)
+		probes.append(Vector3(at.x, here.y if ground <= -1000.0 else ground, at.z))
+	var across: Vector3 = (probes[1] - probes[0]).normalized()
+	var along: Vector3 = (probes[3] - probes[2]).normalized()
+	var up := along.cross(across).normalized()
+	var heading := Vector3(sin(record.yaw), 0.0, cos(record.yaw))
+	heading = (heading - up * up.dot(heading)).normalized()
+	var side := up.cross(heading).normalized()
+	_store_rows(record, side, up, heading)
 
 
 ## FUN_00429510: the extents of the actor's model: [minimum, maximum].

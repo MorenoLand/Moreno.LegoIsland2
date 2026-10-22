@@ -19,7 +19,6 @@ static func build_setup(u: BuilderUnit) -> void:
 	var slot_copy_7 = null
 	var slot_copy_8 = null
 	var value_4 = null
-	var value_5 = null
 	var slot = null
 	var var_value = null
 	var var_value_2 = null
@@ -42,7 +41,7 @@ static func build_setup(u: BuilderUnit) -> void:
 	CastleBuilders.build_scenery(u)
 	u.call_unported(0x004DBB00, [])
 	CastleBuilders.build_bumpers(u)
-	u.set_clip(u.rec_f(0x2e0), 0x1b, 0.0)
+	u.set_clip(u.pointer(0x2d8), 0x1b, 0.0)
 	u.write_global(0x009749B8, 0x1b)
 	u.call_unported(0x00884370, [1])
 	u.call_unported(0x00884370, [2])
@@ -135,11 +134,11 @@ static func build_setup(u: BuilderUnit) -> void:
 		u.record_flags_and(0x15e8, 0xfffd)
 	else:
 		u.record_flags_or(0x13e0, 2)
-		u.set_clip(u.rec_f(0x2e0), 0xb8, 0.0)
-		u.set_clip(u.rec_f(5000), 2, 0.0)
-		u.set_clip(u.rec_f(0x12b8), 0xb8, 0.0)
-		u.set_clip(u.rec_f(0x1528), 2, 0.0)
-		u.set_clip(u.rec_f(0x14c0), 2, 0.0)
+		u.set_clip(u.pointer(0x2d8), 0xb8, 0.0)
+		u.set_clip(u.pointer(0x1380), 2, 0.0)
+		u.set_clip(u.pointer(0x12b0), 0xb8, 0.0)
+		u.set_clip(u.pointer(0x1520), 2, 0.0)
+		u.set_clip(u.pointer(0x14b8), 2, 0.0)
 		u.record_flags_or(0x1580, 2)
 	if (var_value_2 < 0x16) || (0x18 < var_value_2):
 		u.record_flags_and(0x1518, 0xfffd)
@@ -150,11 +149,11 @@ static func build_setup(u: BuilderUnit) -> void:
 		u.record_flags_or(0x1518, 2)
 		u.record_flags_and(0x1580, 0xfffd)
 		u.record_flags_or(0x15e8, 2)
-		u.set_clip(u.rec_f(0x1528), 2, 0.0)
-		u.set_clip(u.rec_f(0x14c0), 2, 0.0)
+		u.set_clip(u.pointer(0x1520), 2, 0.0)
+		u.set_clip(u.pointer(0x14b8), 2, 0.0)
 	var_value = vars.get_var(0xa3)
 	if (((var_value == 2) || (var_value == 0x1f)) || (var_value == 0x20)) || ((var_value == 0x21 || (var_value == 0))):
-		u.set_clip(u.rec_f(0x2e0), 0x43, 0.0)
+		u.set_clip(u.pointer(0x2d8), 0x43, 0.0)
 		vars.set_var(0x5e, 8)
 		slot_copy_6 = u.rec_f(0x4348)
 		slot_copy_5 = u.rec_f(0x4344)
@@ -171,7 +170,7 @@ static func build_setup(u: BuilderUnit) -> void:
 		else:
 			slot_copy_8 = slot_copy_8 + 6.2831855
 		value_4.set_field_f(0x50, slot_copy_8)
-		u.call_unported(0x00421F40, [(value_4 + 0xc), 0.0, slot_copy_8])
+		u.call_unported(0x00421F40, [value_4, 0.0, slot_copy_8])
 		slot_copy_2 = value_4.field_f(0x2c) * 48.0
 		slot_copy_3 = value_4.field_f(0x30) * 48.0
 		slot_copy_4 = value_4.field_f(0x34) * 48.0
@@ -182,20 +181,21 @@ static func build_setup(u: BuilderUnit) -> void:
 		value_4.set_field_f(0x3c, slot_copy_5)
 		value_4.set_field_f(0x44, slot_copy_7)
 		vars.set_var(0x82, 1)
+		u.copy_matrix(u.pointer(0x2d8), value_4)
 		u.write_global(0x05DE1E80, value_4)
 		if value_4 == u.pointer(0x49f0):
-			u.set_clip(u.rec_f(0x2e0), 0x6e, 0.0)
+			u.set_clip(u.pointer(0x2d8), 0x6e, 0.0)
 		elif value_4 == u.pointer(0x4a58):
-			u.set_clip(u.rec_f(0x2e0), 0x6f, 0.0)
+			u.set_clip(u.pointer(0x2d8), 0x6f, 0.0)
 		else:
-			u.set_clip(u.rec_f(0x2e0), 0x4c, 0.0)
+			u.set_clip(u.pointer(0x2d8), 0x4c, 0.0)
 	else:
 		vars.set_var(0x5e, 1)
 		vars.set_var(0x82, 0)
 		vars.set_var(0x112, 0)
 		u.write_global(0x05DE1E80, 0)
 		u.place_at_waypoint(1, 0x6f, value_4)
-		u.set_clip(u.rec_f(0x2e0), 0x1b, 0.0)
+		u.set_clip(u.pointer(0x2d8), 0x1b, 0.0)
 		if var_value == 8:
 			u.record_flags_or(0x1310, 2)
 			vars.set_var(0x5e, 0x10)
@@ -208,6 +208,7 @@ static func build_setup(u: BuilderUnit) -> void:
 			else:
 				u.place_at_waypoint(1, 6, u.pointer(4992))
 				u.place_at_waypoint(1, 6, u.pointer(4784))
+				u.copy_matrix(u.pointer(0x2d8), u.pointer(0x1380))
 				u.rec_set_f(0x324, u.rec_f(0x13cc))
 				u.rec_set_f(0x328, u.rec_f(0x13d0))
 				u.rec_set_f(0x32c, u.rec_f(0x13d4))
@@ -226,9 +227,10 @@ static func build_setup(u: BuilderUnit) -> void:
 				u.place_at_waypoint(1, 0x50, u.pointer(728))
 		else:
 			u.place_at_waypoint(1, 0x72, u.pointer(728))
+		value = u.rec_f(0x304) * 4.0
 		value_2 = u.rec_f(0x308) * 4.0
 		value_3 = u.rec_f(0x30c) * 4.0
-		u.rec_set_f(0x314, value[2] + u.rec_f(0x314))
+		u.rec_set_f(0x314, value + u.rec_f(0x314))
 		u.rec_set_f(0x318, value_2 + u.rec_f(0x318))
 		u.rec_set_f(0x31c, value_3 + u.rec_f(0x31c))
 	if var_value_2 == 0x16:
@@ -236,9 +238,9 @@ static func build_setup(u: BuilderUnit) -> void:
 		u.place_at_waypoint(1, 0x96, u.pointer(2496))
 		u.rec_set_f(0xa10, u.float_bits(0x3fc90f94))
 		u.set_rotation((u.pointer(0x9cc)), u.rec_f(0xa0c), u.rec_f(0xa10), u.rec_f(0xa14))
-		u.set_clip(u.rec_f(0x9c8), 0xb8, 0.0)
+		u.set_clip(u.pointer(0x9c0), 0xb8, 0.0)
 		u.record_flags_or(0x14b0, 2)
-		u.set_clip(u.rec_f(0x1458), 2, 0.0)
+		u.set_clip(u.pointer(0x1450), 2, 0.0)
 		u.place_at_waypoint(1, 0x96, u.pointer(5200))
 		u.set_rotation((u.pointer(0x145c)), u.rec_f(0xa0c), u.rec_f(0xa10), u.rec_f(0xa14))
 	u.new_block(value_4)
@@ -286,7 +288,7 @@ static func build_setup(u: BuilderUnit) -> void:
 	u.call_unported(0x0042B150, [u.pointer(0x4308), 0xff, 2])
 	u.new_block(u.pointer(0x1c08))
 	u.call_unported(0x0086D507, [u.rec_f(0x1c64), 0x26])
-	u.reg(u.pointer(0x1c08), 0x004DB9F4, u.desc_param(0), 0, 2, 1, 1)
+	u.reg(u.pointer(0x1c08), Ctor.CASTLE_CUES, u.desc_param(0), 0, 2, 1, 1)
 	u.reg(u.pointer(0x1c08), Ctor.HOLO_GUIDE, u.desc_param(0), 1, 0x62, 0, 0)
 	d.memset(48)
 	d.set_u32(4, 0x40000000)
@@ -304,14 +306,14 @@ static func build_setup(u: BuilderUnit) -> void:
 		if ((u.char_at(record_index, 0) == 'R') && (u.char_at(record_index, 1) == 'A')) && (u.char_at(record_index, 2) == 'T'):
 			u.new_block(u.records[record_index])
 			u.call_unported(0x0086D507, [u.records[record_index].field_f(0x5c), 0x86])
-			u.reg(u.records[record_index], 0x004DC27A, u.desc_param(0), 0, 2, 1, 1)
+			u.reg(u.records[record_index], Ctor.RATTUS, u.desc_param(0), 0, 2, 1, 1)
 		elif ((u.char_at(record_index, 1) == 'L') && (u.char_at(record_index, 2) == 'F')) && (u.char_at(record_index, 3) == 'G'):
 			u.new_block(u.records[record_index])
 			u.call_unported(0x0086D507, [u.records[record_index].field_f(0x5c), 0x86])
 			d.memset(16)
 			d.set_u32(0, 1)
 			d.set_u16(4, 0xffff)
-			d.set_u32(8, value_5 & 0xffff0000)
+			d.set_u32(8, 0)
 			u.reg(u.records[record_index], Ctor.FLAG_SETTER, d, 0, 2, 1, 1)
 		elif ((u.char_at(record_index, 0) == 'B') && (u.char_at(record_index, 1) == 'F')) && (u.char_at(record_index, 2) == 'G'):
 			u.new_block(u.records[record_index])
@@ -319,7 +321,7 @@ static func build_setup(u: BuilderUnit) -> void:
 			d.memset(16)
 			d.set_u32(0, 1)
 			d.set_u16(4, 0xffff)
-			d.set_u32(8, value_5 & 0xffff0000)
+			d.set_u32(8, 0)
 			u.reg(u.records[record_index], Ctor.FLAG_SETTER, d, 0, 2, 1, 1)
 	vars.set_var(0x92, 1)
 	u.new_block(u.pointer(0x1b38))
@@ -329,19 +331,18 @@ static func build_setup(u: BuilderUnit) -> void:
 	d.memset(16)
 	d.set_u32(0, 2)
 	d.set_u16(4, 0xffff)
-	d.set_u32(8, value_5 & 0xffff0000)
+	d.set_u32(8, 0)
 	u.reg(u.pointer(0x1b38), Ctor.FLAG_SETTER, d, 1, 2, 1, 1)
 	u.new_block(u.pointer(0x1c70))
 	u.call_unported(0x0086D507, [u.rec_f(0x1ccc), 0x86])
 	d.memset(16)
 	d.set_u32(0, 2)
 	d.set_u16(4, 0xffff)
-	d.set_u32(8, value_5 & 0xffff0000)
+	d.set_u32(8, 0)
 	u.reg(u.pointer(0x1c70), Ctor.FLAG_SETTER, d, 0, 2, 1, 1)
 	u.write_global(0x009CCB08, u.pointer(0x2e4))
 	u.call_unported(0x0041B4E0, [])
 	u.write_global(0x05DE1DA4, 0xc1200000)
-	var_value_2 = 0x4dac37
 
 
 static func build_state_dependent(u: BuilderUnit, previous_state: int, state: int) -> void:
@@ -373,6 +374,7 @@ static func build_state_dependent(u: BuilderUnit, previous_state: int, state: in
 			u.record_flags_or(0x1580, 2)
 			if previous_state == 0x14:
 				vars.set_var(0x112, 1)
+				u.copy_matrix(u.pointer(0x1380), u.pointer(0x2d8))
 				vars.set_var(0x5e, 0x10)
 			u.load_speech_table("_DATA/messages/ci/English/csifsm3.str")
 			u.load_hold_table("_DATA/messages/ci/English/csihol3.str")
@@ -386,9 +388,9 @@ static func build_state_dependent(u: BuilderUnit, previous_state: int, state: in
 			u.place_at_waypoint(1, 0x96, u.pointer(2496))
 			u.rec_set_f(0xa10, u.float_bits(0x3fc90f94))
 			u.set_rotation((u.pointer(0x9cc)), u.rec_f(0xa0c), u.rec_f(0xa10), u.rec_f(0xa14))
-			u.set_clip(u.rec_f(0x9c8), 0xb8, 0.0)
+			u.set_clip(u.pointer(0x9c0), 0xb8, 0.0)
 			u.record_flags_or(0x14b0, 2)
-			u.set_clip(u.rec_f(0x1458), 2, 0.0)
+			u.set_clip(u.pointer(0x1450), 2, 0.0)
 			u.place_at_waypoint(1, 0x96, u.pointer(5200))
 			u.set_rotation((u.pointer(0x145c)), u.rec_f(0xa0c), u.rec_f(0xa10), u.rec_f(0xa14))
 			pass  # PC: *(undefined2 *)(DAT_00975e44 + 0x13e0) = 2;
@@ -552,6 +554,7 @@ static func build_story_c(u: BuilderUnit) -> void:
 	u.rec_set_f(0x31c, waypoint_z_2)
 	value = u.ground_height(Vector3(waypoint_x_2, waypoint_y_2, waypoint_z_2))
 	u.rec_set_f(0x318, float(value))
+	u.copy_matrix(u.pointer(0x1380), u.pointer(0x2d8))
 	wp = u.waypoint(1, 0x60)
 	waypoint_x = wp.x
 	waypoint_y = wp.y
@@ -629,7 +632,7 @@ static func build_scenery(u: BuilderUnit) -> void:
 	var vars = u.vars
 	var d := Descriptor.new()
 	var wp = null
-	u.write_global(0x0097A368, FUN_00440bf0(0x46))
+	u.write_global(0x0097A368, u.slot_table(0x46))
 	u.register_switch("SWITCH_CSI_MOVE_BSD2", 0xfa)
 	u.register_switch("SWITCH_CSI_CSM_FX_SWITCH09", 0xfb)
 	u.register_switch("SWITCH_CSI_MOVE_LAR4", 0xfc)
@@ -711,45 +714,27 @@ static func build_bumpers(u: BuilderUnit) -> void:
 	for record_index in range(u.records.size()):
 		if ((u.char_at(record_index, 0) == 'G') && (u.char_at(record_index, 1) == 'O')) && (u.char_at(record_index, 2) == 'B'):
 			u.new_block(u.records[record_index])
-			u.reg(u.records[record_index], 0x004DC5AB, u.desc_param(0), 0, 0xbc, slot_copy, 0)
+			u.reg(u.records[record_index], Ctor.BRICK_PICKUP, u.desc_param(0), 0, 0xbc, slot_copy, 0)
 			slot_copy = slot_copy << 1
 
 
 static func build_prepare(u: BuilderUnit) -> void:
-	var vars = u.vars
-	var d := Descriptor.new()
-	var wp = null
-	var value = null
-	var value_2 = null
-	var value_3 = null
-	var slot_copy = null
-	var value_4 = null
-	value = null  # PC: FUN_00426100(*(undefined4 *)(DAT_00975e44 + 0x13c),0,8,1,8)
-	u.call_unported(0x0042B130, [value])
-	for record_index in range(u.records.size()):
-		u.records[record_index].set_field_f(0x50, -u.records[record_index].field_f(0x50))
-		value_2 = u.code_cmp(record_index, "?", 4)
-		if value_2 == 0:
-			u.call_unported(0x00429850, [u.records[record_index], 2.0, 14.0])
-		value_2 = u.code_cmp(record_index, "?", 4)
-		if value_2 == 0:
-			u.call_unported(0x00429850, [u.records[record_index], 1.6, 16.0])
-		value_2 = u.code_cmp(record_index, "?", 4)
-		if value_2 == 0:
-			u.records[record_index].flags |= 0x10
-	u.call_unported(0x004297B0, [u.pointer(0x1cd8), d])
-	slot_copy = slot_copy + 2.0
-	u.call_unported(0x00429720, [u.pointer(0x1cd8), value_3, slot_copy, value_4])
-	u.call_unported(0x004297B0, [u.pointer(0x22f0), d])
-	slot_copy = slot_copy + 2.0
-	u.call_unported(0x00429720, [u.pointer(0x22f0), value_3, slot_copy, value_4])
-	u.call_unported(0x00429780, [u.pointer(0x2358)])
-	u.call_unported(0x00429780, [u.pointer(0x4a58)])
-	u.call_unported(0x00429780, [u.pointer(0x49f0)])
-	u.call_unported(0x00429780, [u.pointer(0x1f48)])
-	u.call_unported(0x00429780, [u.pointer(0x2288)])
-	u.call_unported(0x00429780, [u.pointer(0x23c0)])
+	u.call_unported(0x0042B130, [null])
+	for index in range(u.records.size()):
+		var record: Record = u.records[index]
+		record.set_field_f(0x50, -record.field_f(0x50))
+		var code := String(record.code)
+		if code.begins_with("TREE"):
+			u.call_unported(0x00429850, [record, 2.0, 14.0])
+		if code.begins_with("OAKS"):
+			u.call_unported(0x00429850, [record, 1.6, 16.0])
+		if code.begins_with("FLOW"):
+			record.flags |= 0x10
+	# FUN_004297B0 + FUN_00429720: the sphere shape at the node's bounds centre, raised by 2.0
+	u.call_unported(0x00429720, [u.pointer(0x1cd8), 2.0])
+	# FUN_004297B0 + FUN_00429720: the sphere shape at the node's bounds centre, raised by 2.0
+	u.call_unported(0x00429720, [u.pointer(0x22f0), 2.0])
+	for offset in [0x2358, 0x4a58, 0x49f0, 0x1f48, 0x2288, 0x23c0]:
+		u.call_unported(0x00429780, [u.pointer(offset)])
 	u.record_flags_or(0x2d0, 0x10)
 	u.record_flags_or(0x200, 0x10)
-	record_index = 0x4d93d3
-

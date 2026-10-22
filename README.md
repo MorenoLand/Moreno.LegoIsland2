@@ -1,5 +1,7 @@
 # LEGO Island 2
 
+> **WIP: work in progress.** Unfinished and changing daily; expect missing features and bugs.
+
 A port of LEGO Island 2: The Brickster's Revenge (PC, 2001) to Redot / Godot. It reads the game's files from your own copy of
 the game; no game data is included in this repository.
 

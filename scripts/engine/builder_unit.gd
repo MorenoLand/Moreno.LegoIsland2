@@ -32,6 +32,12 @@ func pointer(off: int) -> Record:
 	return records[clampi(off / Record.SIZE, 0, records.size() - 1)]
 
 
+## One character of a record's four-letter code ('' past the end).
+func char_at(index: int, position: int) -> String:
+	var code := String(records[index].code)
+	return code[position] if position < code.length() else ""
+
+
 func to_int(value) -> int:
 	return 1 if value else 0
 
@@ -93,6 +99,23 @@ func float_bits(bits: int) -> float:
 	buffer.resize(4)
 	buffer.encode_u32(0, bits & 0xFFFFFFFF)
 	return buffer.decode_float(0)
+
+
+## The 16-float copy of one record's matrix block (+0xC) onto another: position and angles.
+func copy_matrix(to: Record, from: Record) -> void:
+	for offset in [0x0c, 0x10, 0x14, 0x1c, 0x20, 0x24, 0x2c, 0x30, 0x34, 0x4c, 0x50, 0x54]:
+		to.set_field_f(offset, from.field_f(offset))
+	to.x = from.x
+	to.y = from.y
+	to.z = from.z
+
+
+## FUN_00881A12(position, 16): the terrain height under a point.
+func ground_height(position: Vector3) -> float:
+	if ctx.services != null:
+		var g: float = ctx.services.ground_height(position, 0.0)
+		return g if g > -1.0e37 else position.y
+	return position.y
 
 
 ## FUN_004478A9(table, node, record position): put the record on that waypoint node.
@@ -200,11 +223,21 @@ var globals := {}
 func write_global(address: int, value) -> void:
 	if ctx.services != null and address == 0x05DE1CA0:
 		ctx.services.talk.ground_min = float(value)
+	if ctx.services != null and address == 0x05DE1E80:
+		ctx.services.talk.machine_actor = value if value is Record else null
 	globals[address] = value
 
 
 func read_global(address: int):
 	return globals.get(address, 0)
+
+
+## FUN_00440BF0(size): a table of size + 1 entries, each a value 0 and an owner 0xFFFF.
+func slot_table(size: int) -> Array:
+	var table := []
+	for i in size + 1:
+		table.append([0, 0xFFFF])
+	return table
 
 
 func call_unported(address: int, args: Array) -> void:
@@ -222,8 +255,16 @@ func call_unported(address: int, args: Array) -> void:
 			0x0087B7BF:
 				ctx.services.talk.add_group(_record_of(args[0]), _record_of(args[1]), _record_of(args[2]))
 				return
+			0x00421F40:
+				# FUN_00421F40(matrix of a record, 0, yaw): the record's matrix from its angles.
+				if args[0] is Record:
+					ctx.services.init_matrix(args[0])
+				return
 			0x0042B2C0:
 				ctx.services.model_set_flag(_record_of(args[0]), int(args[1]))
+				return
+			0x00520540:
+				DiveWorld.register_group(args[0], int(args[1]), String(args[2]))
 				return
 			0x004B9290:
 				helpers.defeat(int(args[0]))

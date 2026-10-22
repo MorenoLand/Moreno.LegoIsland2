@@ -3,6 +3,7 @@ extends Node3D
 
 const Waypoints = preload("res://scripts/core/waypoints.gd")
 const CsmHostScript = preload("res://scripts/game/csm_host.gd")
+const BrickMorphScript = preload("res://scripts/game/brick_morph.gd")
 const Story = preload("res://scripts/core/story.gd")
 
 const ISLAND_ZONE := "z02LGI"
@@ -47,8 +48,13 @@ const RABBIT_SPEED := 0.01
 const RABBIT_DROP := 8.0
 const SWIFT_PERCH_CLIP := 1
 const SEA_LEVEL := 2.4
+const CASTLE_ZONE := "z07CSI"
+## The island's water texture, and the castle's sea level (its ground_min is 0).
+const WATER_TEXTURE := 4
+var sea_y := SEA_LEVEL
 const SEA_MARGIN := 120.0
 const WALL_LOW := 1.2
+const WALL_RADIUS := 0.5
 const WALL_HIGH := 2.4
 const SWIM_CLIP := 9
 const TREAD_CLIP := 0x41
@@ -208,6 +214,24 @@ var bridge: EngineBridge
 var talk_view := {}
 var turn_clips := {}
 var csm_host: Node
+## True while Pepper rides a machine through the behaviour engine (set by EngineBridge).
+var ride_on := false
+## The record whose own collision shape the ground queries ignore (the machine being ridden).
+var ground_skip := -1
+## The skateboard (record 9) and its clips (SKBD.blk). While the board is ridden the engine hands
+## over the tilt of Pepper's matrix in `ride_basis`.
+const BOARD_RECORD := 9
+const SKATE_SELECTOR := 4
+var board_blk: BlkFile
+var board_clip := 0
+var board_time := 0.0
+var ride_basis := Basis()
+var ride_tilted := false
+## The step-off clip of the board (0x1C) plays on after the engine lets go; -1 when it does not.
+var dismount_t := -1.0
+## The record the last wall hit belonged to (-2: the land itself).
+var wall_record := -1
+var brick_morph: Node3D
 const ROAD_PROBE := 4.5
 ## Cut-out vehicle wheels per record, turned while the vehicle moves.
 var wheel_sets := {}
@@ -296,6 +320,9 @@ const JUMP_CLIP := 1
 ## a scripted chapter-1 event, the port makes the board rideable directly - walk onto
 ## the board to get on, press the action key (X, which does nothing else in the park)
 ## to step off. SPACE still jumps while riding, so the jump never becomes unreachable.
+## Riding camera: how fast the view catches up with the engine's eye, and the distance after which it jumps.
+const RIDE_GLIDE := 20.0
+const RIDE_SNAP := 40.0
 const BOARD_CODE := "SKBD"
 const BOARD_MOUNT_RADIUS := 3.0
 const BOARD_REMOUNT_RADIUS := 8.0
@@ -487,24 +514,22 @@ func _ready() -> void:
 	if land != null:
 		add_child(land)
 		land_col = ColFile.parse(Data.read("_data/%s/col/land.col" % zone))
-	var seabed := MeshBuilder.build(zone, "SeaBed", 0, true, _run(0))
+	# A zone that places its own SEAB / SEAE records (the castle: at -13.9 and -58.0, their
+	# meshes are authored offset to match) must not get a second copy at the origin.
+	var places_sea := _places_own_sea()
+	var seabed := MeshBuilder.build(zone, "SeaBed", 0, true, _run(0)) if not places_sea else null
 	if seabed != null:
 		seabed.name = "SeaBed"
 		add_child(seabed)
 		seabed_mesh = seabed
-	var sea := MeshBuilder.build(zone, "Sea", 0, true, _run(2))
+	var sea := MeshBuilder.build(zone, "Sea", 0, true, _run(2)) if not places_sea else null
 	if sea != null:
 		sea.name = "Sea"
 		add_child(sea)
 		sea_mesh = sea
 		sea_materials.clear()
-		for i in sea.mesh.get_surface_count():
-			var sea_material := sea.mesh.surface_get_material(i)
-			if sea_material is StandardMaterial3D:
-				sea_material.texture_repeat = true
-				sea_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				sea_materials.append(sea_material)
-	if zone == ISLAND_ZONE:
+		_collect_sea(sea)
+	if zone == ISLAND_ZONE or zone == CASTLE_ZONE:
 		_build_water_plane()
 	sky = MeshBuilder.build(zone, "sky", 0, true, _run(3))
 	if sky != null:
@@ -512,6 +537,11 @@ func _ready() -> void:
 		add_child(sky)
 	_load_runs()
 	_place_objects()
+	if places_sea:
+		# The zone's builder puts the sea animation on record 2 (SEAE) itself.
+		for child in get_children():
+			if child is MeshInstance3D and String(child.name) == "Sea_2":
+				_collect_sea(child)
 	_load_cols()
 	if zone == ISLAND_ZONE:
 		_snap_people()
@@ -531,6 +561,10 @@ func _ready() -> void:
 	if zone == ISLAND_ZONE:
 		csm_host = CsmHostScript.new()
 		add_child(csm_host)
+		csm_host.house_stage()
+		brick_morph = BrickMorphScript.new()
+		add_child(brick_morph)
+		brick_morph.setup(self)
 	if zone == ISLAND_ZONE or zone == HOUSE_ZONE:
 		var hud_layer := CanvasLayer.new()
 		hud_layer.layer = 5
@@ -573,7 +607,53 @@ func _ready() -> void:
 			_sky_without_fog()
 		_apply_fog()
 		Game.options_changed.connect(_apply_fog)
+	elif ZONE_FOG.has(zone):
+		var row: Array = ZONE_FOG[zone]
+		var tint := Color.from_rgba8((int(row[3]) >> 16) & 0xFF, (int(row[3]) >> 8) & 0xFF, int(row[3]) & 0xFF)
+		env.environment.background_color = tint
+		env.environment.fog_enabled = bool(row[4])
+		env.environment.fog_mode = Environment.FOG_MODE_DEPTH
+		env.environment.fog_light_color = tint
+		env.environment.fog_density = 1.0
+		env.environment.fog_depth_curve = 1.0
+		world_env = env
+		fog_row = row
+		_apply_fog()
+		Game.options_changed.connect(_apply_fog)
 	add_child(env)
+
+
+## The zone functions' FUN_00429D30(near, a, b, c, colour) calls (FUN_00407F30 / FUN_00407E00):
+## linear fog from end - c * end / b to end = (b - a) * (100 - draw setting) * 0.01 + a, in
+## the colour, which also clears the screen; the last argument is D3DRS_FOGENABLE (FUN_00407CC0), so
+## a zone that passes 0 has no fog, only the clear colour. Rows: [a, b, c, colour, fog on].
+const ZONE_FOG := {
+	"z03PPH": [100.0, 800.0, 500.0, 0x00FFFF, true],
+	"z07CSI": [100.0, 800.0, 500.0, 0xFF9966, true],
+	"z08BKD": [200.0, 200.0, 120.0, 0x000000, true],
+	"z36CNT": [52.5, 52.5, 10.0, 0x000000, false],
+}
+var fog_row: Array = [100.0, 800.0, 500.0, 0x00FFFF]
+
+
+## The materials the sea animation (FUN_00457172 / FUN_00456FF4) scrolls.
+func _collect_sea(holder: MeshInstance3D) -> void:
+	for i in holder.mesh.get_surface_count():
+		var sea_material := holder.mesh.surface_get_material(i)
+		if sea_material is StandardMaterial3D:
+			sea_material.texture_repeat = true
+			sea_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			sea_materials.append(sea_material)
+		elif sea_material is ShaderMaterial:
+			sea_materials.append(sea_material)
+
+
+## True when the zone's own placement has a sea record at a height other than 0.
+func _places_own_sea() -> bool:
+	for row in _rows("res://data/%s_placement.tsv" % prefix):
+		if (String(row[1]) == "SEAB" or String(row[1]) == "SEAE") and absf(float(row[6])) > 0.001:
+			return true
+	return false
 
 
 ## Fog distance from the Graphics screen (settings slot 0x15, default 50):
@@ -582,17 +662,26 @@ func _ready() -> void:
 func _apply_fog() -> void:
 	if world_env == null:
 		return
-	fog_end = (800.0 - 100.0) * float(100 - Game.option("fog")) * 0.01 + 100.0
+	fog_end = (float(fog_row[1]) - float(fog_row[0])) * float(100 - Game.option("fog")) * 0.01 + float(fog_row[0])
 	world_env.environment.fog_depth_end = fog_end
-	world_env.environment.fog_depth_begin = fog_end - 500.0 * fog_end / 800.0
+	world_env.environment.fog_depth_begin = fog_end - float(fog_row[2]) * fog_end / float(fog_row[1])
 
 
 func _sky_without_fog() -> void:
-	for i in sky.mesh.get_surface_count():
-		var material := sky.mesh.surface_get_material(i)
+	_fog_free(sky)
+
+
+## Draw a mesh without fog (the sky and a zone's backdrop sit beyond the fog's end).
+func _fog_free(holder: MeshInstance3D) -> void:
+	var seen := {}
+	for i in holder.mesh.get_surface_count():
+		var material := holder.mesh.surface_get_material(i)
+		if material == null or seen.has(material):
+			continue
+		seen[material] = true
 		if material is StandardMaterial3D:
 			material.disable_fog = true
-		elif material is ShaderMaterial:
+		elif material is ShaderMaterial and not material.shader.code.contains("fog_disabled"):
 			var shader := Shader.new()
 			shader.code = material.shader.code.replace("render_mode ", "render_mode fog_disabled, ")
 			material.shader = shader
@@ -874,10 +963,12 @@ func _build_water_plane() -> void:
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.vertex_color_use_as_albedo = true
 	material.texture_repeat = true
-	material.albedo_texture = MeshBuilder.texture(zone, 4)
+	material.albedo_texture = MeshBuilder.texture(zone, int(_run(1)[0]) if not _run(1).is_empty() else WATER_TEXTURE)
 	material.render_priority = -1
 	for i in plane.mesh.get_surface_count():
 		plane.mesh.surface_set_material(i, material)
+	if zone == CASTLE_ZONE:
+		sea_y = 0.0
 	plane.name = "WaterPlane"
 	plane.scale = Vector3(fog_end * WATER_SCALE, 1.0, fog_end * WATER_SCALE)
 	add_child(plane)
@@ -903,7 +994,7 @@ func _water_step(delta: float) -> void:
 		if absf(cam.y - water_anchor.y) > step:
 			water_anchor.y += step * signf(cam.y - water_anchor.y)
 	var wobble := Vector2(cos(water_b) + sin(water_a), sin(water_b) + cos(water_a)) * WATER_WOBBLE
-	water_mesh.position = Vector3(water_anchor.x + wobble.x, SEA_LEVEL - WATER_DROP, -(water_anchor.y + wobble.y))
+	water_mesh.position = Vector3(water_anchor.x + wobble.x, sea_y - WATER_DROP, -(water_anchor.y + wobble.y))
 
 
 func _sea_step(delta: float) -> void:
@@ -916,7 +1007,10 @@ func _sea_step(delta: float) -> void:
 		sea_phase += SEA_PHASE_RISE if drift >= 0.0 else SEA_PHASE_FALL
 		sea_scroll += drift
 	for material in sea_materials:
-		material.uv1_offset = Vector3(0.0, sea_scroll, 0.0)
+		if material is ShaderMaterial:
+			material.set_shader_parameter("uv_offset", Vector2(0.0, sea_scroll))
+		else:
+			material.uv1_offset = Vector3(0.0, sea_scroll, 0.0)
 
 
 func _process(delta: float) -> void:
@@ -939,6 +1033,8 @@ func _process(delta: float) -> void:
 		pass
 	elif player == null:
 		_free_camera(delta)
+	elif bridge != null and bridge.program != null and bridge.program.drives_player:
+		_drive_program()
 	else:
 		_drive_player(delta)
 	if zone == ISLAND_ZONE:
@@ -999,6 +1095,19 @@ func _process(delta: float) -> void:
 		_house_triggers()
 
 
+## A zone whose program moves Pepper through its own behaviours: the player node follows his record
+## and the camera is the program's.
+func _drive_program() -> void:
+	var record: Record = bridge.records[bridge.player_record]
+	player_pos = Vector3(record.x, record.y, -record.z)
+	player.position = player_pos
+	player.basis = _placement_basis(record.field_f(0x4C), record.yaw, record.field_f(0x54))
+	var pose: Dictionary = bridge.program.camera_pose()
+	if not pose.is_empty():
+		camera.position = Vector3(pose.eye.x, pose.eye.y, -pose.eye.z)
+		camera.look_at(Vector3(pose.target.x, pose.target.y, -pose.target.z), Vector3.UP)
+
+
 func _free_camera(delta: float) -> void:
 	yaw += _turn_axis() * ORBIT_SPEED * delta
 	var forward := _forward_axis()
@@ -1040,6 +1149,22 @@ func _drive_player(delta: float) -> void:
 			_train_mount(_train_near())
 		elif zone == ISLAND_ZONE:
 			_start_throw(absf(forward) >= RUN_THRESHOLD)
+	if ride_on:
+		# Riding a machine (FUN_0087FB26): the engine drives the machine, Pepper and the camera.
+		if action and not action_held:
+			bridge.dismount()
+		action_held = action
+		jump_held = jump
+		player.position = player_pos + Vector3(0, pepper_foot, 0)
+		player.basis = ride_basis if ride_tilted else Basis(Vector3.UP, player_yaw + PI)
+		_pose_pepper()
+		var ride_eye: Vector3 = bridge.services.camera_eye
+		var ride_target: Vector3 = bridge.services.camera_target
+		# The engine moves the eye at 30 Hz; glide to it between ticks.
+		var wanted := Vector3(ride_eye.x, ride_eye.y, -ride_eye.z)
+		camera.position = wanted if camera.position.distance_to(wanted) > RIDE_SNAP else camera.position.lerp(wanted, 1.0 - exp(-delta * RIDE_GLIDE))
+		camera.look_at(Vector3(ride_target.x, ride_target.y + CAMERA_TARGET_UP, -ride_target.z), Vector3.UP)
+		return
 	if train_on:
 		# Riding the train (FUN_004d6d30): sit on the car, slide across it with
 		# the turn keys, camera behind. The body is seated on this frame's car
@@ -1067,7 +1192,7 @@ func _drive_player(delta: float) -> void:
 	jump_held = jump
 	if jump_t >= 0.0:
 		jump_t += JUMP_TIME_STEP * REFERENCE_RATE * delta
-		var next_air := player_pos + jump_velocity * delta
+		var next_air := player_pos + _slide(player_pos, jump_velocity * delta)
 		var air_y := jump_y0 + (JUMP_SPEED + GRAVITY * jump_t) * jump_t + 0.5 * GRAVITY * jump_t * jump_t
 		var floor_y := _surface(Vector3(next_air.x, air_y + STEP_UP, next_air.z))
 		if jump_t > JUMP_SPEED / absf(GRAVITY) * 0.5 and floor_y > -INF and air_y <= floor_y:
@@ -1419,6 +1544,23 @@ func _load_runs() -> void:
 			col_paths[int(parts[0])] = col_path
 
 
+## How many leading meshes of a list are the same mesh at different detail (HR, MR, LR, SLR, BGR).
+func _lod_group_length(slots: PackedStringArray) -> int:
+	var first := String(mesh_names.get(int(slots[0]), ""))
+	var stem := first.replace("_HR", "_@").replace("HR", "@")
+	var count := 1
+	for i in range(1, slots.size()):
+		var name := String(mesh_names.get(int(slots[i]), ""))
+		var same := false
+		for lod in ["HR", "MR", "LR", "SLR", "BGR"]:
+			if name == stem.replace("_@", "_" + lod).replace("@", lod):
+				same = true
+		if not same:
+			break
+		count += 1
+	return count
+
+
 func _place_objects() -> void:
 	var models := {}
 	var part_models := {}
@@ -1471,10 +1613,15 @@ func _place_objects() -> void:
 				if String(mesh_names.get(int(b_mesh[i]), "")).begins_with(FIGURE_BODY_MESH) and code_name != "PEPP":
 					pick = i
 					break
-			if pick < 0 and b_mesh.size() >= OWN_MESH_GROUP + 2:
-				var own_name := String(mesh_names.get(int(b_mesh[OWN_MESH_GROUP]), ""))
+			var own_start := OWN_MESH_GROUP
+			if zone == CASTLE_ZONE:
+				# The castle's mesh lists run part group (what a parent attaches), then the
+				# record's own group; the part group is the LOD set of the first mesh.
+				own_start = _lod_group_length(b_mesh)
+			if pick < 0 and b_mesh.size() >= own_start + (1 if zone == CASTLE_ZONE else 2):
+				var own_name := String(mesh_names.get(int(b_mesh[own_start]), ""))
 				if code_name == "PEPP" or not own_name.begins_with("PEPP_"):
-					pick = OWN_MESH_GROUP
+					pick = own_start
 			for i in b_mesh.size():
 				if pick >= 0:
 					break
@@ -1523,16 +1670,18 @@ func _place_objects() -> void:
 		if zone != ISLAND_ZONE:
 			solid = col_paths.has(slot) and code != "PEPP"
 		if solid and col_paths.has(slot):
-			collider_slots.append([slot, position, float(parts[3])])
+			collider_slots.append([slot, position, float(parts[3]), record])
 		elif code != "PEPP" and zone == ISLAND_ZONE:
 			for candidate in record_slots.get(record, []):
 				if col_paths.has(candidate) and candidate >= FIRST_SOLID_SLOT:
-					collider_slots.append([candidate, position, float(parts[3])])
+					collider_slots.append([candidate, position, float(parts[3]), record])
 					break
 		var run: int = models[record][1]
 		var key := "%d:%d" % [slot, run]
 		if not mesh_cache.has(key):
-			var built := MeshBuilder.build(zone, String(mesh_names.get(slot, "")), 0, true, runs.get(run, PackedInt32Array()), true)
+			# A zone's backdrop is a painted picture, not a lit object (its inside faces would go black).
+			var backdrop := String(mesh_names.get(slot, "")).to_lower() == "backdrop"
+			var built := MeshBuilder.build(zone, String(mesh_names.get(slot, "")), 0, true, runs.get(run, PackedInt32Array()), not backdrop)
 			mesh_cache[key] = built.mesh if built != null else null
 		var mesh: Mesh = mesh_cache[key]
 		if record == trace_record:
@@ -1555,6 +1704,8 @@ func _place_objects() -> void:
 		else:
 			instance.basis = _placement_basis(float(parts[2]), float(parts[3]), float(parts[4]))
 		add_child(instance)
+		if String(mesh_names.get(slot, "")).to_lower() == "backdrop":
+			_fog_free(instance)
 		if zone == ISLAND_ZONE and code == "HOLO":
 			# The hologram of the Info Maniac only appears while he talks through
 			# Pepper's headset; the cut scene scripts show it, never the free walk.
@@ -1570,6 +1721,16 @@ func _place_objects() -> void:
 			board_home_basis = instance.basis
 		if zone == ISLAND_ZONE and record >= PEOPLE_FIRST and record <= PEOPLE_LAST and code != "PEPP":
 			_cheer_setup(record, instance, key, String(mesh_names.get(slot, "")), ACTOR_START_CLIP)
+		if zone != ISLAND_ZONE and zone != PARK_ZONE and zone != HOUSE_ZONE and code != "PEPP" and attaches.has(record):
+			# A skinned actor of a zone (the records that carry parts): the rig is the smallest of the
+			# zone's animation files with a bone for every part's bone.
+			zone_rig = _rig_by_bones(attaches[record])
+			if not zone_rig.is_empty():
+				_cheer_setup(record, instance, key, String(mesh_names.get(slot, "")), 0)
+			zone_rig = {}
+		if zone == CASTLE_ZONE and String(mesh_names.get(slot, "")).to_lower().begins_with("hors_hors"):
+			# The horse: its own animation file (HORS.blk); the horse behaviour picks the clips.
+			_cheer_setup(record, instance, key, String(mesh_names.get(slot, "")))
 		if zone == ISLAND_ZONE and SPIN_RECORDS.has(record):
 			spinners.append({"node": instance, "rx": float(parts[2]), "ry": float(parts[3]), "rz": float(parts[4])})
 		if zone == ISLAND_ZONE and record >= SWIFT_FIRST and record <= SWIFT_LAST:
@@ -1599,10 +1760,10 @@ func _place_objects() -> void:
 			road_home[record] = MeshBuilder.flip(position)
 		if code == "PEPP":
 			player = instance
-			# Only the island's own tables line Pepper's parts up with its attach
-			# list. In the house the same lookup lands on the room's scenery, so
+			# Only the island's and the castle's tables line Pepper's parts up with their attach
+			# list (the castle's children 0..4 are model rows 0..4: helmet, head, hat, hands). In the house the same lookup lands on the room's scenery, so
 			# the hand-written part list is used there instead.
-			if zone == ISLAND_ZONE and attaches.has(record):
+			if (zone == ISLAND_ZONE or zone == CASTLE_ZONE) and attaches.has(record):
 				var generated: Array = []
 				for entry in attaches[record]:
 					if part_models.has(entry[0]):
@@ -1685,6 +1846,7 @@ const PIZZA_RUNS := [23, 24, 25]
 
 func _attach_pepper(body: MeshInstance3D) -> void:
 	pepper_blk = BlkFile.parse(Data.read("_data/%s/anim/MFIG.blk" % zone))
+	board_blk = BlkFile.parse(Data.read("_data/%s/anim/SKBD.blk" % zone))
 	if pepper_blk == null:
 		return
 	var materials: Array = []
@@ -1787,6 +1949,15 @@ func _animate_pepper(magnitude: float, delta: float, jumping := false) -> void:
 		throw_t += RAMP_RATE * delta
 		pepper_clip = _throw_clip()
 		pepper_time = throw_t
+		_pose_pepper()
+		return
+	if dismount_t >= 0.0:
+		# FUN_00452ADD: getting off the board plays PEP_OFFBOARD (0x1C) before the walk takes over.
+		dismount_t += RAMP_RATE * delta
+		pepper_clip = BOARD_OFF_CLIP
+		pepper_time = dismount_t
+		if dismount_t >= _clip_frames(BOARD_OFF_CLIP) - 1.0:
+			dismount_t = -1.0
 		_pose_pepper()
 		return
 	if not jumping and train_off >= 0.0:
@@ -2116,6 +2287,34 @@ func _attach_parts(instance: MeshInstance3D, list: Array, part_models: Dictionar
 		_register_faces(str(record), node)
 		attached.append([node, bone])
 	return attached
+
+
+## The scene basis of a game matrix given by its three rows (row vectors, z mirrored).
+func rows_basis(row0: Vector3, row1: Vector3, row2: Vector3) -> Basis:
+	var rows := [row0, row1, row2]
+	var flipped := Basis()
+	for i in 3:
+		var column := Vector3.ZERO
+		for j in 3:
+			var value: float = rows[i][j]
+			var sign_i := -1.0 if i == 2 else 1.0
+			var sign_j := -1.0 if j == 2 else 1.0
+			column[j] = value * sign_i * sign_j
+		flipped[i] = column
+	return flipped
+
+
+func camera_game_position() -> Vector3:
+	var at := camera.global_position
+	return Vector3(at.x, at.y, -at.z)
+
+
+## Move a record's collision shape with it (a machine that is driven away).
+func move_collider(record: int, scene_position: Vector3, yaw: float) -> void:
+	for item in colliders:
+		if int(item.get("record", -1)) == record:
+			item.position = scene_position
+			item.basis = Basis(Vector3.UP, -yaw).inverse()
 
 
 func _placement_basis(rx: float, ry: float, rz: float) -> Basis:
@@ -2540,6 +2739,12 @@ func _road_height(point: Vector3, route_y: float) -> float:
 
 ## Frames in a clip, from the shipped anim block, so a mount/dismount pose is held
 ## for exactly as long as the clip lasts.
+func _board_frames(clip: int) -> float:
+	if board_blk == null or clip < 0 or clip >= board_blk.anims.size():
+		return 1.0
+	return maxf(float(int(board_blk.anims[clip].frames)), 1.0)
+
+
 func _clip_frames(clip: int) -> float:
 	if pepper_blk == null or clip < 0 or clip >= pepper_blk.anims.size():
 		return BOARD_POSE_FRAMES
@@ -2846,6 +3051,25 @@ func _static_skin(key: String, mesh_name: String, mesh: Mesh) -> Mesh:
 	return result
 
 
+var zone_rig := {}
+
+
+## The smallest animation file of the zone that has a bone for every bone the parts name.
+func _rig_by_bones(list: Array) -> Dictionary:
+	var top := 0
+	for entry in list:
+		top = maxi(top, int(entry[1]))
+	var best := {}
+	var folder := "_data/%s/anim/" % zone
+	for name in ["MFIG", "PEPD", "SKBD", "PRTB", "RATT", "HORS", "CATP", "SHRK", "PIRO", "DLPH", "MANT", "OCTO"]:
+		if not rig_cache.has(name):
+			rig_cache[name] = BlkFile.parse(Data.read(folder + name + ".blk"))
+		var blk: BlkFile = rig_cache[name]
+		if blk != null and blk.offsets.size() > top and (best.is_empty() or blk.offsets.size() < best.blk.offsets.size()):
+			best = {"blk": blk, "clip": 0}
+	return best
+
+
 func _rig_for(mesh_name: String) -> Dictionary:
 	var lowered := mesh_name.to_lower()
 	var file := "MFIG"
@@ -2862,6 +3086,11 @@ func _rig_for(mesh_name: String) -> Dictionary:
 	elif lowered.contains("skel"):
 		file = "SKBD"
 		clip = 0
+	elif lowered.begins_with("hors_hors"):
+		file = "HORS"
+		clip = 0
+	if not zone_rig.is_empty() and file != "HORS":
+		return zone_rig
 	if not rig_cache.has(file):
 		rig_cache[file] = BlkFile.parse(Data.read("_data/%s/anim/%s.blk" % [zone, file]))
 	return {"blk": rig_cache[file], "clip": clip}
@@ -2889,8 +3118,6 @@ func _hidden_at_start(mesh_name: String, position: Vector3) -> String:
 	for part in HIDDEN_NAME_PARTS:
 		if lowered.contains(part):
 			return "name:" + part
-	if lowered.begins_with("house_pepper_") and not lowered.ends_with("_01"):
-		return "house_pepper"
 	if position == Vector3.ZERO:
 		return "position_zero"
 	return ""
@@ -2906,7 +3133,7 @@ func _load_cols() -> void:
 		var col: ColFile = col_cache[slot]
 		if col == null or col.count == 0:
 			continue
-		colliders.append({"col": col, "position": MeshBuilder.flip(entry[1]), "basis": Basis(Vector3.UP, -float(entry[2])).inverse()})
+		colliders.append({"col": col, "position": MeshBuilder.flip(entry[1]), "basis": Basis(Vector3.UP, -float(entry[2])).inverse(), "record": int(entry[3]) if entry.size() > 3 else -1})
 
 
 func _slide(from: Vector3, move: Vector3) -> Vector3:
@@ -2919,20 +3146,28 @@ func _slide(from: Vector3, move: Vector3) -> Vector3:
 	return slid
 
 
-func _wall_normal(from: Vector3, to: Vector3) -> Vector3:
+func _wall_normal(from: Vector3, to: Vector3, skip_record := -1) -> Vector3:
 	var heights := PackedFloat32Array([WALL_LOW, WALL_HIGH])
+	var reach := Vector3(to.x - from.x, 0.0, to.z - from.z)
+	if reach.length() > 0.0001:
+		# The body has a radius: look that far past the step, as the exe's swept sphere does.
+		to += reach.normalized() * WALL_RADIUS
 	var a := Vector3(from.x, from.y, -from.z)
 	var b := Vector3(to.x, to.y, -to.z)
 	if land_col != null:
 		var n: Vector3 = land_col.wall_hit(a, b, heights)
 		if n != Vector3.ZERO:
+			wall_record = -2
 			return Vector3(n.x, 0.0, -n.z)
 	for item in colliders:
+		if skip_record >= 0 and int(item.get("record", -1)) == skip_record:
+			continue
 		var col: ColFile = item.col
 		var la: Vector3 = item.basis * (from - item.position)
 		var lb: Vector3 = item.basis * (to - item.position)
 		var n: Vector3 = col.wall_hit(Vector3(la.x, la.y, -la.z), Vector3(lb.x, lb.y, -lb.z), heights)
 		if n != Vector3.ZERO:
+			wall_record = int(item.get("record", -1))
 			var local := Vector3(n.x, 0.0, -n.z)
 			var world: Vector3 = (item.basis.inverse() * local)
 			return Vector3(world.x, 0.0, world.z).normalized()
@@ -2971,6 +3206,8 @@ func _ground(point: Vector3, step := STEP_UP, terrain_only := false) -> float:
 	if terrain_only:
 		return best
 	for item in colliders:
+		if ground_skip >= 0 and int(item.get("record", -1)) == ground_skip:
+			continue
 		var col: ColFile = item.col
 		var local: Vector3 = item.basis * (point - item.position)
 		if absf(local.x) > col.box_b.x + 1.0 or absf(local.z) > col.box_b.z + 1.0:
@@ -2980,6 +3217,25 @@ func _ground(point: Vector3, step := STEP_UP, terrain_only := false) -> float:
 			best = h + item.position.y
 			ground_surface = col.last_surface
 	return best
+
+
+## The highest record surface at or below a point (scene axes) and the record it belongs to:
+## {"height", "record", "surface"}, empty when none. `skip` is a record to ignore.
+func record_ground(point: Vector3, skip := -1) -> Dictionary:
+	var best := -INF
+	var found := {}
+	for item in colliders:
+		if skip >= 0 and int(item.get("record", -1)) == skip:
+			continue
+		var col: ColFile = item.col
+		var local: Vector3 = item.basis * (point - item.position)
+		if absf(local.x) > col.box_b.x + 1.0 or absf(local.z) > col.box_b.z + 1.0:
+			continue
+		var h := col.ground(local.x, -local.z, point.y - item.position.y, 0.0)
+		if h > -INF and h + item.position.y > best:
+			best = h + item.position.y
+			found = {"height": best, "record": int(item.get("record", -1)), "surface": col.last_surface}
+	return found
 
 
 func _key(a: Key, b: Key) -> float:

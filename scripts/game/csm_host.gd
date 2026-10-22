@@ -46,6 +46,7 @@ const TALK_LINKS := {
 # tag, the plain one sets 0x40001.
 const VAR_SCORE_A := 0xA6
 const VAR_SCORE_B := 0x12
+const Story = preload("res://scripts/core/story.gd")
 const VAR_DELIVERED := 0xAD
 const VAR_PIZZAS := 0xB0
 const VAR_PIZZA_TRIP := 0x4F
@@ -498,6 +499,31 @@ func actor_place(name: String, pos: Vector3, yaw: float) -> void:
 	yaws[_record(name)] = yaw
 	node.position = _to_scene(pos)
 	node.basis = island._placement_basis(0.0, yaw, 0.0)
+
+
+## Pepper's house while the island loads: the original house (PHSE) before the first delivery
+## and once all eleven are done, else the stage model of the delivered count. The scenes hide
+## the old stage and BrickMorph shows the new one when its bricks have landed.
+func house_stage() -> void:
+	var count := clampi(Game.get_var(Story.HOUSE_STAGE_VAR), 0, Story.HOUSE_STAGES + 1)
+	var site := _record_node(Story.HOUSE_SITE_RECORD)
+	if site != null:
+		site.visible = count == 0 or count > Story.HOUSE_STAGES
+	for i in Story.HOUSE_STAGES:
+		var node := _record_node(Story.HOUSE_STAGE_FIRST + i)
+		if node != null:
+			node.visible = i + 1 == count
+
+
+func _record_node(record: int) -> Node3D:
+	if nodes.has(record):
+		return nodes[record]
+	for child in island.get_children():
+		if child is Node3D and String(child.name).ends_with("_%d" % record):
+			nodes[record] = child
+			return child
+	nodes[record] = null
+	return null
 
 
 func actor_visible(name: String, shown: bool) -> void:

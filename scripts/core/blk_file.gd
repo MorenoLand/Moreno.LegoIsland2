@@ -40,7 +40,7 @@ static func parse(bytes: PackedByteArray) -> BlkFile:
 			var count_bones := body.decode_u32(4)
 			var count_frames := body.decode_u32(8)
 			var floats := (12 + count_frames * (3 + 4 * count_bones) * 4)
-			file.anims.append({"bones": count_bones, "frames": count_frames, "data": body.slice(12, floats).to_float32_array()})
+			file.anims.append({"flags": body.decode_u32(0), "bones": count_bones, "frames": count_frames, "data": body.slice(12, floats).to_float32_array()})
 	return file
 
 

@@ -27,6 +27,8 @@ var target_waypoint := -1
 var hidden_record := -1
 ## DAT_05DE1CA0: lowest ground height an actor may fall to.
 var ground_min := 0.0
+## _DAT_05DE1DA4: gravity (-10 on the island).
+var gravity := -10.0
 ## DAT_009749B8: clip last forced on Pepper.
 var pepper_clip := 0
 ## DAT_05DE1F7C: name of the speech line being prepared.

@@ -169,6 +169,7 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 		return 1
 	if ridden != 0:
 		ridden = 0
+		services.init_matrix(actor)
 		bump_timer = 0.0
 		hold = 0.0
 		thrust = 0.0
@@ -184,7 +185,7 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 	services.anim_set_frame(player, frame)
 	var speed := velocity.length()
 	if 0.0 < speed:
-		services.set_matrix_at(actor, Vector3(actor.x, actor.y, actor.z))
+		services.set_matrix_yaw(actor, Vector3(actor.x, actor.y, actor.z))
 		services.align_to_ground_machine(actor)
 	var forward := Vector3(actor.field_f(0x2C), actor.field_f(0x30), actor.field_f(0x34))
 	var here := Vector3(actor.x, actor.y, actor.z)
@@ -282,3 +283,12 @@ func post(actor) -> void:
 				g.list_mode = -1
 			else:
 				g.machine_actor = null
+
+
+## Port decision: stop being ridden (see EngineBridge.dismount).
+func release() -> void:
+	vars.clear_var(tag, 0x10000000)
+	vars.or_var(tag, 0x20000000)
+	ridden = 0
+	thrust = 0.0
+	velocity = Vector3.ZERO

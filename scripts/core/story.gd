@@ -188,6 +188,12 @@ const STORY_PTERO_STATE := 0x34
 
 
 ## FUN_00404b87: the zone the state lives in, or -1 when out of range.
+const HOUSE_SITE_RECORD := 125
+const HOUSE_STAGE_FIRST := 350
+const HOUSE_STAGES := 10
+const HOUSE_STAGE_VAR := 0xAD
+
+
 static func zone_of(state: int) -> int:
 	return int(TABLE[state][0]) if state >= 0 and state < TABLE.size() else -1
 

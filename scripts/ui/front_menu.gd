@@ -21,6 +21,11 @@ const CONFIRM_MENU := 20
 const SLOT_CALLBACK_PICK := 0x86BB2E
 const SLOT_CALLBACK_NEW := 0x86BBB3
 
+## FUN_0086BFBD: the pause menu greys "Pepper's house" (item flags 0x20) while the story
+## state (var 0x58) is below 4.
+const LEVPPH_MIN_STATE := 4
+const DISABLED_FLAG := 0x20
+
 const SPACE := Vector2(640, 480)
 const TILE := 24
 const SHADOW := Vector2(1.6, 1.6)
@@ -42,7 +47,7 @@ var selected := 1
 var stack: Array = []
 var press := 0
 var half := 0
-var disabled_mask := 0
+var disabled_mask := 0x20
 var last_mouse := Vector2(-1000, -1000)
 var sounds := {}
 var move_index := 0
@@ -150,6 +155,8 @@ func _read_menus() -> void:
 			menus.append({"type": int(row[2]), "count": int(row[3]),
 				"style": int(row[4]), "callback": int(row[5]),
 				"first": int(row[0]), "items": []})
+		if item.name == "!LEVPPH" and Game.get_var(Game.VAR_STATE) < LEVPPH_MIN_STATE:
+			item.flags = DISABLED_FLAG
 		var option_key: String = Game.OPTION_ITEMS.get(item.name, "")
 		if option_key != "":
 			item.value = Game.option(option_key)

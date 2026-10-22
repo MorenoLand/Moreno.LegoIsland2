@@ -3,6 +3,8 @@ extends RefCounted
 
 const RECORD := 88
 const WALL_SLOPE := 0.5
+## A wall is a little wider than its polygons so the cracks between neighbours do not leak.
+const EDGE_SLACK := 0.15
 const FACE_AT := 0x08
 const EDGE_AT := [0x18, 0x28, 0x38]
 
@@ -13,6 +15,10 @@ var faces := PackedFloat32Array()
 var planes := PackedFloat32Array()
 var box_a := Vector3.ZERO
 var box_b := Vector3.ZERO
+## The bounding radius the loader reads after the two boxes (col[9]).
+var radius := 0.0
+## The fourth edge plane of the quads (polygons with flag 4): (nx, ny, nz, d).
+var quad_edge := PackedFloat32Array()
 var last_surface := 0
 
 
@@ -22,6 +28,7 @@ static func parse(bytes: PackedByteArray) -> ColFile:
 	var out := ColFile.new()
 	out.box_a = Vector3(bytes.decode_float(4), bytes.decode_float(8), bytes.decode_float(12))
 	out.box_b = Vector3(bytes.decode_float(16), bytes.decode_float(20), bytes.decode_float(24))
+	out.radius = bytes.decode_float(28)
 	var tag := bytes.slice(32, 36).get_string_from_ascii()
 	if tag != "COLP":
 		return out
@@ -30,6 +37,7 @@ static func parse(bytes: PackedByteArray) -> ColFile:
 	out.surface.resize(out.count)
 	out.planes.resize(out.count * 12)
 	out.faces.resize(out.count * 4)
+	out.quad_edge.resize(out.count * 4)
 	for i in out.count:
 		var at := 40 + i * RECORD
 		out.flags[i] = bytes.decode_u32(at)
@@ -39,6 +47,8 @@ static func parse(bytes: PackedByteArray) -> ColFile:
 		for p in 3:
 			for k in 4:
 				out.planes[i * 12 + p * 4 + k] = bytes.decode_float(at + EDGE_AT[p] + k * 4)
+		for k in 4:
+			out.quad_edge[i * 4 + k] = bytes.decode_float(at + 0x48 + k * 4)
 	return out
 
 
@@ -183,9 +193,14 @@ func wall_hit(a: Vector3, b: Vector3, heights: PackedFloat32Array) -> Vector3:
 			var py := a.y + h + (b.y - a.y) * t
 			var pz := a.z + (b.z - a.z) * t
 			var inside := true
-			for k in 3:
-				var o: int = i * 12 + k * 4
-				if planes[o] * px + planes[o + 1] * py + planes[o + 2] * pz - planes[o + 3] > 0.0:
+			for k in 3 + (1 if (flags[i] & 4) != 0 else 0):
+				var plane := Plane(Vector3.ZERO, 0.0)
+				if k < 3:
+					var o: int = i * 12 + k * 4
+					plane = Plane(Vector3(planes[o], planes[o + 1], planes[o + 2]), planes[o + 3])
+				else:
+					plane = Plane(Vector3(quad_edge[i * 4], quad_edge[i * 4 + 1], quad_edge[i * 4 + 2]), quad_edge[i * 4 + 3])
+				if plane.normal.x * px + plane.normal.y * py + plane.normal.z * pz - plane.d > EDGE_SLACK:
 					inside = false
 					break
 			if inside:

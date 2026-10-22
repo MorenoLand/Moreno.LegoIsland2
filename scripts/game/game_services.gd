@@ -24,8 +24,71 @@ func has_anim(record) -> bool:
 	return items.has(record.index)
 
 
+## While Pepper rides a machine the engine's animation calls on the player record drive the
+## island's own Pepper clip.
+func _rider(record) -> bool:
+	return island.ride_on and record != null and record == player
+
+
+## The skateboard's own clips (SKBD.blk).
+func _board(record) -> bool:
+	return record != null and record.index == island.BOARD_RECORD and island.board_blk != null
+
+
+## FUN_0042336A for the clips the island keeps itself (Pepper's and the board's).
+func _advance(time: float, frames: float, loops: bool) -> Array:
+	var length := maxf(frames, 1.0)
+	var result := 0
+	if not loops:
+		if length - 1.0 < time:
+			if length <= 1.0:
+				time = 0.0
+			else:
+				while length - 1.0 < time:
+					time -= length - 1.0
+			result = 2
+	elif length <= time:
+		while length <= time:
+			time -= length
+		result = 1
+	return [time, result]
+
+
+func clip_advance(record, step: float) -> int:
+	if _rider(record):
+		var clip: int = island.pepper_clip
+		var loops: bool = island.pepper_blk != null and clip >= 0 and clip < island.pepper_blk.anims.size() and (int(island.pepper_blk.anims[clip].flags) & 0x10) != 0
+		var moved := _advance(float(island.pepper_time) + step, island._clip_frames(clip), loops)
+		island.pepper_time = moved[0]
+		return moved[1]
+	if _board(record):
+		var clip: int = island.board_clip
+		var loops: bool = clip >= 0 and clip < island.board_blk.anims.size() and (int(island.board_blk.anims[clip].flags) & 0x10) != 0
+		var moved := _advance(float(island.board_time) + step, island._board_frames(clip), loops)
+		island.board_time = moved[0]
+		return moved[1]
+	return super.clip_advance(record, step)
+
+
+func swimming() -> bool:
+	return island.swimming
+
+
+func set_pepper_clip(clip: int) -> void:
+	island.pepper_clip = clip
+	island.pepper_time = 0.0
+
+
 func set_clip(record, clip: int, start_frame: float) -> void:
 	super.set_clip(record, clip, start_frame)
+	if _board(record):
+		island.board_clip = clip
+		island.board_time = start_frame
+		return
+	if _rider(record):
+		island.pepper_clip = clip
+		island.pepper_time = start_frame
+		return
 	var item = _item(record)
 	if item != null:
 		island._set_clip(item, clip)
@@ -34,6 +97,10 @@ func set_clip(record, clip: int, start_frame: float) -> void:
 
 
 func current_clip(record) -> int:
+	if _board(record):
+		return island.board_clip
+	if _rider(record):
+		return island.pepper_clip
 	var item = _item(record)
 	if item == null:
 		return super.current_clip(record)
@@ -56,12 +123,29 @@ func clip_finished(record, step: float) -> bool:
 	return false
 
 
+func clip_ends_within(record, step: float) -> bool:
+	var item = _item(record)
+	if item == null:
+		return super.clip_ends_within(record, step)
+	return _frames(item) < step + float(item.time) + 1.0
+
+
 func anim_frame(record) -> float:
+	if _board(record):
+		return float(island.board_time)
+	if _rider(record):
+		return float(island.pepper_time)
 	var item = _item(record)
 	return float(item.time) if item != null else 0.0
 
 
 func anim_set_frame(record, frame: float) -> void:
+	if _board(record):
+		island.board_time = frame
+		return
+	if _rider(record):
+		island.pepper_time = frame
+		return
 	var item = _item(record)
 	if item != null:
 		item.time = frame
@@ -69,6 +153,10 @@ func anim_set_frame(record, frame: float) -> void:
 
 
 func anim_length(record) -> float:
+	if _board(record):
+		return island._board_frames(island.board_clip)
+	if _rider(record):
+		return island._clip_frames(island.pepper_clip)
 	var item = _item(record)
 	return _frames(item) if item != null else 1.0
 
@@ -92,6 +180,24 @@ func set_face(record, frame: int) -> void:
 func ground_height(position: Vector3, _mode: float) -> float:
 	var g: float = island._ground(Vector3(position.x, position.y + 4.0, -position.z), island.STEP_UP, false)
 	return g if g > -INF else -1.0e38
+
+
+## The terrain only (FUN_00881A12): the records are `record_under`'s.
+func terrain_height(position: Vector3, _mode: float) -> float:
+	var g: float = island._ground(Vector3(position.x, position.y + 4.0, -position.z), island.STEP_UP, true)
+	last_surface = island.ground_surface if g > -INF else 0
+	return g if g > -INF else -1.0e38
+
+
+func record_under(record, start: Vector3, delta: Vector3) -> Variant:
+	var found: Dictionary = island.record_ground(Vector3(start.x, start.y, -start.z), record.index if record != null else -1)
+	if found.is_empty():
+		return null
+	var height: float = found.height
+	if height > start.y or height < start.y + minf(delta.y, 0.0):
+		return null
+	last_surface = int(found.surface)
+	return {"record": int(found.record), "position": Vector3(start.x, height, start.z)}
 
 
 func collide_down(_record, start: Vector3, delta: Vector3, _flags: int) -> Variant:
@@ -472,27 +578,29 @@ func read_input() -> Array:
 ## FUN_00428210: sweep a probe through the collision files. A vertical sweep reports the first
 ## ground surface it crosses, a horizontal one the first wall (the hit point is found by
 ## bisecting the segment; the exe's own radius and surface-mask handling are not read, OPEN).
-func collide_sweep(_record, start: Vector3, delta: Vector3, _flags: int, _radius: float, _tolerance: float) -> Variant:
+func collide_sweep(record, start: Vector3, delta: Vector3, _flags: int, _radius: float, _tolerance: float) -> Variant:
 	var from := Vector3(start.x, start.y, -start.z)
 	if absf(delta.x) + absf(delta.z) < 0.0001:
 		var ground: float = island._ground(Vector3(from.x, maxf(start.y, start.y + delta.y), from.z), island.STEP_UP, false)
 		if ground > -INF and ground >= minf(start.y, start.y + delta.y) and ground <= maxf(start.y, start.y + delta.y):
+			last_surface = island.ground_surface
 			return {"position": Vector3(start.x, ground, start.z), "normal": Vector3.UP}
 		return null
 	var to := Vector3(start.x + delta.x, start.y + delta.y, -(start.z + delta.z))
-	var wall: Vector3 = island._wall_normal(from, to)
+	var own: int = record.index if record != null else -1
+	var wall: Vector3 = island._wall_normal(from, to, own)
 	if wall == Vector3.ZERO:
 		return null
 	var low := 0.0
 	var high := 1.0
 	for i in 6:
 		var mid := (low + high) * 0.5
-		if island._wall_normal(from, from.lerp(to, mid)) != Vector3.ZERO:
+		if island._wall_normal(from, from.lerp(to, mid), own) != Vector3.ZERO:
 			high = mid
 		else:
 			low = mid
 	var hit_at := from.lerp(to, high)
-	return {"position": Vector3(hit_at.x, hit_at.y, -hit_at.z), "normal": Vector3(wall.x, 0.0, -wall.z).normalized()}
+	return {"position": Vector3(hit_at.x, hit_at.y, -hit_at.z), "normal": Vector3(wall.x, 0.0, -wall.z).normalized(), "record": island.wall_record}
 
 
 func particle_attach_ref(handle: int, holder: Array) -> void:
