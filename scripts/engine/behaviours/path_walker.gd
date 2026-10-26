@@ -260,6 +260,7 @@ func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 	if result == -1 and count == 1:
 		previous_step = step_index
 		_act(actor)
+		return 0
 	else:
 		block.look_flags |= 0x10
 		if stop_to_play != 0:

@@ -105,6 +105,7 @@ var talk_tag := -1
 var bar_top: ColorRect
 var bar_bottom: ColorRect
 var bar_px := 0.0
+var bars_mode := 0
 var talk_npc := ""
 var triggers: Array = []
 var fired := {}
@@ -194,6 +195,7 @@ func play(name: String) -> bool:
 	island.camera_locked = true
 	island.story_hold = true
 	bar_px = 0.0
+	island.bridge.services.prompt_mode(1)
 	csm.cam_pos = _to_game(island.camera.position)
 	csm.cam_target = _to_game(island.camera.position + (-island.camera.global_transform.basis.z) * 10.0)
 	csm.start(self)
@@ -261,18 +263,29 @@ func _process(delta: float) -> void:
 	_debug_keys()
 	_talk_keys()
 	_triggers_tick()
+	if island.pause_layer == null:
+		_letterbox(delta)
 	if not active:
 		return
 	if island.pause_layer != null:
 		return
 	var skip := Input.is_physical_key_pressed(TALK_KEY)
 	_animate(delta)
-	_letterbox(delta)
 	_lip_tick(delta)
 	csm.tick(delta, skip)
 
 
+## FUN_00445118 / FUN_00445211: the bars of the prompt mode (1: top and bottom, 2: bottom only)
+## slide in over a few ticks; mode 0 takes them away at once.
 func _letterbox(delta: float) -> void:
+	var mode: int = island.bridge.services.prompt_state if island.bridge != null else 0
+	if mode != bars_mode:
+		bars_mode = mode
+		bar_px = 0.0
+	if mode == 0:
+		bar_top.visible = false
+		bar_bottom.visible = false
+		return
 	var size := get_viewport().get_visible_rect().size
 	var picture := minf(size.y, size.x / BAR_ASPECT)
 	var limit := (size.y - picture) * 0.5
@@ -281,7 +294,7 @@ func _letterbox(delta: float) -> void:
 	bar_top.size = Vector2(size.x, bar_px)
 	bar_bottom.position = Vector2(0.0, size.y - bar_px)
 	bar_bottom.size = Vector2(size.x, bar_px)
-	bar_top.visible = bar_px > 0.5
+	bar_top.visible = bar_px > 0.5 and mode == 1
 	bar_bottom.visible = bar_px > 0.5
 
 
@@ -777,6 +790,7 @@ func csm_finished(_script) -> void:
 		if engine_driven:
 			Game.set_var(0x5E, Game.get_var(0x5E) & ~0x100)
 		island.story_hold = false
+		island.bridge.services.prompt_mode(0)
 		bar_px = 0.0
 		bar_top.visible = false
 		bar_bottom.visible = false

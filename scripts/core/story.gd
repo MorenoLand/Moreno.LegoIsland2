@@ -198,6 +198,24 @@ static func zone_of(state: int) -> int:
 	return int(TABLE[state][0]) if state >= 0 and state < TABLE.size() else -1
 
 
+## The kind of each zone (the second word of the zone table at 0x88F8B0); the way back (FUN_00404AE3)
+## stops at a state whose zone is of kind 1.
+const ZONE_KIND := [1, 1, 1, 3, 3, 3, 1, 3, 4, 4, 1, 1, 2, 1, 3, 3, 2, 3, 2, 1, 2, 4, 1, 1, 3, 3, 2, 1, 3, 3, 0, 1, 1, 1, 1]
+
+
+## FUN_00404AE3: step back to the last state in a zone of kind 1 and set the variable of that state's
+## objective (the exe restores the value snapshotted when it was left; the port keeps no snapshot, so it
+## stays as it is).
+static func rewind(game: Node) -> int:
+	var state: int = game.get_var(VAR_STATE) - 1
+	while state > 0 and int(ZONE_KIND[zone_of(state)]) != 1:
+		state -= 1
+	state = maxi(state, 0)
+	game.set_var(VAR_STATE, state)
+	game.set_var(VAR_ZONE, zone_of(state))
+	return state
+
+
 ## FUN_00404a40: is the current objective finished?
 static func done(state: int, game: Node) -> bool:
 	if state < 0 or state >= TABLE.size():

@@ -48,11 +48,11 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 		near_flag = 0
 	elif timer_near > 0.0 and near_flag == 0 and enabled != 0:
 		timer_near -= 1.0
-		return 1
+		return 0
 	if not continuing:
 		if timer_start > 0.0 and enabled != 0:
 			timer_start -= 1.0
-			return 1
+			return 0
 		saved_yaw = actor.yaw
 		services.walker_finish(actor)
 		turned = 0

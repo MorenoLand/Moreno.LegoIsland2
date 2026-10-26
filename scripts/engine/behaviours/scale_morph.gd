@@ -84,6 +84,7 @@ func update(_actor, _block: BehaviourBlock, var_value: int) -> int:
 		target.flags |= Record.FLAG_VISIBLE
 	else:
 		running = false
+		return 2 if scale_var > 1 else 0
 	return 2
 
 

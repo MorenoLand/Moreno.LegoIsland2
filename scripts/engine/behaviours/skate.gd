@@ -124,8 +124,16 @@ var pipe_normal := Vector3(0.0, 8.0, 0.0)
 var ride_surface = null
 ## DAT_05D50EC0 (trick score), DAT_05D50EC4 (score taken), DAT_05D50EC5 (reset on re-entry),
 ## DAT_05D50EB4 (the surface the rolling sound plays for).
-var trick_score := 0.0
-var score_taken := false
+var trick_score: float:
+	get:
+		return services.talk.trick_score
+	set(value):
+		services.talk.trick_score = value
+var score_taken: bool:
+	get:
+		return services.talk.score_taken
+	set(value):
+		services.talk.score_taken = value
 var reset_on_entry := false
 var sound_surface := 5
 
@@ -153,8 +161,9 @@ func _park() -> bool:
 	return vars.get_var(ZONE_VAR) == PARK_ZONE
 
 
+## DAT_05DE1E7C: the board's record of the zone.
 func _board():
-	return services.record_at(BOARD_RECORD)
+	return services.record_at(services.talk.hidden_record)
 
 
 func _rows(actor) -> Array:

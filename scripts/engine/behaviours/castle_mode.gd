@@ -5,18 +5,28 @@ extends Behaviour
 ## The castle's Pepper controller: the post routine is a state machine on the input selector
 ## (var 0x5E, low 12 bits) that moves Pepper between walking (1), swimming (2), using a thing (4),
 ## a boat (8), the horse (0x10) and the landing after a ride (0x401). Only the horse's way off
-## (state 0x10 -> 0x401 -> 1) and the landing are ported here; the other states, the pickup
-## hand-off (FUN_00518D4F / FUN_00518DE4) and the zone's hum sounds are OPEN.
+## (state 0x10 -> 0x401 -> 1), the landing, the board (4), swimming (2) and taking a machine
+## are ported here; the pickup hand-off (FUN_00518D4F / FUN_00518DE4) and the zone's two hum
+## sounds are OPEN.
 ##
 ## Descriptor +0x18: the spot Pepper is put on when he gets off the horse.
 
 const PEPPER_RECORD := 7
 const STATE_WALK := 1
 const STATE_SWIM := 2
+const STATE_SKATE := 4
+const STATE_MACHINE := 8
 const STATE_HORSE := 0x10
 const STATE_LANDED := 0x401
 const CLIP_WALK_ON := 0x1B
 const CLIP_SWIM_IN := 0x15
+const CLIP_SWIM_OUT := 0x25
+const CLIP_SITTING := 0x43
+const CLIP_DISMOUNT := 0x1C
+const BOARD_CLIP_ON := 1
+const BOARD_CLIP_OFF := 2
+const CARRY_BIT := 0x1000
+const SOUND_SWIM_OUT := 0x5DE1D28
 const RIDER_RECORD := 47
 const HORSE_RECORD := 48
 const SPOT_STEP := 4.0
@@ -66,28 +76,65 @@ func post(actor) -> void:
 	var full: int = vars.get_var(tag)
 	var next := 0
 	var clip := 0
+	var board = services.record_at(g.hidden_record)
 	if vars.get_var(0x58) == STORY_RIVER and full != 8 and actor.x < RIVER_X:
 		vars.set_var(0x56, 2)
-	var mode := full & 0xFFF
-	if mode == STATE_HORSE:
-		if (g.game_flags & 0x10) != 0 and (vars.get_var(0x112) & 0x10) == 0 and _find_spot(actor):
-			g.machine_actor = null
+	var state := full & 0xFFF
+	match state:
+		STATE_SKATE:
+			if ((g.game_flags & 0x10) != 0 or (full & CARRY_BIT) != 0) and g.pepper_clip != 0x20 and g.pepper_clip != 0x21:
+				next = STATE_WALK
+				clip = CLIP_DISMOUNT
+				services.set_clip(board, BOARD_CLIP_OFF, 0.0)
+				for key in IslandMode.ROLL_SOUNDS:
+					services.sound_release(key)
+				services.sound_play(IslandMode.SOUND_DISMOUNT)
+			var forward := Vector3(actor.field_f(0x2C), actor.field_f(0x30), actor.field_f(0x34))
+			var ahead := Vector3(actor.x, actor.y, actor.z) + forward * 4.0
+			if services.terrain_height(ahead, 4.0) <= g.ground_min and g.pepper_clip != 0x20 and g.pepper_clip != 0x21:
+				next = STATE_WALK
+				clip = CLIP_DISMOUNT
+				services.set_clip(board, BOARD_CLIP_OFF, 0.0)
+		STATE_SWIM:
+			var forward := Vector3(actor.field_f(0x2C), actor.field_f(0x30), actor.field_f(0x34))
+			var ahead := Vector3(actor.x, actor.y, actor.z) + forward
+			ahead.y += 4.0
+			if g.ground_min < services.terrain_height(ahead, 4.0):
+				next = STATE_WALK
+				clip = CLIP_SWIM_OUT
+				services.sound_play(SOUND_SWIM_OUT)
+		STATE_HORSE:
+			if (g.game_flags & 0x10) != 0 and (vars.get_var(0x112) & 0x10) == 0 and _find_spot(actor):
+				g.machine_actor = null
+				actor.flags |= 2
+				services.record_at(RIDER_RECORD).flags &= ~2
+				next = STATE_LANDED
+				clip = CLIP_WALK_ON
+		STATE_WALK, STATE_LANDED:
+			if state == STATE_LANDED:
+				next = STATE_WALK
+			var taken: bool = g.machine_actor != null
+			if (g.game_flags & 0x10) == 0 or IslandMode.NO_BOARD_CLIPS.has(g.pepper_clip) or IslandMode.NO_BOARD_ANIM.has(services.current_clip(actor)) or taken:
+				if taken:
+					next = STATE_HORSE if g.machine_actor == services.record_at(HORSE_RECORD) else STATE_MACHINE
+					clip = CLIP_SITTING
+			else:
+				next = STATE_SKATE
+				clip = IslandMode.CLIP_MOUNT
+				services.set_clip(board, BOARD_CLIP_ON, 0.0)
+				board.flags |= 2
+				services.sound_play(IslandMode.SOUND_MOUNT)
+			if actor.y <= g.ground_min:
+				next = STATE_SWIM
+				clip = CLIP_SWIM_IN
 			actor.flags |= 2
 			services.record_at(RIDER_RECORD).flags &= ~2
-			next = STATE_LANDED
-			clip = CLIP_WALK_ON
-	elif mode == STATE_LANDED:
-		next = STATE_WALK
-		if actor.y <= g.ground_min:
-			next = STATE_SWIM
-			clip = CLIP_SWIM_IN
-		actor.flags |= 2
-		services.record_at(RIDER_RECORD).flags &= ~2
 	if clip != 0:
 		g.pepper_clip = clip
 		services.set_clip(actor, clip, 0.0)
+		services.set_pepper_clip(clip)
 	if next != 0:
-		vars.set_var(tag, next | (full & 0x1000))
+		vars.set_var(tag, next | (full & CARRY_BIT))
 
 
 ## FUN_004DF946: look for firm ground around the horse. The exe grows the ring by adding to a

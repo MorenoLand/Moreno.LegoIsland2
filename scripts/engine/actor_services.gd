@@ -591,6 +591,14 @@ func clip_advance(record, step: float) -> int:
 	return 2 if clip_finished(record, step) else 0
 
 
+## Put Pepper at a position (game coordinates).
+func place_player(position: Vector3) -> void:
+	if player != null:
+		player.x = position.x
+		player.y = position.y
+		player.z = position.z
+
+
 ## FUN_004232A3 on Pepper's own animation (record DAT_00975E44 + 0x688): the clip he plays.
 func set_pepper_clip(clip: int) -> void:
 	if player != null:

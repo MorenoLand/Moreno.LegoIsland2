@@ -19,6 +19,8 @@ const SOUNDS := [
 ## FUN_0041B4E0: the eye 6.4 up and 16 behind the rig, looking at 3 above it.
 const CAMERA_BEHIND := Vector3(0.0, 6.4, -16.0)
 const CAMERA_RISE := 3.0
+## DAT_05DE1E7C in FUN_004D93D7: the skateboard.
+const BOARD_RECORD := 0x44
 var _bridge
 
 
@@ -30,6 +32,7 @@ func build(bridge) -> void:
 	var services = bridge.services
 	var records: Array = bridge.records
 	services.talk.ground_min = 0.0
+	services.talk.hidden_record = BOARD_RECORD
 	var unit := BuilderUnit.new(bridge.vars, records.size())
 	unit.records = records
 	EngineSetup.register_ports(unit.ctx, services, bridge.vars)

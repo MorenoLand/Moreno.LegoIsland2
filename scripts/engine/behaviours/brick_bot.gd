@@ -62,13 +62,13 @@ func _target_var() -> int:
 
 func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 	if target == null:
-		return 1
+		return 0
 	var g := services.talk
 	var w := services.walkers
 	var v := _target_var()
 	if (v & 0x4000) != 0:
 		g.head_op(target.block, 0x2000000, 2, vars)
-		return 1
+		return 0
 	if (v & 0x2000000) == 0:
 		g.head_op(target.block, 0x2000000, 0, vars)
 	if status != block.frame_counter:

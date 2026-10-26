@@ -96,7 +96,7 @@ func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 				_attack(actor)
 		2:
 			_turn_spot(actor)
-	return 0
+	return 1
 
 
 func _wander(actor, block: BehaviourBlock, done: bool) -> void:

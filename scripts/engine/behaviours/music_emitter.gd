@@ -45,7 +45,7 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 	if vars.get_var(0x22) == 0:
 		if (var_value & 0x4000000) != 0:
 			vars.clear_var(tag, 0x4000000)
-		return 1
+		return 0
 	var playing := block.distance_squared <= NOTE_NEAR
 	if not playing:
 		timer = timer - 5.0 * 1.0
@@ -85,4 +85,4 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 		vars.clear_var(tag, 0x4000000)
 		services.set_face(actor, 0)
 		services.particles(particle, 1)
-	return 1
+	return 1 if playing else 0

@@ -205,7 +205,7 @@ func update(actor, _block: BehaviourBlock, var_value: int) -> int:
 		else:
 			services.sound_release(SIREN_LOOP)
 	if leave:
-		return 2
+		return 0
 	_siren_follow(actor)
 	if services.frame_zero():
 		var slope := _slope(actor)
@@ -213,6 +213,7 @@ func update(actor, _block: BehaviourBlock, var_value: int) -> int:
 		var mid: Vector3 = (slope["front"] + slope["back"]) * 0.5
 		services.set_matrix_at(actor, mid)
 		_remember(actor)
+		return 0
 	else:
 		_remember(actor)
 		var fwd := Vector3(actor.field_f(0x2C), actor.field_f(0x30), actor.field_f(0x34))

@@ -76,7 +76,7 @@ func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 		services.request_hit(block, Vector3(0.0, 4.0, 0.0), Vector3(0.0, -(vertical * 1.0 + 4.0), 0.0), HIT_KIND, HIT_VAR)
 	actor.set_field_f(0x4C, spin * 1.0 + actor.field_f(0x4C))
 	services.set_rotation(actor, actor.field_f(0x4C), actor.field_f(0x50), actor.field_f(0x54))
-	return 0
+	return 1
 
 
 func has_post() -> bool:

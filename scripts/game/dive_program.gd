@@ -19,13 +19,20 @@ func pre_tick() -> void:
 func tick() -> void:
 	DiveWorld.play_animals()
 	DiveWorld.tick_hud()
+	var hud = _bridge.island.hud
+	if hud != null:
+		hud.dive_tick(DiveWorld.gauge, DiveWorld.bricks_taken, DiveWorld.delivered)
 
 
 func camera_pose() -> Dictionary:
 	return {"eye": DiveCamera.eye, "target": DiveCamera.target}
 
 
+var _bridge
+
+
 func build(bridge) -> void:
+	_bridge = bridge
 	var services = bridge.services
 	var records: Array = bridge.records
 	services.talk.ground_min = -1.0e30

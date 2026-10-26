@@ -55,7 +55,7 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 			if d.z * d.z + d.y * d.y + d.x * d.x < TARGET_NEAR:
 				if target.block != null and target.block.head != null and target.block.head.tag >= 3:
 					vars.or_var(target.block.head.tag, 0x20)
-		return 1
+		return 0
 	if status != block.frame_counter:
 		_goto_phase(handle)
 		services.set_clip(actor, 0x118, 0.0)

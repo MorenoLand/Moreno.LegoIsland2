@@ -166,6 +166,8 @@ func hit_kind(actor, vars) -> int:
 var machine_actor = null
 var machine_distance := 12.0
 var machine_taken := 0
+## DAT_05DE1EC8 (high word): who rides, -1 for a machine the island controller lets Pepper off.
+var ride_owner := 0
 
 ## DAT_00975E8C / DAT_00975E90: the analog steering and throttle axes (-127..127);
 ## DAT_05DE1EE0: a boat was taken.
@@ -179,6 +181,26 @@ var machine_kind := 0
 var craft_ticks := 0
 var craft_flag := 0
 var craft_seen := 0
+
+## The park's run: DAT_05D50EC0 the points of the trick in progress, DAT_05D50EC4 the trick was
+## taken (the points go to the bank), DAT_05D50ED4 the time left, DAT_05D50ECC the medal of the
+## run, DAT_05D50EC8 its score, DAT_05D50ED0 it is a new high score, DAT_05D50DD0 the run is over
+## (1 when a medal was ever won, 2 when none was).
+var trick_score := 0.0
+var score_taken := false
+var park_time_left := 0.0
+var park_medal := 0
+var park_score := 0
+var park_high := false
+var park_end := 0
+## The texts the park's HUD shows (DAT_05D3FE30 the clock, DAT_05D3FDF0 the score, DAT_05D400BC the
+## points of the trick, DAT_05D3FFEC the line above it); "" is not drawn.
+var park_clock_text := ""
+var park_score_text := ""
+var park_trick_text := ""
+var park_line_text := ""
+## FUN_00445ECF was called this tick: the HUD is drawn for this frame.
+var park_hud := false
 
 ## DAT_05D4A3A4: a music emitter is playing.
 var music_flag := 0

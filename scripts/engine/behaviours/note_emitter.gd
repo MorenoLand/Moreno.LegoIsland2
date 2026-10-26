@@ -18,6 +18,7 @@ static func from_descriptor(_desc: Descriptor, services_in: ActorServices) -> No
 func update(actor, _block, _var_value: int) -> int:
 	if not actor.visible():
 		services.particles(0, 1)
+		return 0
 	else:
 		services.particles(0, 2)
 		services.emit_particle(0, actor)

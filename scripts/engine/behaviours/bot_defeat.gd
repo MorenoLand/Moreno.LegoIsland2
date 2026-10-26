@@ -2,7 +2,7 @@ class_name BotDefeat
 extends Behaviour
 
 ## FUN_004CCE41 (ctor) / FUN_004CC527 (update, vtable 0x008B9D90) / FUN_004CCBE7 (post),
-## update returns 1. What happens to a BrickBot when it is hit: it is knocked about
+## update returns 1 or 0 (read off the disassembly path by path). What happens to a BrickBot when it is hit: it is knocked about
 ## (clips 0x94 / 0xCF / 0x95 / 0x11B), explodes and swirls with particles, shrinks away
 ## and finally sets its var to 0x4000 (the post starts the shrink when Pepper is close
 ## and credits the score and the colour var 0x8E).
@@ -89,12 +89,15 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 					if (v & 0x200) != 0 and idle_timer <= 0.0:
 						idle_running = 1
 						services.set_clip(actor, 0x70, 0.0)
+						return 1
+				return 0
 			elif services.clip_finished(actor, 1.0):
 				idle_running = 0
 				idle_timer = 60.0
+				return 0
 			return 1
 		if 0x33 < health:
-			return 1
+			return 0
 	else:
 		hit = -1
 		v |= 0x3000
@@ -104,12 +107,14 @@ func update(actor, block: BehaviourBlock, var_value: int) -> int:
 			actor.flags &= ~2
 			block.flags &= ~2
 			_finish_particles(actor)
+		return 0
 	else:
 		if (v & 0x10000) == 0:
 			if armed != 0:
 				if (v & 0x1000000) == 0:
 					if (v & 0x2000) == 0:
 						vars.clear_var(tag, 0x1000)
+						return 0
 					else:
 						hit = g.hit_kind(actor, vars)
 						if hit != 0:

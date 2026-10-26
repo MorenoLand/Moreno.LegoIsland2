@@ -87,18 +87,32 @@ static func from_descriptor(desc: Descriptor, services_in: ActorServices, vars_i
 	return b
 
 
+## FUN_00459555. The decompiler lost the floats the walker slot answers (FUN_004476B1 the squared
+## gap to the goal, FUN_00446FC4 the speed), so the returns were read off the disassembly: 0 while
+## the character is not yet inside the ramp it needs, otherwise 1 or 2 by the loop flag.
 func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 	if status != block.frame_counter:
 		state = 0
 	if state == 0:
-		if goal < 0:
-			if goal < -1:
-				services.anim_frame(actor)
-		else:
+		if goal >= 0:
 			var walk := services.walker_state(block.walker)
-			if walk == 3 or walk == 2:
-				if services.walker_goal_node(block.walker) != goal:
-					arrived = 0
+			if walk == 0:
+				return 0
+			if walk != 3 and walk != 2:
+				return 0
+			if services.walker_goal_node(block.walker) != goal:
+				arrived = 0
+				return 0
+			if arrived != 0:
+				return 0
+			var gap: float = services.walkers.gap_to_goal(block.walker)
+			var reach: float = ramp_length * services.walkers.speed(block.walker)
+			reach = (reach + 1.0) * (reach + 1.0)
+			if not (gap <= reach):
+				return 0
+		elif goal < -1:
+			if not (float(-goal) <= services.anim_frame(actor)):
+				return 0
 	return 1 if loop_flag != 0 else 2
 
 

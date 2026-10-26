@@ -279,6 +279,7 @@ func post(actor) -> void:
 			if not services.scene_active:
 				vars.or_var(tag, 0x10000000)
 				vars.set_var(0x5E, 8)
+				g.ride_owner = -1
 				ridden = 1
 				g.list_mode = -1
 			else:

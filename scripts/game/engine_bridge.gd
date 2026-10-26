@@ -161,6 +161,7 @@ func setup(owner) -> void:
 ## own walker and swimmer stand in for the ones at selectors 1 and 2. The island's sounds the board
 ## uses (FUN_0044B287 / FUN_0044B666) are defined here.
 func _setup_player_modes() -> void:
+	services.talk.hidden_record = BOARD_RECORD
 	for row in IslandMode.SOUNDS:
 		services.sound_define(int(row[0]), int(row[1]))
 	var player: Record = records[player_record]
@@ -269,7 +270,9 @@ func _tick() -> void:
 	var player: Record = records[player_record]
 	var here: Vector3 = island.player_pos
 	var riding := _riding()
-	var skating := _skating()
+	var skating := _engine_driven()
+	if program != null and program.engine_pepper:
+		island.ride_on = true
 	if not riding and not skating:
 		_follow_camera()
 	if not riding and not skating and (Game.get_var(0x5E) & 0xFFF) == WALK_SELECTOR and services.talk.busy == 0:
@@ -308,11 +311,12 @@ func _tick() -> void:
 		item["touched"] = false
 	if program != null:
 		program.pre_tick()
-	system.tick(records, player, vars)
-	services.resolve_hits(records)
-	system.post_pass(records)
+	if program == null or program.running():
+		system.tick(records, player, vars)
+		services.resolve_hits(records)
+		system.post_pass(records)
 	var was_on: bool = island.ride_on
-	island.ride_on = _riding() or _skating()
+	island.ride_on = _riding() or _engine_driven()
 	island.ground_skip = machine_record()
 	if was_on and not island.ride_on and skating:
 		island.dismount_t = island.pepper_time
@@ -323,11 +327,13 @@ func _tick() -> void:
 		var moved := Vector3(player.x, player.y, -player.z)
 		if moved.distance_to(here) > 0.001:
 			island.player_pos = moved
-	if _skating():
+	if _engine_driven():
 		_skate_follow()
 	elif island.ride_on:
 		_ride_follow()
 	services.frame_counter = system.frame
+	if island.hud != null and island.hud.kind != "dive":
+		island.hud.tick()
 	if program == null:
 		events.tick()
 	else:
@@ -356,16 +362,23 @@ func _tick() -> void:
 
 ## The skateboard (record 9) is drawn where the engine put it while it is shown.
 func _show_board() -> void:
-	var node = nodes.get(BOARD_RECORD)
+	var node = nodes.get(services.talk.hidden_record)
 	if node == null:
 		return
-	var board: Record = records[BOARD_RECORD]
+	var board: Record = records[services.talk.hidden_record]
 	node.visible = (board.flags & 2) != 0
 	if not node.visible:
 		return
 	node.position = Vector3(board.x, board.y, -board.z)
 	if board.matrix_valid:
 		node.basis = island.rows_basis(Vector3(board.field_f(0x0C), board.field_f(0x10), board.field_f(0x14)), Vector3(board.field_f(0x1C), board.field_f(0x20), board.field_f(0x24)), Vector3(board.field_f(0x2C), board.field_f(0x30), board.field_f(0x34)))
+	island.pose_board()
+
+
+## The records own Pepper's pose and the camera: on the board, or all the time in a zone whose program
+## says so (the park, where he also walks to the board by himself).
+func _engine_driven() -> bool:
+	return _skating() or (program != null and program.engine_pepper)
 
 
 func _skating() -> bool:
@@ -436,26 +449,6 @@ func _follow_camera() -> void:
 	services.camera_target = services.camera_eye + Vector3(look.x, look.y, -look.z) * 10.0
 	var right: Vector3 = camera.global_transform.basis.x
 	services.camera_right = Vector3(right.x, right.y, -right.z)
-
-
-## Port decision (the exe has no step-off for a ridden machine, a cut scene releases it):
-## the action key steps off. The machine stops and Pepper walks again beside it.
-func dismount() -> void:
-	var machine: Record = services.talk.machine_actor
-	if machine == null:
-		return
-	var rider := machine.block.head
-	while rider != null and not rider is RideMachine:
-		rider = rider.next
-	if rider == null:
-		return
-	rider.release()
-	services.talk.machine_actor = null
-	Game.set_var(0x5E, WALK_SELECTOR)
-	services.set_clip(records[player_record], WALK_CLIP, 0.0)
-	var side := services.actor_point(machine, Vector3(-4.0, 0.0, 0.0))
-	island.player_pos = Vector3(side.x, island.player_pos.y, -side.z)
-	ride_started = false
 
 
 ## The wheels of a driven machine turn with the distance it covered along its heading.

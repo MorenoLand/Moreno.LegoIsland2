@@ -206,3 +206,137 @@ func wall_hit(a: Vector3, b: Vector3, heights: PackedFloat32Array) -> Vector3:
 			if inside:
 				return Vector3(nx, 0.0, nz).normalized()
 	return Vector3.ZERO
+
+
+var _all_built := false
+var _all_grid := {}
+var _all_loose := PackedInt32Array()
+## DAT_00974998 / DAT_0097499C: the radius the edge planes are widened by and the skin the face plane is
+## thickened by in Pepper's sweeps.
+const SWEEP_RADIUS := 0.6
+const SWEEP_SKIN := 0.2
+const NO_HIT := 1.0e30
+
+
+## The largest distance from the file's origin to a polygon corner (a record whose sweep starts further
+## away than this plus the sweep's length cannot be hit). Infinite when a polygon's corners could not be
+## recovered.
+var reach := 0.0
+
+
+func reach_radius() -> float:
+	if not _all_built:
+		_build_all()
+	return reach
+
+
+func _build_all() -> void:
+	_all_built = true
+	for i in count:
+		var face := Vector3(faces[i * 4], faces[i * 4 + 1], faces[i * 4 + 2])
+		var low := Vector2(INF, INF)
+		var high := Vector2(-INF, -INF)
+		var ok := true
+		for pair in [[0, 1], [1, 2], [0, 2]]:
+			var o1: int = i * 12 + pair[0] * 4
+			var o2: int = i * 12 + pair[1] * 4
+			var rows := Basis(face, Vector3(planes[o1], planes[o1 + 1], planes[o1 + 2]),
+				Vector3(planes[o2], planes[o2 + 1], planes[o2 + 2])).transposed()
+			if absf(rows.determinant()) < 0.000001:
+				ok = false
+				break
+			var corner: Vector3 = rows.inverse() * Vector3(faces[i * 4 + 3], planes[o1 + 3], planes[o2 + 3])
+			low = low.min(Vector2(corner.x, corner.z))
+			high = high.max(Vector2(corner.x, corner.z))
+		if not ok or high.x - low.x > 400.0 or high.y - low.y > 400.0:
+			_all_loose.append(i)
+			reach = INF
+			continue
+		reach = maxf(reach, Vector2(maxf(absf(low.x), absf(high.x)), maxf(absf(low.y), absf(high.y))).length())
+		for cx in range(int(floor((low.x - 0.6) / CELL)), int(floor((high.x + 0.6) / CELL)) + 1):
+			for cz in range(int(floor((low.y - 0.6) / CELL)), int(floor((high.y + 0.6) / CELL)) + 1):
+				var key := Vector2i(cx, cz)
+				var list: PackedInt32Array = _all_grid.get(key, PackedInt32Array())
+				list.append(i)
+				_all_grid[key] = list
+
+
+## FUN_004277B0 over every polygon the segment a -> b can reach (the type 0 branch of FUN_00428210),
+## in the file's own space: the closest polygon whose flags meet the mask, as {t, point, normal}, or {}.
+## A polygon is a plane thickened by `skin` with its three (four) edge planes widened by `radius`: a
+## segment that starts within twice the skin in front of the plane hits at once (t = 0, the point is
+## the start pushed out to the skin), otherwise it hits where it crosses the thickened plane, when that
+## point is inside the widened edges. The last polygon at the smallest t wins, as in the exe.
+func sweep(a: Vector3, b: Vector3, radius: float, skin: float, mask: int) -> Dictionary:
+	if count == 0:
+		return {}
+	var reach := maxf(radius, skin) + 0.5
+	var low := Vector2(minf(a.x, b.x) - reach, minf(a.z, b.z) - reach)
+	var high := Vector2(maxf(a.x, b.x) + reach, maxf(a.z, b.z) + reach)
+	if not _all_built:
+		_build_all()
+	var candidates := {}
+	for cx in range(int(floor(low.x / CELL)), int(floor(high.x / CELL)) + 1):
+		for cz in range(int(floor(low.y / CELL)), int(floor(high.y / CELL)) + 1):
+			for w in _all_grid.get(Vector2i(cx, cz), PackedInt32Array()):
+				candidates[w] = true
+	for w in _all_loose:
+		candidates[w] = true
+	var ordered: Array = candidates.keys()
+	ordered.sort()
+	var best := NO_HIT
+	var found := {}
+	for i: int in ordered:
+		if (flags[i] & mask) == 0:
+			continue
+		var n := Vector3(faces[i * 4], faces[i * 4 + 1], faces[i * 4 + 2])
+		var d := faces[i * 4 + 3]
+		var s0 := n.dot(a) - d
+		var s1 := n.dot(b) - d
+		var dist := 0.0
+		var span := 0.0
+		if s0 >= 0.0:
+			if s1 >= 0.0:
+				if s0 < s1:
+					continue
+				if s0 - skin > 0.0 and skin < s1:
+					continue
+			span = s0 - s1
+			dist = s0 - skin
+		else:
+			var behind := -s0 - skin
+			if s1 < 0.0:
+				if -s0 < -s1:
+					continue
+				if behind > 0.0 and skin < -s1:
+					continue
+			span = s1 - s0
+			dist = behind
+		var t := 0.0
+		var point := Vector3.ZERO
+		if dist <= skin:
+			var offset := -(s0 + skin) if s0 < 0.0 else skin - s0
+			point = a + n * offset
+		else:
+			t = dist / span
+			if t < 0.0 or t > 1.0 or t > best:
+				continue
+			point = a + (b - a) * t
+		var inside := true
+		for k in 3 + (1 if (flags[i] & 4) != 0 else 0):
+			var plane_normal := Vector3.ZERO
+			var plane_d := 0.0
+			if k < 3:
+				var o: int = i * 12 + k * 4
+				plane_normal = Vector3(planes[o], planes[o + 1], planes[o + 2])
+				plane_d = planes[o + 3]
+			else:
+				plane_normal = Vector3(quad_edge[i * 4], quad_edge[i * 4 + 1], quad_edge[i * 4 + 2])
+				plane_d = quad_edge[i * 4 + 3]
+			if radius < plane_normal.dot(point) - plane_d:
+				inside = false
+				break
+		if inside:
+			best = t
+			found = {"t": t, "point": point, "normal": n, "tri": i}
+	return found

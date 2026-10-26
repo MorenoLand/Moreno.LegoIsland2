@@ -64,7 +64,7 @@ func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 	if state == 0 or state == 2:
 		_walk(actor)
 		services.request_hit(block, Vector3(0.0, 8.0, 0.0), Vector3(0.0, -16.0, 0.0), 3, 0x50)
-	return 0
+	return 1
 
 
 func _walk(actor) -> void:

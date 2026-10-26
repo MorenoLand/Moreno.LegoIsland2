@@ -384,7 +384,7 @@ func update(actor, block: BehaviourBlock, _var_value: int) -> int:
 				var zone := _end_zone()
 				arrived = 0
 				if zone > -1:
-					return 1
+					return 0
 				wanted = 10
 				state = 2
 				turn_flags = 4

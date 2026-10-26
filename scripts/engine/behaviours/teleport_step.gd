@@ -38,6 +38,7 @@ func update(actor, _block, var_value: int) -> int:
 	if (var_value & mask2) == value2:
 		placed = 0
 		vars.or_var(tag, 0x40020000)
+		return 1
 	elif placed == 0:
 		var p = services.waypoint_position(1, node_index)
 		if p != null:
@@ -45,4 +46,4 @@ func update(actor, _block, var_value: int) -> int:
 			actor.y = p.y
 			actor.z = p.z
 		placed = 1
-	return 1
+	return 0

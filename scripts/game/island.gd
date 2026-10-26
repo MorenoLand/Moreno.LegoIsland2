@@ -26,6 +26,9 @@ const MUSIC_SITES := [
 	[121, "Nick Brick.sgt"],
 ]
 const FOV := 60.0
+## The zones whose set-up loads `sky.Msh` (the exe's path strings name it for exactly these; the dive and
+## the park have no sky dome).
+const SKY_ZONES := ["z02LGI", "z07CSI", "z10RGB", "z28HAT", "z23DIP", "z09JST", "z13CAI", "z14OSD", "z16PYA", "z50LTC"]
 const EYE_HEIGHT := 3.0
 const PLAYER_SPEED := 10.0
 const REFERENCE_RATE := 30.0
@@ -49,6 +52,7 @@ const RABBIT_DROP := 8.0
 const SWIFT_PERCH_CLIP := 1
 const SEA_LEVEL := 2.4
 const CASTLE_ZONE := "z07CSI"
+const DIVE_ZONE := "z08BKD"
 ## The island's water texture, and the castle's sea level (its ground_min is 0).
 const WATER_TEXTURE := 4
 var sea_y := SEA_LEVEL
@@ -56,6 +60,10 @@ const SEA_MARGIN := 120.0
 const WALL_LOW := 1.2
 const WALL_RADIUS := 0.5
 const WALL_HIGH := 2.4
+## FUN_00871DB4: the feet sweep sits 1.48 up, the head sweep 4 up and climbs 1.2 along the step.
+const WALK_FOOT_UP := 1.48
+const WALK_HEAD_UP := 4.0
+const WALK_HEAD_RISE := 1.2
 const SWIM_CLIP := 9
 const TREAD_CLIP := 0x41
 const FIGURE_BODY_MESH := "MFG_HR"
@@ -223,6 +231,8 @@ var ground_skip := -1
 const BOARD_RECORD := 9
 const SKATE_SELECTOR := 4
 var board_blk: BlkFile
+var board_skin: SkinnedMesh
+var board_node: MeshInstance3D
 var board_clip := 0
 var board_time := 0.0
 var ride_basis := Basis()
@@ -298,28 +308,11 @@ const JUMP_TIME_STEP := 0.1
 const JUMP_MAX_TIME := 3.0
 const JUMP_CLIP := 1
 
-## Skateboard. It is a park prop: `data/bpk_placement.tsv` row 36 places `SKBD` at
-## (5.225, 2.304, 0.0), right beside the player's own row 35 `PEPP 0.0 2.077 0.0`.
-##
-## There is NO skate key, CONFIRMED in Ghidra: the park's skate update `FUN_007eb09d`
-## (source `...\Common\Z01BPK\c_src\skate.c`, object built by `FUN_007ecf4d`, vtable
-## `0x00942a40`) never reads the input masks `DAT_00975e7c`/`DAT_00975e80`, and neither
-## does the island's other ride handler `FUN_004d5453` (source
-## `...\Common\Z02LGI\c_src\SupaStat.c`, vtable `0x8ba3d8`). The park ride is instead
-## story-gated - `FUN_007eb09d` branches on `FUN_00411495()` (var 0x58) being 1 - and
-## its object starts in state 0x16 (22), i.e. "parked".
-##
-## Clip numbers are the island loader's clip indices: `FUN_00490aeb` loads each clip
-## name in order and the index is the name's position in that sequence minus 15. That
-## offset is confirmed against the eight clips the port already used - PEP_SWIM 9,
-## PEP_JUMPINAIR 1, PEP_THROWPIZZA 11, PEP_TWOPIZZASPLAT 12, PEP_WALK 13, PEP_RUN 36,
-## PEP_IDLE 58, PEP_TREADWATER 65 - and then gives PEP_ONTOBOARD 22, PEP_OFFBOARD 28,
-## PEP_BOARDCYCLE 41, PEP_BOARDSTEER 81.
-##
-## PORT DECISION, not exe data: because the exe has no skate key and its park ride is
-## a scripted chapter-1 event, the port makes the board rideable directly - walk onto
-## the board to get on, press the action key (X, which does nothing else in the park)
-## to step off. SPACE still jumps while riding, so the jump never becomes unreachable.
+## The skateboard is driven by the engine's records (IslandMode and Skate on the island and in the
+## castle, ParkProgram in the park); the island only draws it and plays Pepper's clips.
+## Clip numbers are the island loader's clip indices: `FUN_00490aeb` loads each clip name in order
+## and the index is the name's position in that sequence minus 15 (PEP_SWIM 9, PEP_JUMPINAIR 1,
+## PEP_THROWPIZZA 11, PEP_TWOPIZZASPLAT 12, PEP_WALK 13, PEP_RUN 36, PEP_IDLE 58, PEP_TREADWATER 65).
 ## Riding camera: how fast the view catches up with the engine's eye, and the distance after which it jumps.
 const RIDE_GLIDE := 20.0
 const RIDE_SNAP := 40.0
@@ -425,6 +418,8 @@ var f6_held := false
 var f7_held := false
 var music: DmPlayer
 var ambience: Array = []
+var ambience_songs: Array = []
+var ambience_gulls := false
 var shelf_view := false
 var swimming := false
 var rabbits: Array = []
@@ -510,7 +505,7 @@ func _ready() -> void:
 		Game.pending_zone_code = ""
 	pepper_parts_table = PEPPER_PARTS if zone == ISLAND_ZONE else (HOUSE_PARTS if zone == HOUSE_ZONE else [])
 	_load_lights()
-	var land := MeshBuilder.build(zone, "land", 0, true, _run(4), true)
+	var land := MeshBuilder.build(zone, "land", 0, true, _run(_land_run()), true)
 	if land != null:
 		add_child(land)
 		land_col = ColFile.parse(Data.read("_data/%s/col/land.col" % zone))
@@ -531,7 +526,7 @@ func _ready() -> void:
 		_collect_sea(sea)
 	if zone == ISLAND_ZONE or zone == CASTLE_ZONE:
 		_build_water_plane()
-	sky = MeshBuilder.build(zone, "sky", 0, true, _run(3))
+	sky = MeshBuilder.build(zone, "sky", 0, true, _run(_sky_run())) if SKY_ZONES.has(zone) else null
 	if sky != null:
 		sky.scale = Vector3.ONE * 900.0
 		add_child(sky)
@@ -565,13 +560,16 @@ func _ready() -> void:
 		brick_morph = BrickMorphScript.new()
 		add_child(brick_morph)
 		brick_morph.setup(self)
-	if zone == ISLAND_ZONE or zone == HOUSE_ZONE:
+	if zone == ISLAND_ZONE or zone == HOUSE_ZONE or zone == CASTLE_ZONE or zone == DIVE_ZONE:
 		var hud_layer := CanvasLayer.new()
 		hud_layer.layer = 5
 		hud = Hud.new()
 		if zone == HOUSE_ZONE:
 			hud.corners = false
 			hud.overlay_folder = "_data/Overlays/z03pph/text%03d.tga"
+		else:
+			hud.kind = {ISLAND_ZONE: "island", CASTLE_ZONE: "castle", DIVE_ZONE: "dive"}[zone]
+			hud.overlay_folder = "_data/Overlays/%s/text%%03d.tga" % zone
 		hud_layer.add_child(hud)
 		add_child(hud_layer)
 	if DisplayServer.get_name() != "headless" and zone != ISLAND_ZONE:
@@ -631,6 +629,9 @@ const ZONE_FOG := {
 	"z03PPH": [100.0, 800.0, 500.0, 0x00FFFF, true],
 	"z07CSI": [100.0, 800.0, 500.0, 0xFF9966, true],
 	"z08BKD": [200.0, 200.0, 120.0, 0x000000, true],
+	"z01BPK": [100.0, 200.0, 20.0, 0x000000, true],
+	"z14OSD": [100.0, 800.0, 500.0, 0x00FFFF, true],
+	"z16PYA": [400.0, 400.0, 100.0, 0x00FFFF, true],
 	"z36CNT": [52.5, 52.5, 10.0, 0x000000, false],
 }
 var fog_row: Array = [100.0, 800.0, 500.0, 0x00FFFF]
@@ -1049,6 +1050,8 @@ func _process(delta: float) -> void:
 	_turn_spectators(delta)
 	if bridge != null:
 		bridge.update(delta)
+	if zone == ISLAND_ZONE:
+		_ambience_tick()
 	_update_pages(delta)
 	_update_portals()
 	_cheer(delta)
@@ -1142,7 +1145,7 @@ func _drive_player(delta: float) -> void:
 	# table at 0x0089e1b0 - a real action button, just not the pizza one.
 	var action := Input.is_physical_key_pressed(KEY_F)
 	var jump := Input.is_physical_key_pressed(KEY_SPACE) or Input.is_physical_key_pressed(KEY_ALT)
-	if action and not action_held and throw_t < 0.0:
+	if action and not action_held and throw_t < 0.0 and not ride_on:
 		if train_on:
 			_train_step_off()
 		elif zone == ISLAND_ZONE and _train_near() >= 0:
@@ -1150,9 +1153,8 @@ func _drive_player(delta: float) -> void:
 		elif zone == ISLAND_ZONE:
 			_start_throw(absf(forward) >= RUN_THRESHOLD)
 	if ride_on:
-		# Riding a machine (FUN_0087FB26): the engine drives the machine, Pepper and the camera.
-		if action and not action_held:
-			bridge.dismount()
+		# Riding a machine (FUN_0087FB26) or the board: the engine drives it, Pepper and the camera;
+		# the action key (CTRL) gets off, through the island controller.
 		action_held = action
 		jump_held = jump
 		player.position = player_pos + Vector3(0, pepper_foot, 0)
@@ -1377,6 +1379,8 @@ func _start_ambience() -> void:
 	# sounds/z02LGI/MidiAmbient/ holds Birds.mid, Birds'n'Bees.MID and Seagulls.mid
 	# with their own 1.1 MB "DLS Birds.dls". Birds and gulls are the island's
 	# background sound; without them the town is silent apart from the score.
+	# FUN_00452ADD / FUN_00453987 play one of them at a time: the birds from the start, the gulls
+	# once Pepper is lower than 8 above the sea, the birds again above 16 (see `_ambience_tick`).
 	for entry in AMBIENCE:
 		var amb := DmPlayer.new()
 		add_child(amb)
@@ -1386,8 +1390,33 @@ func _start_ambience() -> void:
 		if song == null:
 			amb.queue_free()
 			continue
-		if amb.play_song(song, true):
-			ambience.append(amb)
+		ambience.append(amb)
+		ambience_songs.append(song)
+	ambience_gulls = false
+	if ambience.size() == AMBIENCE.size():
+		ambience[0].play_song(ambience_songs[0], true)
+
+
+## FUN_00453987 as the island controller calls it every tick: the gulls when Pepper is lower than 8
+## above the sea level, the birds when he is higher than 16, whatever plays between.
+func _ambience_tick() -> void:
+	if ambience.size() != AMBIENCE.size():
+		return
+	var height := player_pos.y
+	var wants_gulls := false
+	if height >= SEA_LEVEL + 8.0:
+		if height > 16.0:
+			wants_gulls = false
+		else:
+			return
+	else:
+		wants_gulls = true
+	if wants_gulls == ambience_gulls:
+		return
+	ambience[1 if not wants_gulls else 0].stop()
+	ambience_gulls = wants_gulls
+	var next := 1 if wants_gulls else 0
+	ambience[next].play_song(ambience_songs[next], true)
 
 
 func _update_music(delta: float) -> void:
@@ -1497,6 +1526,26 @@ func _close_pause() -> void:
 	pause_layer = null
 
 
+## The texture run of the land: the one with a texture for each group of Land.msh (the island's is run 4,
+## the castle's run 3).
+func _land_run() -> int:
+	var file := MeshFile.parse(Data.read("_data/%s/meshes/land.msh" % zone))
+	if file == null:
+		return 4
+	var wanted := file.groups.size()
+	if _run(4).size() == wanted:
+		return 4
+	for index in 8:
+		if _run(index).size() == wanted:
+			return index
+	return 4
+
+
+## The sky is loaded just before the land: the island's run 3 before its run 4, the castle's run 2 before 3.
+func _sky_run() -> int:
+	return _land_run() - 1
+
+
 func _run(index: int) -> PackedInt32Array:
 	var out := PackedInt32Array()
 	var file := FileAccess.open("res://data/%s_texsets.tsv" % prefix, FileAccess.READ)
@@ -1578,7 +1627,9 @@ func _place_objects() -> void:
 	for parts in _rows("res://data/%s_models.tsv" % prefix):
 		var record := int(String(parts[0]).get_slice(":", 0))
 		var every: Array = []
-		for column in [2, 4]:
+		# The record's own meshes come first: its collision file is the one named like its model
+		# (the pizzeria's is `pizzeria_LOD5.col` on slot 79), not one of the parts it carries.
+		for column in [4, 2]:
 			if parts.size() > column:
 				for token in String(parts[column]).split(" ", false):
 					every.append(int(token))
@@ -1661,9 +1712,13 @@ func _place_objects() -> void:
 					Game.get_var(Game.VAR_STATE)])
 		var hide := _hidden_at_start(String(mesh_names.get(slot, "")), position) if zone == ISLAND_ZONE else ""
 		if hide != "":
+			# A collision record (the pizzeria's walls are `collision_pizzeria`) is not drawn but is solid.
+			if hide == "name:collision" and col_paths.has(slot) and slot >= FIRST_SOLID_SLOT:
+				collider_slots.append([slot, position, float(parts[3]), record])
 			_skip("hidden:" + hide + ":" + String(mesh_names.get(slot, "")), record)
 			continue
-		if zone == ISLAND_ZONE and _story_hidden(record, Game.get_var(Game.VAR_STATE)):
+		var board_hidden := zone == ISLAND_ZONE and record == BOARD_RECORD
+		if zone == ISLAND_ZONE and not board_hidden and _story_hidden(record, Game.get_var(Game.VAR_STATE)):
 			_skip("story_hidden", record)
 			continue
 		var solid := slot >= FIRST_SOLID_SLOT and not (slot >= 303 and slot <= 317)
@@ -1706,6 +1761,10 @@ func _place_objects() -> void:
 		add_child(instance)
 		if String(mesh_names.get(slot, "")).to_lower() == "backdrop":
 			_fog_free(instance)
+		if board_hidden:
+			# The skateboard exists from the start and the engine shows it when Pepper gets on.
+			instance.visible = false
+			_board_skin_setup(instance, String(mesh_names.get(slot, "")))
 		if zone == ISLAND_ZONE and code == "HOLO":
 			# The hologram of the Info Maniac only appears while he talks through
 			# Pepper's headset; the cut scene scripts show it, never the free walk.
@@ -1763,7 +1822,7 @@ func _place_objects() -> void:
 			# Only the island's and the castle's tables line Pepper's parts up with their attach
 			# list (the castle's children 0..4 are model rows 0..4: helmet, head, hat, hands). In the house the same lookup lands on the room's scenery, so
 			# the hand-written part list is used there instead.
-			if (zone == ISLAND_ZONE or zone == CASTLE_ZONE) and attaches.has(record):
+			if zone != HOUSE_ZONE and attaches.has(record):
 				var generated: Array = []
 				for entry in attaches[record]:
 					if part_models.has(entry[0]):
@@ -2739,6 +2798,28 @@ func _road_height(point: Vector3, route_y: float) -> float:
 
 ## Frames in a clip, from the shipped anim block, so a mount/dismount pose is held
 ## for exactly as long as the clip lasts.
+## The board is a two-bone mesh: each vertex follows one bone of the clip the board plays
+## (SKBD.blk), so the mesh is rebuilt from the pose whenever it is shown.
+func _board_skin_setup(instance: MeshInstance3D, mesh_name: String) -> void:
+	var file := MeshFile.parse(Data.read("_data/%s/meshes/%s.msh" % [zone, mesh_name]))
+	var materials: Array = []
+	for i in instance.mesh.get_surface_count():
+		materials.append(instance.mesh.surface_get_material(i))
+	board_skin = SkinnedMesh.create(file, materials)
+	board_node = instance
+	if board_blk == null:
+		board_blk = BlkFile.parse(Data.read("_data/%s/anim/SKBD.blk" % zone))
+
+
+func pose_board() -> void:
+	if board_skin == null or board_blk == null:
+		return
+	var pose := board_blk.pose(board_clip, int(board_time))
+	if pose.size() >= 2:
+		board_skin.update(pose)
+		board_node.mesh = board_skin.mesh
+
+
 func _board_frames(clip: int) -> float:
 	if board_blk == null or clip < 0 or clip >= board_blk.anims.size():
 		return 1.0
@@ -3133,17 +3214,83 @@ func _load_cols() -> void:
 		var col: ColFile = col_cache[slot]
 		if col == null or col.count == 0:
 			continue
-		colliders.append({"col": col, "position": MeshBuilder.flip(entry[1]), "basis": Basis(Vector3.UP, -float(entry[2])).inverse(), "record": int(entry[3]) if entry.size() > 3 else -1})
+		colliders.append({"col": col, "position": MeshBuilder.flip(entry[1]), "basis": Basis(Vector3.UP, -float(entry[2])).inverse(), "record": int(entry[3]) if entry.size() > 3 else -1, "reach": col.reach_radius()})
 
 
+## FUN_00428210's static part: sweep a segment of `delta` from `origin` (scene coordinates) through the
+## land's collision file and every record's, polygons filtered by `mask`. The closest hit comes back as
+## {t, point, normal, record} (the record is -2 for the land itself), or {} for none.
+func sweep(origin: Vector3, delta: Vector3, mask: int, radius: float, skin: float, skip_record := -1) -> Dictionary:
+	var a := Vector3(origin.x, origin.y, -origin.z)
+	var b := Vector3(origin.x + delta.x, origin.y + delta.y, -(origin.z + delta.z))
+	var best := ColFile.NO_HIT
+	var found := {}
+	if land_col != null:
+		var hit := land_col.sweep(a, b, radius, skin, mask)
+		if not hit.is_empty():
+			var n: Vector3 = hit.normal
+			var at: Vector3 = hit.point
+			found = {"t": hit.t, "point": Vector3(at.x, at.y, -at.z), "normal": Vector3(n.x, n.y, -n.z), "record": -2}
+			best = hit.t
+	var end := origin + delta
+	var reach_margin := delta.length() + maxf(radius, skin) + 1.0
+	for item in colliders:
+		if skip_record >= 0 and int(item.get("record", -1)) == skip_record:
+			continue
+		var col: ColFile = item.col
+		var gap: Vector2 = Vector2(origin.x - item.position.x, origin.z - item.position.z)
+		if gap.length() > float(item.get("reach", INF)) + reach_margin:
+			continue
+		var la: Vector3 = item.basis * (origin - item.position)
+		var lb: Vector3 = item.basis * (end - item.position)
+		var hit := col.sweep(Vector3(la.x, la.y, -la.z), Vector3(lb.x, lb.y, -lb.z), radius, skin, mask)
+		if hit.is_empty() or hit.t > best:
+			continue
+		var n: Vector3 = hit.normal
+		var at: Vector3 = hit.point
+		var turn: Basis = item.basis.inverse()
+		found = {"t": hit.t, "point": turn * Vector3(at.x, at.y, -at.z) + item.position, "normal": (turn * Vector3(n.x, n.y, -n.z)).normalized(), "record": int(item.get("record", -1))}
+		best = hit.t
+	if not found.is_empty():
+		wall_record = int(found.record)
+	return found
+
+
+## The collectible pages are not walls (the exe's walker lets a hit on a record named PAG... through).
+func _is_page(record: int) -> bool:
+	return bridge != null and record >= 0 and record < bridge.records.size() and String(bridge.records[record].code).begins_with("PAG")
+
+
+## What Pepper's walker (FUN_00871DB4) does with a step: a sphere of radius 0.6 swept 1.48 up at the
+## feet; a wall it meets (not a floor, not a page) is slid along, and a second hit stops the step. A
+## second sweep at head height, 4 up and rising 1.2 along the step, only answers to surfaces that face
+## downward (a ceiling or an overhang): it slides along them and stops on a second hit.
 func _slide(from: Vector3, move: Vector3) -> Vector3:
-	var normal := _wall_normal(from, from + move)
-	if normal == Vector3.ZERO:
-		return move
-	var slid := move - normal * move.dot(normal)
-	if _wall_normal(from, from + slid) != Vector3.ZERO:
-		return Vector3.ZERO
-	return slid
+	var step := Vector3(move.x, 0.0, move.z)
+	if step.length() < 0.00001:
+		return step
+	var low := sweep(from + Vector3(0.0, WALK_FOOT_UP, 0.0), step, 1, ColFile.SWEEP_RADIUS, ColFile.SWEEP_SKIN, ground_skip)
+	if not low.is_empty() and low.normal.y < 1.0 and not _is_page(int(low.record)):
+		var wall: Vector3 = low.normal
+		var along := wall.x * step.x + wall.z * step.z
+		step.x -= wall.x * along
+		step.z -= wall.z * along
+		if not sweep(from + Vector3(0.0, WALK_FOOT_UP, 0.0), step, 3, ColFile.SWEEP_RADIUS, ColFile.SWEEP_SKIN, ground_skip).is_empty():
+			step = Vector3.ZERO
+	var head_step := Vector3(step.x, WALK_HEAD_RISE, step.z)
+	var head := sweep(from + Vector3(0.0, WALK_HEAD_UP, 0.0), head_step, 1, ColFile.SWEEP_RADIUS, ColFile.SWEEP_SKIN, ground_skip)
+	if not head.is_empty() and head.normal.y < 0.0:
+		var roof: Vector3 = head.normal
+		var against := roof.x * step.x + roof.z * step.z
+		if against < 0.0:
+			step.x -= roof.x * against
+			step.z -= roof.z * against
+			var again := sweep(from + Vector3(0.0, WALK_HEAD_UP, 0.0), Vector3(step.x, WALK_HEAD_RISE, step.z), 1, ColFile.SWEEP_RADIUS, ColFile.SWEEP_SKIN, ground_skip)
+			if not again.is_empty() and again.normal.y > -1.0:
+				step = Vector3.ZERO
+			elif not again.is_empty():
+				pass
+	return step
 
 
 func _wall_normal(from: Vector3, to: Vector3, skip_record := -1) -> Vector3:

@@ -32,7 +32,7 @@ func _rider(record) -> bool:
 
 ## The skateboard's own clips (SKBD.blk).
 func _board(record) -> bool:
-	return record != null and record.index == island.BOARD_RECORD and island.board_blk != null
+	return record != null and record.index == talk.hidden_record and island.board_blk != null
 
 
 ## FUN_0042336A for the clips the island keeps itself (Pepper's and the board's).
@@ -72,6 +72,11 @@ func clip_advance(record, step: float) -> int:
 
 func swimming() -> bool:
 	return island.swimming
+
+
+func place_player(position: Vector3) -> void:
+	super.place_player(position)
+	island.player_pos = Vector3(position.x, position.y, -position.z)
 
 
 func set_pepper_clip(clip: int) -> void:
@@ -576,8 +581,9 @@ func read_input() -> Array:
 
 
 ## FUN_00428210: sweep a probe through the collision files. A vertical sweep reports the first
-## ground surface it crosses, a horizontal one the first wall (the hit point is found by
-## bisecting the segment; the exe's own radius and surface-mask handling are not read, OPEN).
+## ground surface it crosses (the port's own ground model); every other direction runs the exe's
+## polygon sweep (island.sweep: edge planes widened by the radius, face planes thickened by the
+## tolerance, polygons chosen by the flags).
 func collide_sweep(record, start: Vector3, delta: Vector3, _flags: int, _radius: float, _tolerance: float) -> Variant:
 	var from := Vector3(start.x, start.y, -start.z)
 	if absf(delta.x) + absf(delta.z) < 0.0001:
@@ -586,21 +592,13 @@ func collide_sweep(record, start: Vector3, delta: Vector3, _flags: int, _radius:
 			last_surface = island.ground_surface
 			return {"position": Vector3(start.x, ground, start.z), "normal": Vector3.UP}
 		return null
-	var to := Vector3(start.x + delta.x, start.y + delta.y, -(start.z + delta.z))
 	var own: int = record.index if record != null else -1
-	var wall: Vector3 = island._wall_normal(from, to, own)
-	if wall == Vector3.ZERO:
+	var hit: Dictionary = island.sweep(from, Vector3(delta.x, delta.y, -delta.z), _flags, _radius, _tolerance, own)
+	if hit.is_empty():
 		return null
-	var low := 0.0
-	var high := 1.0
-	for i in 6:
-		var mid := (low + high) * 0.5
-		if island._wall_normal(from, from.lerp(to, mid), own) != Vector3.ZERO:
-			high = mid
-		else:
-			low = mid
-	var hit_at := from.lerp(to, high)
-	return {"position": Vector3(hit_at.x, hit_at.y, -hit_at.z), "normal": Vector3(wall.x, 0.0, -wall.z).normalized(), "record": island.wall_record}
+	var at: Vector3 = hit.point
+	var n: Vector3 = hit.normal
+	return {"position": Vector3(at.x, at.y, -at.z), "normal": Vector3(n.x, n.y, -n.z), "record": int(hit.record)}
 
 
 func particle_attach_ref(handle: int, holder: Array) -> void:
